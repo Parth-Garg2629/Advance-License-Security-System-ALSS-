@@ -1,0 +1,95 @@
+<!-- ===== HEADER START ===== -->
+<header
+    class="flex items-center justify-between px-8 py-5 bg-surface-dark
+           border-b border-border-dark shadow-lg shrink-0 h-20
+           relative z-10">
+
+    <!-- ================= LEFT: PAGE CONTEXT ================= -->
+    <div class="flex items-center gap-3 min-w-0">
+
+        <!-- Scope Badge -->
+        {% if g.current_user %}
+            {% if g.current_user.role == "SUPER_ADMIN" %}
+                <span class="px-3 py-1 text-xs font-bold rounded-full
+                             bg-purple-500/10 text-purple-400 border border-purple-500/30">
+                    SYSTEM SCOPE
+                </span>
+            {% elif g.current_user.role == "COMPANY_ADMIN" %}
+                <span class="px-3 py-1 text-xs font-bold rounded-full
+                             bg-primary/10 text-primary border border-primary/30">
+                    COMPANY ADMIN
+                </span>
+            {% elif g.current_user.role == "COMPANY_VIEWER" %}
+                <span class="px-3 py-1 text-xs font-bold rounded-full
+                             bg-surface-light text-text-muted border border-border-dark">
+                    READ-ONLY
+                </span>
+            {% endif %}
+        {% endif %}
+
+        <!-- Breadcrumb -->
+        <span class="text-text-muted text-sm font-medium truncate">
+            {{ header_section | default("Security Console") }}
+        </span>
+
+        <span class="text-primary/50 text-sm font-bold">/</span>
+
+        <span class="text-white text-lg font-bold tracking-tight truncate">
+            {{ header_title | default("Dashboard") }}
+        </span>
+    </div>
+
+    <!-- ================= RIGHT: ACTIONS ================= -->
+    <div class="flex items-center gap-6">
+
+        <!-- Critical Alerts (Super Admin / Admin) -->
+        {% if critical_alerts %}
+        <div
+            class="flex items-center gap-2 bg-danger/10 text-danger
+                   px-4 py-1.5 rounded-full border border-danger/40
+                   animate-pulse shadow-[0_0_10px_rgba(255,7,58,0.2)]">
+            <span class="material-symbols-outlined text-[18px]">warning</span>
+            <span class="text-xs font-bold uppercase tracking-wide">
+                {{ critical_alerts }} Critical Alerts
+            </span>
+        </div>
+        {% endif %}
+
+        <div class="w-px h-8 bg-white/10"></div>
+
+        <!-- Notifications -->
+        <button
+            title="Notifications"
+            class="text-text-muted hover:text-primary transition p-1
+                   hover:drop-shadow-[0_0_5px_rgba(0,242,255,0.8)]">
+            <span class="material-symbols-outlined text-2xl">notifications</span>
+        </button>
+
+        <!-- Help -->
+        <button
+            title="Help"
+            class="text-text-muted hover:text-primary transition p-1
+                   hover:drop-shadow-[0_0_5px_rgba(0,242,255,0.8)]">
+            <span class="material-symbols-outlined text-2xl">help</span>
+        </button>
+
+        <!-- User Mini Info -->
+        {% if g.current_user %}
+        <div class="flex items-center gap-2 pl-4 border-l border-white/10">
+            <span class="material-symbols-outlined text-primary text-xl">
+                account_circle
+            </span>
+            <div class="text-right leading-tight">
+                <p class="text-sm font-semibold text-white">
+                    {{ g.current_user.username }}
+                </p>
+                <p class="text-[11px] text-text-muted uppercase tracking-wide">
+                    {{ g.current_user.role.replace("_", " ") }}
+                </p>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</header>
+<!-- ===== HEADER END ===== -->

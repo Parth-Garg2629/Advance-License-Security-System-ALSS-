@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- ================= SUPER ADMIN : GLOBAL USERS ================= -->
+
+<div class="space-y-8">
+
+    <!-- PAGE HEADER -->
+    <div>
+        <h1 class="text-3xl font-bold text-white tracking-tight">
+            Global Users
+        </h1>
+        <p class="text-text-muted mt-1">
+            All users across all companies and system roles.
+        </p>
+    </div>
+
+    <!-- POLICY NOTICE -->
+    <div class="bg-surface-dark border border-border-dark rounded-xl p-5 text-sm">
+        <span class="text-primary font-semibold">Security Rule:</span>
+        User roles and company bindings define strict access boundaries.
+        Super Admin visibility does not imply tenant control.
+    </div>
+
+    <!-- USERS TABLE -->
+    <div class="bg-surface-dark border border-border-dark rounded-xl overflow-hidden">
+
+        <table class="w-full text-left text-sm">
+            <thead class="bg-surface-light border-b border-border-dark">
+                <tr class="text-xs uppercase text-text-muted">
+                    <th class="p-4">User ID</th>
+                    <th class="p-4">Username</th>
+                    <th class="p-4">Email</th>
+                    <th class="p-4">Role</th>
+                    <th class="p-4">Company</th>
+                    <th class="p-4">Created</th>
+                </tr>
+            </thead>
+
+            <tbody class="divide-y divide-border-dark">
+                {% if users %}
+                    {% for u in users %}
+                    <tr class="hover:bg-surface-light transition-colors">
+
+                        <td class="p-4 font-mono text-primary">
+                            {{ u.id }}
+                        </td>
+
+                        <td class="p-4 text-white font-semibold">
+                            {{ u.username }}
+                        </td>
+
+                        <td class="p-4 text-text-muted">
+                            {{ u.email or "—" }}
+                        </td>
+
+                        <td class="p-4">
+                            {% if u.role == "SUPER_ADMIN" %}
+                                <span class="px-2 py-1 rounded text-xs border border-purple-500 text-purple-400">
+                                    SUPER ADMIN
+                                </span>
+                            {% elif u.role == "COMPANY_ADMIN" %}
+                                <span class="px-2 py-1 rounded text-xs border border-primary text-primary">
+                                    COMPANY ADMIN
+                                </span>
+                            {% else %}
+                                <span class="px-2 py-1 rounded text-xs border border-emerald-500 text-emerald-400">
+                                    VIEWER
+                                </span>
+                            {% endif %}
+                        </td>
+
+                        <td class="p-4 text-text-muted">
+                            {{ u.company.name if u.company else "SYSTEM" }}
+                        </td>
+
+                        <td class="p-4 text-text-muted">
+                            {{ u.created_at.strftime("%d %b %Y") if u.created_at else "—" }}
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="p-6 text-center text-text-muted">
+                            No users found in the system.
+                        </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+
+    </div>
+
+    <!-- FUTURE SCOPE -->
+    <div class="bg-surface-dark border border-border-dark rounded-xl p-5 text-sm text-text-muted">
+        <span class="text-primary font-semibold">Planned Enhancements:</span>
+        User suspension, role reassignment, forced logout,
+        and anomaly detection will be implemented here.
+    </div>
+
+</div>
+
+{% endblock %}

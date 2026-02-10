@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block title %}Settings | ALSS{% endblock %}
+
+{% block content %}
+<div class="p-8 space-y-8">
+
+    <!-- Page Header -->
+    <div>
+        <h1 class="text-2xl font-semibold text-white">Application Settings</h1>
+        <p class="text-sm text-gray-400">
+            System configuration and security status (read-only)
+        </p>
+    </div>
+
+    <!-- System Info -->
+    <section class="bg-gray-900 border border-gray-800 rounded-xl p-6">
+        <h2 class="text-lg font-medium text-white mb-4">System Information</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div>
+                <p class="text-gray-400">Application Name</p>
+                <p class="text-white">Advanced License Security System</p>
+            </div>
+
+            <div>
+                <p class="text-gray-400">Environment</p>
+                <p class="text-white">Production</p>
+            </div>
+
+            <div>
+                <p class="text-gray-400">Version</p>
+                <p class="text-white">v4.2.0</p>
+            </div>
+
+            <div>
+                <p class="text-gray-400">Server Status</p>
+                <p class="text-green-400">ONLINE</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Security Status -->
+    <section class="bg-gray-900 border border-gray-800 rounded-xl p-6">
+        <h2 class="text-lg font-medium text-white mb-4">Security</h2>
+
+        <ul class="space-y-2 text-sm">
+            <li class="flex justify-between">
+                <span class="text-gray-400">JWT Authentication</span>
+                <span class="text-green-400">Enabled</span>
+            </li>
+            <li class="flex justify-between">
+                <span class="text-gray-400">Device Binding</span>
+                <span class="text-green-400">Enabled</span>
+            </li>
+            <li class="flex justify-between">
+                <span class="text-gray-400">Company Scoping</span>
+                <span class="text-green-400">Enforced</span>
+            </li>
+            <li class="flex justify-between">
+                <span class="text-gray-400">Audit Logging</span>
+                <span class="text-green-400">Active</span>
+            </li>
+        </ul>
+    </section>
+
+    <!-- Database & Storage -->
+    <section class="bg-gray-900 border border-gray-800 rounded-xl p-6">
+        <h2 class="text-lg font-medium text-white mb-4">Data & Storage</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div>
+                <p class="text-gray-400">Database</p>
+                <p class="text-green-400">Connected</p>
+            </div>
+
+            <div>
+                <p class="text-gray-400">Last Backup</p>
+                <p class="text-white">—</p>
+            </div>
+
+            <div>
+                <p class="text-gray-400">Audit Retention</p>
+                <p class="text-white">Permanent</p>
+            </div>
+
+            <div>
+                <p class="text-gray-400">Export Format</p>
+                <p class="text-white">CSV</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- UI Preferences -->
+    <section class="bg-gray-900 border border-gray-800 rounded-xl p-6">
+        <h2 class="text-lg font-medium text-white mb-4">Interface</h2>
+
+        <div class="flex items-center justify-between text-sm">
+            <div>
+                <p class="text-gray-400">Theme</p>
+                <p class="text-white">Dark</p>
+            </div>
+
+            <span class="text-xs text-gray-500">
+                Managed from UI toggle
+            </span>
+        </div>
+    </section>
+
+    <!-- Notice -->
+    <section class="bg-yellow-900/20 border border-yellow-700/30 rounded-xl p-4 text-sm text-yellow-300">
+        <p>
+            Advanced configuration, destructive actions, and security policy changes
+            are intentionally disabled in this interface to preserve system integrity.
+        </p>
+    </section>
+
+</div>
+{% endblock %}

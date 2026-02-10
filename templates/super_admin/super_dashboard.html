@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- ================= SUPER ADMIN DASHBOARD ================= -->
+
+<div class="space-y-8">
+
+    <!-- PAGE HEADER -->
+    <div>
+        <h1 class="text-3xl font-bold text-white tracking-tight">
+            System Dashboard
+        </h1>
+        <p class="text-text-muted mt-1">
+            Platform-wide overview across all companies and users.
+        </p>
+    </div>
+
+    <!-- ================= METRICS ================= -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+
+        <!-- TOTAL COMPANIES -->
+        <div class="bg-surface-dark border border-border-dark rounded-xl p-6">
+            <p class="text-sm text-text-muted">Total Companies</p>
+            <p class="text-3xl font-bold text-primary mt-2">
+                {{ stats.total_companies }}
+            </p>
+        </div>
+
+        <!-- ACTIVE COMPANIES -->
+        <div class="bg-surface-dark border border-border-dark rounded-xl p-6">
+            <p class="text-sm text-text-muted">Active Companies</p>
+            <p class="text-3xl font-bold text-emerald-400 mt-2">
+                {{ stats.active_companies }}
+            </p>
+        </div>
+
+        <!-- TOTAL USERS -->
+        <div class="bg-surface-dark border border-border-dark rounded-xl p-6">
+            <p class="text-sm text-text-muted">Total Users</p>
+            <p class="text-3xl font-bold text-white mt-2">
+                {{ stats.total_users }}
+            </p>
+        </div>
+
+        <!-- TOTAL AUDIT LOGS -->
+        <div class="bg-surface-dark border border-border-dark rounded-xl p-6">
+            <p class="text-sm text-text-muted">Audit Log Entries</p>
+            <p class="text-3xl font-bold text-warning mt-2">
+                {{ stats.total_logs }}
+            </p>
+        </div>
+
+    </div>
+
+    <!-- ================= SYSTEM NOTICE ================= -->
+    <div class="bg-surface-dark border border-border-dark rounded-xl p-6">
+        <h2 class="text-lg font-semibold text-white mb-2">
+            Platform Security Status
+        </h2>
+        <ul class="text-sm text-text-muted space-y-1">
+            <li>• Multi-tenant isolation enforced</li>
+            <li>• Role-based access control active</li>
+            <li>• Device binding & license enforcement enabled</li>
+            <li>• Centralized audit logging operational</li>
+        </ul>
+    </div>
+
+    <!-- ================= QUICK ACTIONS ================= -->
+    <div class="bg-surface-dark border border-border-dark rounded-xl p-6">
+        <h2 class="text-lg font-semibold text-white mb-4">
+            System Actions
+        </h2>
+
+        <div class="flex flex-wrap gap-4">
+            <a href="/super/companies"
+               class="px-4 py-2 rounded-lg bg-primary text-black font-semibold hover:bg-cyan-400 transition">
+                Manage Companies
+            </a>
+
+            <a href="/super/users"
+               class="px-4 py-2 rounded-lg bg-surface-light border border-border-dark
+                      text-text-muted hover:text-white hover:border-primary transition">
+                View Global Users
+            </a>
+
+            <a href="/super/audit"
+               class="px-4 py-2 rounded-lg bg-surface-light border border-border-dark
+                      text-text-muted hover:text-white hover:border-primary transition">
+                System Audit Logs
+            </a>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

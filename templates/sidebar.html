@@ -1,0 +1,118 @@
+<aside class="flex w-64 flex-col bg-surface-dark border-r border-border-dark shrink-0">
+
+    <!-- LOGO -->
+    <div class="px-6 py-6 border-b border-white/10">
+        <h1 class="text-white text-2xl font-bold">ALSS</h1>
+        <p class="text-primary text-xs uppercase tracking-widest">
+            Security Console
+        </p>
+    </div>
+
+    <!-- NAV -->
+    <nav id="sidebar-nav" class="flex-1 px-4 py-6 space-y-1"></nav>
+
+    <!-- PROFILE -->
+    <div class="px-4 py-4 border-t border-white/10">
+        <a href="/admin/profile" class="sidebar-link">Profile</a>
+    </div>
+</aside>
+
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+    const nav = document.getElementById("sidebar-nav");
+    nav.innerHTML = "";
+
+    let role = null;
+
+    try {
+        // Try admin / superadmin context
+        const res = await authFetch("/admin/api/profile");
+        if (res && res.ok) {
+            const user = await res.json();
+            role = user.role;
+        }
+    } catch {
+        // ignore
+    }
+
+    // Fallback: client context
+    if (!role) {
+        try {
+            const res = await authFetch("/client/api/dashboard");
+            if (res && res.ok) {
+                role = "COMPANY_VIEWER";
+            }
+        } catch {
+            // ignore
+        }
+    }
+
+    if (!role) {
+        console.warn("Sidebar: role not resolved");
+        return;
+    }
+
+    // 🔥 GLOBAL ROLE SYNC (single source of truth)
+    window.__ALSS_ROLE = role;
+
+    const path = window.location.pathname;
+
+    function link(href, label) {
+        const active =
+            path === href ||
+            path.startsWith(href + "/");
+
+        return `
+            <a href="${href}"
+               class="sidebar-link ${active ? "active" : ""}">
+                ${label}
+            </a>
+        `;
+    }
+
+    /* ================= SUPER ADMIN ================= */
+    if (role === "SUPER_ADMIN") {
+        nav.innerHTML += link("/admin/dashboard", "Dashboard");
+        nav.innerHTML += link("/super/companies", "Companies");
+        nav.innerHTML += link("/super/users", "Clients");
+        nav.innerHTML += link("/admin/licenses", "Licenses");
+        nav.innerHTML += link("/admin/devices", "Devices");
+        nav.innerHTML += link("/admin/audit", "Audit Logs");
+        nav.innerHTML += link("/admin/exports", "Exports");
+    }
+
+    /* ================= COMPANY ADMIN ================= */
+    if (role === "COMPANY_ADMIN") {
+        nav.innerHTML += link("/admin/dashboard", "Dashboard");
+        nav.innerHTML += link("/admin/licenses", "Licenses");
+        nav.innerHTML += link("/admin/devices", "Devices");
+        nav.innerHTML += link("/admin/audit", "Audit Logs");
+        nav.innerHTML += link("/admin/exports", "Exports");
+    }
+
+    /* ================= CLIENT / VIEWER ================= */
+    if (role === "COMPANY_VIEWER") {
+        nav.innerHTML += link("/client/dashboard", "Dashboard");
+    }
+});
+</script>
+
+<style>
+.sidebar-link {
+    display: block;
+    padding: 10px 14px;
+    border-radius: 8px;
+    color: #94a3b8;
+    font-size: 14px;
+    text-decoration: none;
+}
+.sidebar-link:hover {
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+}
+.sidebar-link.active {
+    background: rgba(0, 242, 255, 0.12);
+    color: #00f2ff;
+    font-weight: 600;
+}
+</style>

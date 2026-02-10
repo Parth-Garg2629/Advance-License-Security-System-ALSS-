@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="space-y-6 max-w-[1200px]">
+
+    <!-- PAGE HEADER -->
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-2xl font-bold text-white tracking-tight">
+                Organization Settings
+            </h1>
+            <p class="text-sm text-text-muted mt-1">
+                Manage company profile, security policies, integrations, and admin roles.
+            </p>
+        </div>
+
+        <div class="flex gap-3">
+            <button
+                onclick="window.location.reload()"
+                class="px-4 py-2 text-sm font-medium text-text-main
+                       bg-surface-light border border-border-dark rounded">
+                Cancel
+            </button>
+
+            <button
+                onclick="saveCompanySettings()"
+                class="px-4 py-2 text-sm font-bold text-black bg-primary rounded
+                       hover:bg-cyan-400 transition flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">save</span>
+                Save Changes
+            </button>
+        </div>
+    </div>
+
+    <!-- ================= GENERAL INFORMATION ================= -->
+    <section class="bg-surface-dark border border-border-dark rounded-lg">
+        <div class="px-6 py-4 border-b border-border-dark bg-surface-light">
+            <h2 class="text-lg font-bold text-white">General Information</h2>
+        </div>
+
+        <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="text-sm text-text-muted">Company Name</label>
+                <input id="company-name"
+                    class="mt-1 w-full h-10 px-3 bg-surface-light border border-border-dark
+                           rounded text-sm text-white">
+            </div>
+
+            <div>
+                <label class="text-sm text-text-muted">Organization ID</label>
+                <div id="company-id"
+                    class="mt-1 h-10 flex items-center px-3 bg-surface-dark border border-border-dark
+                           rounded text-sm font-mono text-primary">
+                    —
+                </div>
+            </div>
+
+            <div>
+                <label class="text-sm text-text-muted">Technical Contact Email</label>
+                <input id="tech-email"
+                    class="mt-1 w-full h-10 px-3 bg-surface-light border border-border-dark
+                           rounded text-sm text-white">
+            </div>
+
+            <div>
+                <label class="text-sm text-text-muted">Billing Contact Email</label>
+                <input id="billing-email"
+                    class="mt-1 w-full h-10 px-3 bg-surface-light border border-border-dark
+                           rounded text-sm text-white">
+            </div>
+
+            <div>
+                <label class="text-sm text-text-muted">Company Status</label>
+                <select id="company-status"
+                    class="mt-1 w-full h-10 bg-surface-light border border-border-dark
+                           rounded text-white">
+                    <option value="ACTIVE">ACTIVE</option>
+                    <option value="SUSPENDED">SUSPENDED</option>
+                </select>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= SUBSCRIPTION (BACKEND CONTROLLED) ================= -->
+    <section class="bg-surface-dark border border-border-dark rounded-lg opacity-70">
+        <div class="px-6 py-4 border-b border-border-dark bg-surface-light flex justify-between">
+            <h2 class="text-lg font-bold text-white">Subscription</h2>
+            <span class="text-xs text-text-muted">Backend controlled</span>
+        </div>
+
+        <div class="p-6 space-y-4">
+            <div class="flex justify-between text-sm">
+                <span class="text-text-muted">Plan</span>
+                <span class="text-text-muted">—</span>
+            </div>
+
+            <div>
+                <div class="flex justify-between text-sm mb-1">
+                    <span class="text-text-muted">License Usage</span>
+                    <span class="text-text-muted">— / —</span>
+                </div>
+                <div class="w-full h-2 bg-surface-light rounded"></div>
+            </div>
+
+            <div class="flex justify-between text-sm pt-4 border-t border-border-dark">
+                <span class="text-text-muted">Renewal Date</span>
+                <span class="text-text-muted">—</span>
+            </div>
+
+            <button disabled
+                class="w-full py-2 text-sm text-text-muted border border-border-dark rounded cursor-not-allowed">
+                Manage Subscription
+            </button>
+        </div>
+    </section>
+
+    <!-- ================= SECURITY POLICIES ================= -->
+    <section class="bg-surface-dark border border-border-dark rounded-lg">
+        <div class="px-6 py-4 border-b border-border-dark bg-surface-light">
+            <h2 class="text-lg font-bold text-white">Security Policies</h2>
+        </div>
+
+        <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="space-y-6">
+
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-sm font-medium text-white">Enforce MFA</p>
+                        <p class="text-xs text-text-muted">Globally enforced by backend</p>
+                    </div>
+                    <input type="checkbox" checked disabled>
+                </div>
+
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-sm font-medium text-white">Device Fingerprinting</p>
+                        <p class="text-xs text-text-muted">Mandatory (security core)</p>
+                    </div>
+                    <input type="checkbox" checked disabled>
+                </div>
+
+                <div>
+                    <label class="text-sm text-text-muted">Session Timeout</label>
+                    <select id="session-timeout"
+                        class="mt-1 w-full h-10 bg-surface-light border border-border-dark
+                               rounded text-white">
+                        <option value="15">15 Minutes</option>
+                        <option value="30">30 Minutes</option>
+                        <option value="60">60 Minutes</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <label class="text-sm text-text-muted">IP Whitelist (CIDR)</label>
+                <textarea id="ip-whitelist"
+                    class="mt-1 w-full min-h-[160px] bg-surface-light border border-border-dark
+                           rounded text-sm text-white font-mono p-3 resize-none"></textarea>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= ADMIN ROLES ================= -->
+    <section class="bg-surface-dark border border-border-dark rounded-lg">
+        <div class="px-6 py-4 border-b border-border-dark bg-surface-light flex justify-between">
+            <h2 class="text-lg font-bold text-white">Internal Roles</h2>
+
+            <button disabled
+                class="px-3 py-1.5 text-sm text-text-muted border border-border-dark rounded cursor-not-allowed">
+                Invite Admin (backend pending)
+            </button>
+        </div>
+
+        <table class="w-full text-left">
+            <thead class="bg-surface-dark border-b border-border-dark text-xs uppercase text-text-muted">
+                <tr>
+                    <th class="px-6 py-3">User</th>
+                    <th class="px-6 py-3">Role</th>
+                    <th class="px-6 py-3">Status</th>
+                    <th class="px-6 py-3">Created</th>
+                </tr>
+            </thead>
+
+            <tbody id="admins-table" class="divide-y divide-border-dark text-sm">
+                <tr>
+                    <td colspan="4" class="p-6 text-center text-text-muted">
+                        Loading administrators…
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    authFetch("/admin/api/company")
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById("company-name").value = data.name;
+            document.getElementById("company-id").innerText = data.id;
+            document.getElementById("company-status").value = data.status;
+            document.getElementById("session-timeout").value = data.session_timeout;
+            document.getElementById("ip-whitelist").value = data.ip_whitelist || "";
+
+            document.getElementById("tech-email").value = data.tech_email || "";
+            document.getElementById("billing-email").value = data.billing_email || "";
+
+            const tbody = document.getElementById("admins-table");
+            tbody.innerHTML = "";
+
+            data.admins.forEach(a => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td class="px-6 py-4 text-white">${a.username}</td>
+                    <td class="px-6 py-4 text-primary">${a.role}</td>
+                    <td class="px-6 py-4 text-emerald-400">Active</td>
+                    <td class="px-6 py-4 text-text-muted">
+                        ${new Date(a.created_at).toLocaleDateString()}
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        });
+});
+
+function saveCompanySettings() {
+    authFetch("/admin/api/company", {
+        method: "PUT",
+        body: JSON.stringify({
+            name: document.getElementById("company-name").value,
+            status: document.getElementById("company-status").value,
+            session_timeout: document.getElementById("session-timeout").value,
+            ip_whitelist: document.getElementById("ip-whitelist").value,
+            tech_email: document.getElementById("tech-email").value,
+            billing_email: document.getElementById("billing-email").value
+        })
+    })
+    .then(() => alert("Organization settings saved"));
+}
+</script>
+
+{% endblock %}

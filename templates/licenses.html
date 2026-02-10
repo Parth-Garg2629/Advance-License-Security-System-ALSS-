@@ -1,0 +1,238 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- ================= HEADER ================= -->
+<div class="flex items-center justify-between mb-6">
+    <div>
+        <h1 class="text-2xl font-bold text-white tracking-tight">
+            License Management
+        </h1>
+        <p class="text-sm text-text-muted mt-1">
+            Issue, monitor, and revoke licenses securely.
+        </p>
+    </div>
+
+    <div class="flex gap-3">
+        <button
+            onclick="exportLicensesCSV()"
+            class="h-10 px-4 border border-border-dark bg-surface-dark
+                   text-text-muted text-sm font-medium rounded hover:bg-surface-light">
+            Export CSV
+        </button>
+
+        <button
+            data-requires-admin
+            onclick="openCreateModal()"
+            class="h-10 px-4 bg-primary text-black
+                   text-sm font-bold rounded hover:opacity-90">
+            Issue License
+        </button>
+    </div>
+</div>
+
+<!-- ================= METRICS ================= -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    <div class="bg-surface-dark border border-border-dark rounded p-5">
+        <p class="text-sm text-text-muted">Active</p>
+        <p id="stat-active" class="text-2xl font-bold text-primary mt-2">0</p>
+    </div>
+    <div class="bg-surface-dark border border-border-dark rounded p-5">
+        <p class="text-sm text-text-muted">Expired / Revoked</p>
+        <p id="stat-revoked" class="text-2xl font-bold text-danger mt-2">0</p>
+    </div>
+    <div class="bg-surface-dark border border-border-dark rounded p-5">
+        <p class="text-sm text-text-muted">Single Device</p>
+        <p id="stat-single" class="text-2xl font-bold text-warning mt-2">0</p>
+    </div>
+    <div class="bg-surface-dark border border-border-dark rounded p-5">
+        <p class="text-sm text-text-muted">Total</p>
+        <p id="stat-total" class="text-2xl font-bold text-white mt-2">0</p>
+    </div>
+</div>
+
+<!-- ================= TABLE ================= -->
+<div class="bg-surface-dark border border-border-dark rounded overflow-hidden">
+<table class="w-full text-left text-sm">
+<thead class="bg-surface-light border-b border-border-dark">
+<tr class="text-xs uppercase text-text-muted">
+    <th class="p-4">License Key</th>
+    <th class="p-4">Status</th>
+    <th class="p-4">Max Devices</th>
+    <th class="p-4">Seconds Left</th>
+    <th class="p-4 text-right">Actions</th>
+</tr>
+</thead>
+
+<tbody id="licenses-table-body">
+<tr>
+    <td colspan="5" class="p-6 text-center text-text-muted">
+        Loading licenses…
+    </td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<!-- ================= CREATE LICENSE MODAL ================= -->
+<div id="license-modal" class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50">
+    <div class="bg-surface-dark border border-border-dark rounded-xl w-full max-w-md p-6">
+        <h2 class="text-xl font-bold text-white mb-4">Issue License</h2>
+
+        <!-- SuperAdmin only -->
+        <div id="super-fields" class="space-y-3 hidden mb-3">
+            <input
+                id="company-id"
+                type="number"
+                placeholder="Company ID"
+                class="w-full h-10 bg-surface-light border border-border-dark
+                       rounded px-3 text-white placeholder:text-text-muted" />
+        </div>
+
+        <div class="space-y-3">
+            <input
+                id="max-devices"
+                type="number"
+                min="1"
+                placeholder="Max devices"
+                class="w-full h-10 bg-surface-light border border-border-dark
+                       rounded px-3 text-white placeholder:text-text-muted" />
+
+            <input
+                id="expires-at"
+                type="date"
+                class="w-full h-10 bg-surface-light border border-border-dark
+                       rounded px-3 text-white" />
+        </div>
+
+        <div class="flex justify-end gap-3 mt-6">
+            <button onclick="closeModal()" class="px-4 py-2 text-text-muted">
+                Cancel
+            </button>
+            <button onclick="submitLicense()" class="px-4 py-2 bg-primary text-black font-bold rounded">
+                Create
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ================= JS ================= -->
+<script>
+document.addEventListener("DOMContentLoaded", loadLicenses);
+
+async function loadLicenses() {
+    try {
+        const res = await authFetch("/admin/api/licenses");
+        if (!res || !res.ok) return;
+
+        const list = await res.json();
+
+        const body = document.getElementById("licenses-table-body");
+        body.innerHTML = "";
+
+        let active = 0, revoked = 0, single = 0;
+
+        if (!list.length) {
+            body.innerHTML = `
+                <tr>
+                    <td colspan="5" class="p-6 text-center text-text-muted">
+                        No licenses issued yet.
+                    </td>
+                </tr>`;
+        } else {
+            list.forEach(l => {
+                if (l.status === "ACTIVE") active++; else revoked++;
+                if (l.max_devices === 1) single++;
+
+                body.innerHTML += `
+                <tr class="hover:bg-surface-light">
+                    <td class="p-4 font-mono text-primary break-all">${l.key}</td>
+                    <td class="p-4">${l.status}</td>
+                    <td class="p-4">${l.max_devices}</td>
+                    <td class="p-4">${l.seconds_left ?? "∞"}</td>
+                    <td class="p-4 text-right">
+                        <button onclick="revokeLicense(${l.id})"
+                            class="px-3 py-1 text-xs bg-red-600 text-white rounded">
+                            REVOKE
+                        </button>
+                    </td>
+                </tr>`;
+            });
+        }
+
+        document.getElementById("stat-total").innerText = list.length;
+        document.getElementById("stat-active").innerText = active;
+        document.getElementById("stat-revoked").innerText = revoked;
+        document.getElementById("stat-single").innerText = single;
+
+    } catch (e) {
+        document.getElementById("licenses-table-body").innerHTML = `
+            <tr>
+                <td colspan="5" class="p-6 text-center text-danger">
+                    Failed to load licenses
+                </td>
+            </tr>`;
+    }
+}
+
+function openCreateModal() {
+    document.getElementById("license-modal").classList.remove("hidden");
+
+    authFetch("/admin/api/profile")
+        .then(r => {
+            if (!r || !r.ok) return null;
+            return r.json();
+        })
+        .then(u => {
+            if (u && u.role === "SUPER_ADMIN") {
+                document.getElementById("super-fields").classList.remove("hidden");
+            }
+        });
+}
+
+function closeModal() {
+    document.getElementById("license-modal").classList.add("hidden");
+}
+
+function submitLicense() {
+    const payload = {
+        max_devices: parseInt(document.getElementById("max-devices").value),
+        expires_at: document.getElementById("expires-at").value || null,
+        company_id: document.getElementById("company-id")?.value || null
+    };
+
+    authFetch("/admin/api/licenses", {
+        method: "POST",
+        body: JSON.stringify(payload)
+    })
+    .then(r => {
+        if (!r || !r.ok) throw new Error();
+        closeModal();
+        loadLicenses();
+    })
+    .catch(() => alert("License creation failed"));
+}
+
+function revokeLicense(id) {
+    if (!confirm("Revoke this license?")) return;
+
+    authFetch(`/admin/api/licenses/${id}`, { method: "DELETE" })
+        .then(r => r && r.ok && loadLicenses());
+}
+
+async function exportLicensesCSV() {
+    try {
+        const res = await authFetch("/admin/api/export/licenses");
+        if (!res || !res.ok) throw new Error();
+
+        const blob = await res.blob();
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "licenses.csv";
+        a.click();
+    } catch {
+        alert("CSV export failed");
+    }
+}
+</script>
+
+{% endblock %}

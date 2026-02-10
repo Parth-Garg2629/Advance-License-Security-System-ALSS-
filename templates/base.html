@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>ALSS Admin Console</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        background: "#050508",
+                        surface: "#0b0c15",
+                        border: "#1f2235",
+                        primary: "#00f2ff",
+                        text: "#e2e8f0",
+                        muted: "#94a3b8",
+                        danger: "#ef4444",
+                        warning: "#f59e0b"
+                    },
+                    fontFamily: {
+                        sans: ["Inter", "sans-serif"],
+                    },
+                },
+            },
+        };
+    </script>
+
+    <!-- AUTH (LOAD FIRST) -->
+    <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+
+    <!-- GLOBAL UI ENFORCEMENT -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+    {% block head %}{% endblock %}
+</head>
+
+<body class="bg-background text-text font-sans antialiased overflow-hidden">
+
+<script>
+    document.documentElement.classList.add("dark");
+</script>
+
+<!-- ================= GLOBAL ALERT BANNER ================= -->
+<div id="global-alert"
+     class="fixed top-0 inset-x-0 z-50 hidden">
+    <div id="global-alert-content"
+         class="mx-auto max-w-xl mt-4 px-4 py-3 rounded-lg text-sm font-medium
+                flex items-center justify-between shadow-lg">
+        <span id="global-alert-text"></span>
+    </div>
+</div>
+
+<div class="flex h-screen w-full">
+
+    {% include "sidebar.html" %}
+
+    <main class="flex-1 flex flex-col overflow-hidden">
+        {% include "header.html" %}
+
+        <div class="flex-1 overflow-y-auto p-6">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+</div>
+
+<!-- ================= READ-ONLY VIEWER HARDENING ================= -->
+<style>
+.readonly {
+    opacity: 0.45 !important;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+}
+</style>
+
+<script>
+/* =====================================================
+   READ-ONLY VIEWER ENFORCEMENT (CLIENT SIDE, SAFE)
+   ===================================================== */
+(function enforceReadOnlyUI() {
+    // main.js will remove admin-only buttons already
+    // This is just a visual hardening layer
+    if (window.__ALSS_ROLE !== "COMPANY_VIEWER") return;
+
+    document.querySelectorAll("[data-requires-admin]").forEach(el => {
+        el.classList.add("readonly");
+        el.setAttribute(
+            "title",
+            "Read-only access: you do not have permission to perform this action"
+        );
+    });
+})();
+
+/* =====================================================
+   GLOBAL AUTH UX HANDLING
+   ===================================================== */
+const alertBox = document.getElementById("global-alert");
+const alertContent = document.getElementById("global-alert-content");
+const alertText = document.getElementById("global-alert-text");
+
+function showGlobalAlert(message, type = "info", redirect = false) {
+    alertText.innerText = message;
+
+    alertContent.className =
+        "mx-auto max-w-xl mt-4 px-4 py-3 rounded-lg text-sm font-medium " +
+        "flex items-center justify-between shadow-lg " +
+        (type === "error"
+            ? "bg-danger text-white"
+            : type === "warning"
+            ? "bg-warning text-black"
+            : "bg-surface text-text");
+
+    alertBox.classList.remove("hidden");
+
+    if (redirect) {
+        setTimeout(() => {
+            window.location.href = "/login";
+        }, 1500);
+    }
+}
+
+/* ================= AUTH EVENTS ================= */
+window.addEventListener("auth:logout", e => {
+    const reason = e.detail?.reason;
+
+    if (reason === "session_expired") {
+        showGlobalAlert("Session expired. Please login again.", "warning", true);
+    } else if (reason === "unauthorized") {
+        showGlobalAlert("Unauthorized access. Please login again.", "error", true);
+    } else {
+        showGlobalAlert("You have been logged out.", "info", true);
+    }
+});
+
+window.addEventListener("auth:rate_limited", () => {
+    showGlobalAlert(
+        "Too many requests. Please slow down and try again.",
+        "warning",
+        false
+    );
+});
+
+/* ================= RATE LIMIT COUNTDOWN ================= */
+window.addEventListener("auth:rate_limit_tick", e => {
+    const sec = e.detail.remaining;
+    if (sec >= 0) {
+        showGlobalAlert(
+            `Too many requests. Retrying in ${sec}s…`,
+            "warning",
+            false
+        );
+    }
+});
+</script>
+
+</body>
+</html>

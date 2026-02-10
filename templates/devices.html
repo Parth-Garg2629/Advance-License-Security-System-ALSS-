@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="bg-surface-dark border border-border-dark rounded-lg overflow-hidden">
+
+    <div class="px-6 py-5 border-b border-border-dark bg-surface-dark">
+        <div class="flex justify-between items-start gap-6">
+            <div>
+                <h1 class="text-white tracking-tight text-2xl font-bold">
+                    Registered Devices
+                </h1>
+                <p class="text-text-muted text-sm mt-1 max-w-2xl">
+                    Monitor hardware fingerprints and revoke access when required.
+                </p>
+            </div>
+
+            <div class="flex gap-4 items-end">
+                <div class="px-4 py-2 bg-surface-light rounded border border-border-dark">
+                    <span class="text-xs text-text-muted">TOTAL</span>
+                    <div id="stat-total" class="text-xl font-bold text-white">0</div>
+                </div>
+
+                <div class="px-4 py-2 bg-surface-light rounded border border-border-dark">
+                    <span class="text-xs text-text-muted">ACTIVE</span>
+                    <div id="stat-active" class="text-xl font-bold text-emerald-400">0</div>
+                </div>
+
+                <button
+                    onclick="exportDevicesCSV()"
+                    class="h-10 px-4 border border-border-dark bg-surface-dark
+                           text-text-muted text-sm font-medium rounded">
+                    Export CSV
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm">
+            <thead class="bg-surface-light border-b border-border-dark">
+                <tr class="text-xs uppercase text-text-muted">
+                    <th class="px-4 py-3">ID</th>
+                    <th class="px-4 py-3">Fingerprint</th>
+                    <th class="px-4 py-3">OS</th>
+                    <th class="px-4 py-3">Status</th>
+                    <th class="px-4 py-3">Last Seen</th>
+                    <th class="px-4 py-3 text-right">Action</th>
+                </tr>
+            </thead>
+
+            <tbody id="devices-table-body">
+                <tr>
+                    <td colspan="6" class="p-6 text-center text-text-muted">
+                        Loading devices…
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", loadDevices);
+
+function loadDevices() {
+    authFetch("/admin/api/devices")
+        .then(res => {
+            if (!res || !res.ok) return null;
+            return res.json();
+        })
+        .then(devices => {
+            if (!devices) return;
+
+            const tbody = document.getElementById("devices-table-body");
+            tbody.innerHTML = "";
+
+            let activeCount = 0;
+
+            if (!devices.length) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="p-6 text-center text-text-muted">
+                            No devices found.
+                        </td>
+                    </tr>`;
+                updateStats(0, 0);
+                return;
+            }
+
+            devices.forEach(d => {
+                const isActive = d.status === "ACTIVE";
+                if (isActive) activeCount++;
+
+                let lastSeen = "—";
+                if (d.last_seen) {
+                    const parsed = new Date(d.last_seen);
+                    if (!isNaN(parsed.getTime())) {
+                        lastSeen = parsed.toLocaleString("en-IN");
+                    }
+                }
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-surface-light transition">
+                        <td class="px-4 py-3 font-mono text-primary">${d.id}</td>
+                        <td class="px-4 py-3 font-mono text-text-muted">${d.fingerprint}</td>
+                        <td class="px-4 py-3 text-white">${d.os_name || "—"}</td>
+                        <td class="px-4 py-3">
+                            <span class="px-2 py-1 text-xs rounded border ${
+                                isActive
+                                    ? "border-emerald-500 text-emerald-400"
+                                    : "border-red-500 text-red-400"
+                            }">
+                                ${d.status}
+                            </span>
+                        </td>
+                        <td class="px-4 py-3 text-text-muted">
+                            ${lastSeen}
+                        </td>
+                        <td class="px-4 py-3 text-right">
+                            ${
+                                isActive
+                                    ? `<button
+                                        onclick="revokeDevice(${d.id})"
+                                        class="px-3 py-1 bg-red-600 hover:bg-red-700
+                                               text-white text-xs font-bold rounded">
+                                        REVOKE
+                                       </button>`
+                                    : `<span class="text-xs text-text-muted">—</span>`
+                            }
+                        </td>
+                    </tr>`;
+            });
+
+            updateStats(devices.length, activeCount);
+        })
+        .catch(() => {
+            document.getElementById("devices-table-body").innerHTML = `
+                <tr>
+                    <td colspan="6" class="p-6 text-center text-danger">
+                        Failed to load devices
+                    </td>
+                </tr>`;
+        });
+}
+
+function updateStats(total, active) {
+    document.getElementById("stat-total").innerText = total;
+    document.getElementById("stat-active").innerText = active;
+}
+
+function revokeDevice(id) {
+    if (!confirm("Revoke this device? It will be blocked immediately.")) return;
+
+    authFetch(`/admin/api/devices/${id}/revoke`, { method: "POST" })
+        .then(res => {
+            if (!res || !res.ok) throw new Error();
+            loadDevices();
+        })
+        .catch(() => alert("Failed to revoke device"));
+}
+
+async function exportDevicesCSV() {
+    try {
+        const res = await authFetch("/admin/api/export/devices");
+        if (!res || !res.ok) throw new Error();
+
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "devices.csv";
+        document.body.appendChild(a);
+        a.click();
+
+        a.remove();
+        URL.revokeObjectURL(url);
+    } catch {
+        alert("Device CSV export failed");
+    }
+}
+</script>
+
+{% endblock %}

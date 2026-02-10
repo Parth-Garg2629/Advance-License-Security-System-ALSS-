@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% set header_section = "Client" %}
+{% set header_title = "Dashboard" %}
+
+{% block content %}
+<div class="p-6 space-y-6">
+
+    <!-- ===== METRICS ===== -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <!-- License Status -->
+        <div class="bg-surface-dark border border-border-dark rounded-xl p-5">
+            <p class="text-text-muted text-sm">License Status</p>
+            <h2
+                id="license-status"
+                class="text-2xl font-bold text-success mt-2">
+                —
+            </h2>
+        </div>
+
+        <!-- Devices Used -->
+        <div class="bg-surface-dark border border-border-dark rounded-xl p-5">
+            <p class="text-text-muted text-sm">Devices Used</p>
+            <h2
+                id="device-usage"
+                class="text-2xl font-bold text-white mt-2">
+                —
+            </h2>
+        </div>
+
+        <!-- Expiry -->
+        <div class="bg-surface-dark border border-border-dark rounded-xl p-5">
+            <p class="text-text-muted text-sm">Expires In</p>
+            <h2
+                id="license-expiry"
+                class="text-2xl font-bold text-warning mt-2">
+                —
+            </h2>
+        </div>
+
+    </div>
+
+    <!-- ===== DEVICE STATUS ===== -->
+    <div class="bg-surface-dark border border-border-dark rounded-xl p-6">
+        <h3 class="text-lg font-semibold text-white mb-4">
+            Device Status
+        </h3>
+
+        <ul id="device-list" class="space-y-2 text-sm text-gray-300">
+            <li>Loading…</li>
+        </ul>
+    </div>
+
+</div>
+
+<!-- ================= JS ================= -->
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+    try {
+        const res = await authFetch("/client/api/dashboard");
+        if (!res || !res.ok) throw new Error("API failed");
+
+        const data = await res.json();
+
+        // -------------------------
+        // License Status
+        // -------------------------
+        const statusEl = document.getElementById("license-status");
+        statusEl.innerText = data.license_status || "—";
+
+        statusEl.classList.remove("text-success", "text-danger", "text-warning");
+
+        if (data.license_status === "EXPIRED") {
+            statusEl.classList.add("text-danger");
+        } else if (data.license_status === "ACTIVE") {
+            statusEl.classList.add("text-success");
+        } else {
+            statusEl.classList.add("text-warning");
+        }
+
+        // -------------------------
+        // Device Usage (FINAL FIX)
+        // -------------------------
+        const used = Number.isFinite(Number(data.used_devices))
+            ? Number(data.used_devices)
+            : 0;
+
+        const max = Number.isFinite(Number(data.max_devices))
+            ? Number(data.max_devices)
+            : 0;
+
+        document.getElementById("device-usage").innerText =
+            `${used} / ${max}`;
+
+        // -------------------------
+        // Expiry Countdown (SAFE)
+        // -------------------------
+        const expiryEl = document.getElementById("license-expiry");
+
+        if (data.expires_at) {
+            startExpiryCountdown(data.expires_at);
+        } else {
+            expiryEl.innerText = "—";
+            expiryEl.classList.remove("text-warning", "text-danger");
+            expiryEl.classList.add("text-muted");
+        }
+
+        // -------------------------
+        // Devices List (FINAL FIX)
+        // -------------------------
+        const list = document.getElementById("device-list");
+        list.innerHTML = "";
+
+        if (!Array.isArray(data.devices) || data.devices.length === 0) {
+            list.innerHTML = `<li>No active devices</li>`;
+            return;
+        }
+
+        data.devices.forEach(d => {
+            list.innerHTML += `
+                <li>
+                    <span class="font-mono">${d.fingerprint}</span>
+                    — <span class="opacity-80">${d.status}</span>
+                    ${
+                        d.last_seen
+                            ? `<span class="opacity-60 text-xs ml-2">(${new Date(d.last_seen).toLocaleString()})</span>`
+                            : ""
+                    }
+                </li>
+            `;
+        });
+
+    } catch (err) {
+        console.error("Client dashboard load failed", err);
+
+        document.getElementById("license-status").innerText = "ERROR";
+        document.getElementById("device-usage").innerText = "—";
+        document.getElementById("license-expiry").innerText = "—";
+
+        const list = document.getElementById("device-list");
+        list.innerHTML =
+            `<li class="text-danger">Failed to load device data</li>`;
+    }
+});
+
+// =====================================================
+// EXPIRY COUNTDOWN (IST-SAFE, CLIENT SIDE)
+// =====================================================
+function startExpiryCountdown(isoTime) {
+    const expiryEl = document.getElementById("license-expiry");
+    const expiryTime = new Date(isoTime).getTime();
+
+    if (isNaN(expiryTime)) {
+        expiryEl.innerText = "—";
+        return;
+    }
+
+    function tick() {
+        const now = Date.now();
+        let diff = Math.floor((expiryTime - now) / 1000);
+
+        if (diff <= 0) {
+            expiryEl.innerText = "EXPIRED";
+            expiryEl.classList.remove("text-warning");
+            expiryEl.classList.add("text-danger");
+            clearInterval(timer);
+            return;
+        }
+
+        const days = Math.floor(diff / 86400);
+        diff %= 86400;
+        const hours = Math.floor(diff / 3600);
+        diff %= 3600;
+        const minutes = Math.floor(diff / 60);
+
+        expiryEl.innerText = `${days}d ${hours}h ${minutes}m`;
+    }
+
+    tick();
+    const timer = setInterval(tick, 1000);
+}
+</script>
+{% endblock %}

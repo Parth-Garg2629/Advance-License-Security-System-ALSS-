@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+{% block title %}Profile | ALSS{% endblock %}
+
+{% block content %}
+<div class="p-8 space-y-8">
+
+    <!-- ================= PAGE HEADER ================= -->
+    <div>
+        <h1 class="text-2xl font-semibold text-white">Profile</h1>
+        <p class="text-sm text-muted">
+            View your account identity, company scope, and security posture
+        </p>
+    </div>
+
+    <!-- ================= IDENTITY ================= -->
+    <section class="bg-surface border border-border rounded-xl p-6">
+        <h2 class="text-lg font-medium text-white mb-4">Identity</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div>
+                <p class="text-muted">Username</p>
+                <p id="pf-username" class="text-white font-mono">—</p>
+            </div>
+
+            <div>
+                <p class="text-muted">Email</p>
+                <p id="pf-email" class="text-white">—</p>
+            </div>
+
+            <div>
+                <p class="text-muted">Role</p>
+                <p id="pf-role" class="text-primary font-semibold">—</p>
+            </div>
+
+            <div>
+                <p class="text-muted">Last Login</p>
+                <p id="pf-last-login" class="text-white">—</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= COMPANY ================= -->
+    <section class="bg-surface border border-border rounded-xl p-6">
+        <h2 class="text-lg font-medium text-white mb-4">Company Scope</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div>
+                <p class="text-muted">Company Name</p>
+                <p id="pf-company-name" class="text-white">—</p>
+            </div>
+
+            <div>
+                <p class="text-muted">Company Status</p>
+                <p id="pf-company-status" class="text-primary font-semibold">—</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= SECURITY ================= -->
+    <section class="bg-surface border border-border rounded-xl p-6">
+        <h2 class="text-lg font-medium text-white mb-4">Security Controls</h2>
+
+        <ul class="space-y-2 text-sm">
+            <li class="flex justify-between">
+                <span class="text-muted">JWT Authentication</span>
+                <span class="text-emerald-400 font-semibold">ENFORCED</span>
+            </li>
+            <li class="flex justify-between">
+                <span class="text-muted">Device Binding</span>
+                <span class="text-emerald-400 font-semibold">ACTIVE</span>
+            </li>
+            <li class="flex justify-between">
+                <span class="text-muted">Audit Logging</span>
+                <span class="text-emerald-400 font-semibold">ENABLED</span>
+            </li>
+            <li class="flex justify-between">
+                <span class="text-muted">Session Revocation</span>
+                <span class="text-emerald-400 font-semibold">SUPPORTED</span>
+            </li>
+        </ul>
+    </section>
+
+    <!-- ================= CHANGE PASSWORD ================= -->
+    <section class="bg-surface border border-border rounded-xl p-6">
+        <h2 class="text-lg font-medium text-white mb-4">Change Password</h2>
+
+        <form id="passwordForm" class="space-y-4 max-w-md">
+            <div>
+                <label class="block text-sm text-muted mb-1">Current Password</label>
+                <input id="currentPassword" type="password" required
+                       class="w-full bg-background border border-border rounded-lg px-3 py-2 text-white">
+            </div>
+
+            <div>
+                <label class="block text-sm text-muted mb-1">New Password</label>
+                <input id="newPassword" type="password" required minlength="8"
+                       class="w-full bg-background border border-border rounded-lg px-3 py-2 text-white">
+            </div>
+
+            <div>
+                <label class="block text-sm text-muted mb-1">Confirm New Password</label>
+                <input id="confirmPassword" type="password" required
+                       class="w-full bg-background border border-border rounded-lg px-3 py-2 text-white">
+            </div>
+
+            <button type="submit"
+                    class="bg-primary hover:bg-cyan-400 text-black px-4 py-2 rounded-lg text-sm font-bold">
+                Update Password
+            </button>
+
+            <p class="text-xs text-muted">
+                Password change will invalidate existing sessions for security.
+            </p>
+        </form>
+    </section>
+
+    <!-- ================= SESSIONS ================= -->
+    <section class="bg-surface border border-border rounded-xl p-6">
+        <h2 class="text-lg font-medium text-white mb-4">Sessions</h2>
+
+        <p class="text-sm text-muted mb-3">
+            Immediately revoke all active sessions across devices.
+        </p>
+
+        <button id="logoutAllBtn"
+                class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm">
+            Logout All Sessions
+        </button>
+    </section>
+
+</div>
+
+<!-- ================= JS ================= -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    /* ================= LOAD PROFILE ================= */
+    authFetch("/admin/api/profile")
+        .then(res => {
+            if (!res.ok) throw new Error("Profile fetch failed");
+            return res.json();
+        })
+        .then(data => {
+            document.getElementById("pf-username").innerText = data.username;
+            document.getElementById("pf-email").innerText = data.email || "—";
+            document.getElementById("pf-role").innerText = data.role;
+            document.getElementById("pf-last-login").innerText =
+                data.last_login ? new Date(data.last_login).toLocaleString() : "—";
+
+            document.getElementById("pf-company-name").innerText =
+                data.company?.name || "—";
+            document.getElementById("pf-company-status").innerText =
+                data.company?.status || "—";
+        })
+        .catch(() => {
+            alert("Failed to load profile data. Please re-login.");
+        });
+
+    /* ================= CHANGE PASSWORD ================= */
+    document.getElementById("passwordForm").addEventListener("submit", e => {
+        e.preventDefault();
+
+        const current = currentPassword.value.trim();
+        const next = newPassword.value.trim();
+        const confirm = confirmPassword.value.trim();
+
+        if (next !== confirm) {
+            alert("New passwords do not match");
+            return;
+        }
+
+        authFetch("/admin/api/profile/password", {
+            method: "POST",
+            body: JSON.stringify({
+                current_password: current,
+                new_password: next
+            })
+        })
+        .then(res => {
+            if (!res.ok) throw new Error();
+            alert("Password updated. Please login again.");
+            localStorage.clear();
+            window.location.href = "/login";
+        })
+        .catch(() => {
+            alert("Password update not enabled or failed.");
+        });
+    });
+
+    /* ================= LOGOUT ALL ================= */
+    document.getElementById("logoutAllBtn").addEventListener("click", () => {
+        if (!confirm("This will logout all active sessions. Continue?")) return;
+
+        authFetch("/auth/logout", { method: "POST" })
+            .finally(() => {
+                localStorage.clear();
+                window.location.href = "/login";
+            });
+    });
+
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <title>ALSS Secure Access</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            safelist: ["hover:scale-[1.01]"],
+            theme: {
+                extend: {
+                    colors: {
+                        background: "#050508",
+                        surface: "#0b0c15",
+                        border: "#1f2235",
+                        primary: "#00f2ff",
+                        text: "#e2e8f0",
+                        muted: "#94a3b8",
+                    },
+                    fontFamily: {
+                        sans: ["Inter", "sans-serif"],
+                    },
+                },
+            },
+        };
+    </script>
+</head>
+
+<body class="bg-background text-text font-sans min-h-screen flex items-center justify-center relative overflow-hidden">
+
+<!-- Grid Background -->
+<div class="absolute inset-0 opacity-10 pointer-events-none"
+     style="background-image: radial-gradient(#1f2235 1px, transparent 1px);
+            background-size: 20px 20px;">
+</div>
+
+<!-- Glow -->
+<div class="absolute w-[480px] h-[480px] bg-primary/20 blur-[120px] rounded-full"></div>
+
+<!-- LOGIN CARD -->
+<div class="relative z-10 w-full max-w-md bg-surface border border-border rounded-xl p-8 shadow-2xl
+            transition-transform duration-300 ease-out hover:scale-[1.01]">
+
+    <!-- LOGO -->
+    <div class="flex flex-col items-center mb-8">
+        <div class="w-20 h-20 mb-4">
+            <svg viewBox="0 0 100 100"
+                 class="text-primary drop-shadow-[0_0_15px_rgba(0,242,255,0.6)]">
+                <rect x="10" y="10" width="80" height="80" rx="2"
+                      fill="none" stroke="currentColor" stroke-width="4"/>
+                <path d="M50 25 L25 75 H38 L50 50 L62 75 H75 L50 25 Z"
+                      fill="currentColor"/>
+            </svg>
+        </div>
+
+        <h1 class="text-2xl font-black tracking-widest text-white">ALSS</h1>
+        <p class="text-xs text-primary/70 tracking-[0.25em] mt-1 uppercase font-bold">
+            Advanced License Security System
+        </p>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <form id="loginForm" class="space-y-5">
+
+        <div>
+            <label class="block text-xs text-muted uppercase tracking-widest mb-1">
+                Username
+            </label>
+            <input
+                type="text"
+                name="username"
+                required
+                autocomplete="username"
+                class="w-full h-11 px-4 bg-background border border-border rounded
+                       text-white text-sm focus:ring-1 focus:ring-primary
+                       focus:border-primary outline-none">
+        </div>
+
+        <div>
+            <label class="block text-xs text-muted uppercase tracking-widest mb-1">
+                Password
+            </label>
+            <input
+                type="password"
+                name="password"
+                required
+                autocomplete="current-password"
+                class="w-full h-11 px-4 bg-background border border-border rounded
+                       text-white text-sm focus:ring-1 focus:ring-primary
+                       focus:border-primary outline-none">
+        </div>
+
+        <button
+            id="loginBtn"
+            type="submit"
+            class="w-full h-11 bg-primary text-black font-bold rounded
+                   transition-all duration-150
+                   hover:bg-cyan-400 hover:scale-[1.01]
+                   active:scale-[0.98]
+                   shadow-[0_0_20px_rgba(0,242,255,0.6)]">
+            SECURE LOGIN
+        </button>
+    </form>
+
+    <!-- FOOTER -->
+    <div class="mt-6 text-center text-[10px] text-muted uppercase tracking-widest">
+        Unauthorized access is prohibited<br>
+        All activity is monitored & logged
+    </div>
+</div>
+
+<!-- LOGIN SCRIPT (FINAL) -->
+<script>
+const form = document.getElementById("loginForm");
+const btn = document.getElementById("loginBtn");
+
+form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    btn.disabled = true;
+    btn.innerText = "AUTHENTICATING...";
+
+    try {
+        const res = await fetch("/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                username: form.username.value.trim(),
+                password: form.password.value
+            })
+        });
+
+        const data = await res.json();
+        console.log("LOGIN RESPONSE:", data);
+
+        if (!res.ok) {
+            alert(data.message || "Login failed");
+            throw new Error("LOGIN_FAILED");
+        }
+
+        if (!data.access_token || !data.user || !data.user.role) {
+            alert("Invalid login response");
+            throw new Error("INVALID_RESPONSE");
+        }
+
+        localStorage.setItem("access_token", data.access_token);
+        localStorage.setItem("refresh_token", data.refresh_token);
+
+        if (["SUPER_ADMIN", "COMPANY_ADMIN"].includes(data.user.role)) {
+            window.location.href = "/admin/dashboard";
+        } else {
+            window.location.href = "/client";
+        }
+
+    } catch (err) {
+        console.error(err);
+        btn.disabled = false;
+        btn.innerText = "SECURE LOGIN";
+    }
+});
+</script>
+
+</body>
+</html>

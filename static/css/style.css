@@ -1,0 +1,187 @@
+/* =====================================================
+   ALSS DESIGN TOKENS (LOCKED)
+   ===================================================== */
+
+:root {
+    --bg-app: #0b0f1a;
+
+    --surface-dark: #0f1629;
+    --surface-light: #141c33;
+
+    --border-dark: #1f2a44;
+
+    --text-primary: #e5e7eb;
+    --text-muted: #9ca3af;
+
+    --primary: #facc15;   /* yellow */
+    --danger: #ef4444;    /* red */
+    --warning: #f59e0b;   /* amber */
+}
+
+/* =====================================================
+   BASE RESET
+   ===================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-app);
+    color: var(--text-primary);
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* =====================================================
+   TEXT UTILITIES
+   ===================================================== */
+
+.text-white { color: var(--text-primary); }
+.text-primary { color: var(--primary); }
+.text-text-muted { color: var(--text-muted); }
+.text-danger { color: var(--danger); }
+.text-warning { color: var(--warning); }
+
+/* =====================================================
+   BACKGROUNDS
+   ===================================================== */
+
+.bg-surface-dark { background-color: var(--surface-dark); }
+.bg-surface-light { background-color: var(--surface-light); }
+.bg-primary { background-color: var(--primary); }
+.bg-black\/70 { background-color: rgba(0,0,0,0.7); }
+
+/* =====================================================
+   BORDERS
+   ===================================================== */
+
+.border-border-dark {
+    border: 1px solid var(--border-dark);
+}
+
+/* =====================================================
+   INPUTS (CRITICAL FIX)
+   ===================================================== */
+
+input,
+select,
+textarea {
+    background-color: var(--surface-light);
+    color: var(--text-primary);
+    border: 1px solid var(--border-dark);
+    outline: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--text-muted);
+}
+
+/* Fix browser date input white text bug */
+input[type="date"] {
+    color-scheme: dark;
+}
+
+/* Remove native styling inconsistencies */
+.appearance-none {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+/* Focus state */
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--primary);
+}
+
+/* =====================================================
+   BUTTONS
+   ===================================================== */
+
+button {
+    cursor: pointer;
+    border: none;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* =====================================================
+   TABLES
+   ===================================================== */
+
+table {
+    border-collapse: collapse;
+}
+
+thead {
+    background-color: var(--surface-light);
+}
+
+tr {
+    border-bottom: 1px solid var(--border-dark);
+}
+
+tr:hover {
+    background-color: rgba(255,255,255,0.03);
+}
+
+/* =====================================================
+   MODALS
+   ===================================================== */
+
+.fixed {
+    position: fixed;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* =====================================================
+   SCROLLBAR (OPTIONAL BUT CLEAN)
+   ===================================================== */
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--surface-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-dark);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
+}
+
+/* =====================================================
+   MONO (LICENSE KEYS)
+   ===================================================== */
+
+.font-mono {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* =====================================================
+   SAFETY NET (PREVENT WHITE TEXT ON WHITE BG)
+   ===================================================== */
+
+input,
+select,
+textarea,
+option {
+    color: var(--text-primary) !important;
+    background-color: var(--surface-light) !important;
+}

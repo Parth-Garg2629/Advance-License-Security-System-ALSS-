@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="bg-surface-dark border border-border-dark rounded-lg shadow-2xl overflow-hidden">
+
+    <!-- ================= HEADER ================= -->
+    <div class="px-6 py-5 border-b border-border-dark bg-surface-dark">
+        <div class="flex justify-between items-start gap-6">
+            <div>
+                <h1 class="text-white tracking-tight text-2xl font-bold">
+                    Audit Logs
+                </h1>
+                <p class="text-text-muted text-sm mt-1">
+                    Immutable, company-scoped security and activity records.
+                </p>
+            </div>
+
+            <button
+                onclick="exportAuditCSV()"
+                class="flex items-center gap-2 px-4 py-2 bg-surface-light
+                       border border-border-dark rounded text-sm
+                       text-text-muted hover:bg-surface-dark">
+                Export CSV
+            </button>
+        </div>
+    </div>
+
+    <!-- ================= POLICY NOTE ================= -->
+    <div class="px-6 py-3 text-sm bg-surface-light border-b border-border-dark">
+        <span class="text-primary font-semibold">Security notice:</span>
+        Audit logs are append-only and cannot be modified or deleted.
+    </div>
+
+    <!-- ================= TABLE ================= -->
+    <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm">
+            <thead class="bg-surface-light border-b border-border-dark">
+                <tr class="text-xs uppercase text-text-muted">
+                    <th class="px-4 py-3">Time (IST)</th>
+                    <th class="px-4 py-3">Action</th>
+                    <th class="px-4 py-3">User</th>
+                    <th class="px-4 py-3">Role</th>
+                    <th class="px-4 py-3">Status</th>
+                    <th class="px-4 py-3">Message</th>
+                </tr>
+            </thead>
+
+            <tbody id="audit-table-body" class="divide-y divide-border-dark">
+                <tr>
+                    <td colspan="6" class="p-6 text-center text-text-muted">
+                        Loading audit logs…
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- ================= JS ================= -->
+<script>
+document.addEventListener("DOMContentLoaded", loadAuditLogs);
+
+function loadAuditLogs() {
+    authFetch("/admin/api/audit-logs")
+        .then(res => {
+            if (!res || !res.ok) return null;
+            return res.json();
+        })
+        .then(logs => {
+            if (!logs) return;
+
+            const tbody = document.getElementById("audit-table-body");
+            tbody.innerHTML = "";
+
+            if (!logs.length) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="p-6 text-center text-text-muted">
+                            No audit events recorded.
+                        </td>
+                    </tr>`;
+                return;
+            }
+
+            logs.forEach(log => {
+                const success = log.status === "success";
+
+                // Backend already sends formatted IST string
+                let ts = "—";
+                if (log.created_at) {
+                    ts = log.created_at;
+                }
+
+                const username = log.username || "SYSTEM";
+                const role = log.role || "SYSTEM";
+                const message = log.message || "—";
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-surface-light transition">
+                        <td class="px-4 py-3 font-mono text-text-muted">
+                            ${ts}
+                        </td>
+                        <td class="px-4 py-3 font-mono text-primary">
+                            ${log.action}
+                        </td>
+                        <td class="px-4 py-3">
+                            ${username}
+                        </td>
+                        <td class="px-4 py-3 text-text-muted">
+                            ${role}
+                        </td>
+                        <td class="px-4 py-3">
+                            <span class="px-2 py-1 text-xs rounded border ${
+                                success
+                                    ? "border-emerald-500 text-emerald-400"
+                                    : "border-red-500 text-red-400"
+                            }">
+                                ${success ? "SUCCESS" : "FAILED"}
+                            </span>
+                        </td>
+                        <td class="px-4 py-3 text-text-muted">
+                            ${message}
+                        </td>
+                    </tr>`;
+            });
+        })
+        .catch(() => {
+            document.getElementById("audit-table-body").innerHTML = `
+                <tr>
+                    <td colspan="6" class="p-6 text-center text-danger">
+                        Failed to load audit logs
+                    </td>
+                </tr>`;
+        });
+}
+
+async function exportAuditCSV() {
+    try {
+        const res = await authFetch("/admin/api/export/audit-logs");
+        if (!res || !res.ok) throw new Error();
+
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "audit_logs.csv";
+        document.body.appendChild(a);
+        a.click();
+
+        a.remove();
+        URL.revokeObjectURL(url);
+    } catch {
+        alert("Audit log CSV export failed");
+    }
+}
+</script>
+
+{% endblock %}

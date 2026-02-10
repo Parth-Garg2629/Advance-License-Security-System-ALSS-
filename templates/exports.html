@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="bg-surface-dark border border-border-dark rounded-lg shadow-2xl overflow-hidden">
+
+    <!-- HEADER -->
+    <div class="px-6 py-5 border-b border-border-dark bg-surface-dark">
+        <div>
+            <h1 class="text-white tracking-tight text-2xl font-bold">
+                Security Data Exports
+            </h1>
+            <p class="text-text-muted text-sm mt-1">
+                Company-scoped, permission-checked CSV exports for compliance and audits.
+            </p>
+        </div>
+    </div>
+
+    <!-- NOTICE -->
+    <div class="px-6 py-3 border-b border-border-dark bg-surface-light text-sm">
+        <span class="text-primary font-semibold">Important:</span>
+        All exports are logged, rate-limited, and restricted to your organization.
+    </div>
+
+    <!-- QUICK EXPORTS -->
+    <div class="p-6">
+        <h2 class="text-lg font-bold text-white mb-4">
+            One-Click Secure Exports
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+            <button
+                onclick="downloadCSV('audit')"
+                class="p-4 rounded border border-border-dark bg-surface-light
+                       hover:border-primary transition-all text-left">
+                <p class="font-semibold text-white">Audit Logs</p>
+                <p class="text-xs text-text-muted mt-1">
+                    Login attempts, admin actions, security events
+                </p>
+            </button>
+
+            <button
+                onclick="downloadCSV('devices')"
+                class="p-4 rounded border border-border-dark bg-surface-light
+                       hover:border-primary transition-all text-left">
+                <p class="font-semibold text-white">Devices</p>
+                <p class="text-xs text-text-muted mt-1">
+                    Fingerprints, OS metadata, last seen, bindings
+                </p>
+            </button>
+
+            <button
+                onclick="downloadCSV('licenses')"
+                class="p-4 rounded border border-border-dark bg-surface-light
+                       hover:border-primary transition-all text-left">
+                <p class="font-semibold text-white">Licenses</p>
+                <p class="text-xs text-text-muted mt-1">
+                    Issued keys, status, expiry, device limits
+                </p>
+            </button>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+function downloadCSV(type) {
+    let endpoint = "";
+
+    if (type === "licenses") {
+        endpoint = "/admin/api/export/licenses";
+    } else if (type === "devices") {
+        endpoint = "/admin/api/export/devices";
+    } else if (type === "audit") {
+        endpoint = "/admin/api/export/audit-logs";
+    }
+
+    authFetch(endpoint)
+        .then(res => {
+            if (!res.ok) throw new Error();
+            return res.blob();
+        })
+        .then(blob => {
+            const ts = new Date().toISOString().replace(/[:.]/g, "-");
+            const filename = `alss_${type}_${ts}.csv`;
+
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+        })
+        .catch(() => alert("Export failed or permission denied"));
+}
+</script>
+
+{% endblock %}

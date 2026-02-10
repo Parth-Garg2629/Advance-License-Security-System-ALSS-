@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- ================= SUPER ADMIN : COMPANIES ================= -->
+
+<div class="space-y-8">
+
+    <!-- PAGE HEADER -->
+    <div>
+        <h1 class="text-3xl font-bold text-white tracking-tight">
+            Companies
+        </h1>
+        <p class="text-text-muted mt-1">
+            System-wide tenant management and visibility.
+        </p>
+    </div>
+
+    <!-- POLICY NOTICE -->
+    <div class="bg-surface-dark border border-border-dark rounded-xl p-5 text-sm">
+        <span class="text-primary font-semibold">System Rule:</span>
+        Companies are isolated tenants. Disabling a company immediately
+        suspends all associated users, licenses, and devices.
+    </div>
+
+    <!-- COMPANIES TABLE -->
+    <div class="bg-surface-dark border border-border-dark rounded-xl overflow-hidden">
+
+        <table class="w-full text-left text-sm">
+            <thead class="bg-surface-light border-b border-border-dark">
+                <tr class="text-xs uppercase text-text-muted">
+                    <th class="p-4">Company ID</th>
+                    <th class="p-4">Name</th>
+                    <th class="p-4">Status</th>
+                    <th class="p-4">Created</th>
+                    <th class="p-4 text-right">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody class="divide-y divide-border-dark">
+                {% if companies %}
+                    {% for c in companies %}
+                    <tr class="hover:bg-surface-light transition-colors">
+
+                        <td class="p-4 font-mono text-primary">
+                            {{ c.id }}
+                        </td>
+
+                        <td class="p-4 text-white font-semibold">
+                            {{ c.name }}
+                        </td>
+
+                        <td class="p-4">
+                            {% if c.status == "ACTIVE" %}
+                                <span class="px-2 py-1 rounded text-xs border border-emerald-500 text-emerald-400">
+                                    ACTIVE
+                                </span>
+                            {% else %}
+                                <span class="px-2 py-1 rounded text-xs border border-red-500 text-red-400">
+                                    DISABLED
+                                </span>
+                            {% endif %}
+                        </td>
+
+                        <td class="p-4 text-text-muted">
+                            {{ c.created_at.strftime("%d %b %Y") if c.created_at else "—" }}
+                        </td>
+
+                        <td class="p-4 text-right">
+                            <button
+                                disabled
+                                class="text-text-muted opacity-40 cursor-not-allowed"
+                                title="Company actions enabled in later phase">
+                                <span class="material-symbols-outlined">more_vert</span>
+                            </button>
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="p-6 text-center text-text-muted">
+                            No companies found in the system.
+                        </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+
+    </div>
+
+    <!-- FUTURE SCOPE -->
+    <div class="bg-surface-dark border border-border-dark rounded-xl p-5 text-sm text-text-muted">
+        <span class="text-primary font-semibold">Planned Controls:</span>
+        Company suspension, plan limits, billing linkage, usage caps,
+        and compliance flags will be handled here.
+    </div>
+
+</div>
+
+{% endblock %}

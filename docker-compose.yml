@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  # Flask application
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: alss_web
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=production
+      - SECRET_KEY=${SECRET_KEY:-change-me-in-production}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-change-me-in-production}
+      - DATABASE_URI=sqlite:///database/alss.db
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+    volumes:
+      # Persist database
+      - ./database:/app/database
+      # Persist logs
+      - ./logs:/app/logs
+    restart: unless-stopped
+    networks:
+      - alss_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Optional: Nginx reverse proxy (uncomment if needed)
+  # nginx:
+  #   image: nginx:alpine
+  #   container_name: alss_nginx
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - ./nginx.conf:/etc/nginx/nginx.conf:ro
+  #     - ./certs:/etc/nginx/certs:ro
+  #   depends_on:
+  #     - web
+  #   restart: unless-stopped
+  #   networks:
+  #     - alss_network
+
+networks:
+  alss_network:
+    driver: bridge
+
+volumes:
+  database:
+  logs:
