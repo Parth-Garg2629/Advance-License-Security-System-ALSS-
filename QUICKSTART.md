@@ -4,11 +4,79 @@ Get your Advanced License Security System up and running in minutes!
 
 ## 📋 Prerequisites
 
+**Choose Your Setup Method:**
+
+### 🐳 Docker (Recommended - Easiest)
+- **Docker** 20.10+ and **Docker Compose** 2.0+
+- **Git** (optional, for cloning)
+
+### 🐍 Manual Python Setup
 - **Python 3.8+** installed
 - **pip** package manager
 - **Git** (optional, for cloning)
 
-## ⚡ Quick Setup (5 Minutes)
+---
+
+## 🐳 Quick Setup with Docker (Recommended - 3 Minutes)
+
+### 1️⃣ Clone the Project
+
+```bash
+git clone https://github.com/Parth-Garg2629/Advance-License-Security-System-ALSS-.git
+cd ALSS_web2
+```
+
+### 2️⃣ Configure Environment
+
+```bash
+# Copy example environment file
+cp .env.example .env
+
+# Generate secure keys
+python -c "import secrets; print('SECRET_KEY=' + secrets.token_hex(32))" >> .env
+python -c "from cryptography.fernet import Fernet; print('ENCRYPTION_KEY=' + Fernet.generate_key().decode())" >> .env
+```
+
+Edit `.env` and update the keys that were just generated.
+
+### 3️⃣ Start with Docker Compose
+
+```bash
+# Build and start containers
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+```
+
+### 4️⃣ Initialize Database
+
+```bash
+# Access the container
+docker-compose exec web bash
+
+# Initialize database
+flask db upgrade
+python create_admin.py
+
+# Exit container
+exit
+```
+
+### 5️⃣ Access the Application
+
+- **Web Interface**: http://localhost:5000
+- **Admin Panel**: http://localhost:5000/admin/dashboard
+
+**Default Login:**
+- Username: `admin`
+- Password: `changeme123`
+
+**📖 For complete Docker documentation, see [DOCKER.md](DOCKER.md)**
+
+---
+
+## 🐍 Manual Setup (Alternative Method)
 
 ### 1️⃣ Clone or Download the Project
 
@@ -119,8 +187,40 @@ Open your browser and navigate to:
 
 ## 🔧 Common Tasks
 
+### Docker Commands
+
+```bash
+# Stop containers
+docker-compose stop
+
+# Start containers
+docker-compose start
+
+# Restart containers
+docker-compose restart
+
+# View logs
+docker-compose logs -f
+
+# Access container shell
+docker-compose exec web bash
+
+# Rebuild and restart
+docker-compose up -d --build
+```
+
 ### Create a New Admin User
 
+**Docker:**
+```bash
+docker-compose exec web python -c "from app import app, db; from models import User; \
+user = User(username='newadmin', email='admin@company.com', role='SUPER_ADMIN'); \
+user.set_password('NewPassword123'); \
+with app.app_context(): db.session.add(user); db.session.commit(); \
+print('Admin user created!')"
+```
+
+**Manual:**
 ```bash
 python -c "from app import app, db; from models import User; \
 user = User(username='newadmin', email='admin@company.com', role='SUPER_ADMIN'); \
@@ -131,6 +231,14 @@ print('Admin user created!')"
 
 ### Reset Database
 
+**Docker:**
+```bash
+# ⚠️ WARNING: This deletes all data!
+docker-compose exec web flask db downgrade base
+docker-compose exec web flask db upgrade
+```
+
+**Manual:**
 ```bash
 # ⚠️ WARNING: This deletes all data!
 flask db downgrade base
@@ -145,6 +253,14 @@ python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().d
 
 ### Run Tests (if available)
 
+**Docker:**
+```bash
+docker-compose exec web pytest
+# Or with coverage
+docker-compose exec web pytest --cov=.
+```
+
+**Manual:**
 ```bash
 pytest
 # Or with coverage
@@ -240,7 +356,29 @@ curl -X POST http://localhost:5000/api/validate \
 
 ## 🐛 Troubleshooting
 
+### Docker Issues
+
+```bash
+# Container won't start
+docker-compose logs web
+
+# Port already in use
+# Edit docker-compose.yml, change ports: - "5001:5000"
+
+# Rebuild from scratch
+docker-compose down -v
+docker-compose up -d --build
+```
+
 ### Database Locked Error
+
+**Docker:**
+```bash
+docker-compose exec web flask db upgrade --sql > migration.sql
+docker-compose exec web sqlite3 database/alss.db < migration.sql
+```
+
+**Manual:**
 ```bash
 # Close all connections, then:
 flask db upgrade --sql > migration.sql
@@ -248,18 +386,38 @@ sqlite3 database/alss.db < migration.sql
 ```
 
 ### Port Already in Use
+
+**Docker:**
+Edit `docker-compose.yml` and change the port mapping:
+```yaml
+ports:
+  - "5001:5000"  # Changed from 5000:5000
+```
+
+**Manual:**
 ```bash
 # Use different port
 flask run --port=5001
 ```
 
 ### Import Errors
+
 ```bash
 # Reinstall dependencies
 pip install -r requirements.txt --force-reinstall
 ```
 
 ### Migration Issues
+
+**Docker:**
+```bash
+docker-compose exec web rm -rf migrations/
+docker-compose exec web flask db init
+docker-compose exec web flask db migrate -m "Initial migration"
+docker-compose exec web flask db upgrade
+```
+
+**Manual:**
 ```bash
 # Remove migrations and restart
 rm -rf migrations/
@@ -272,10 +430,11 @@ flask db upgrade
 
 ## 📖 Next Steps
 
+- 🐳 **Docker Users**: Read [DOCKER.md](DOCKER.md) for production deployment and advanced configuration
 - 📘 Read the full [README.md](README.md) for architecture details
 - 🔒 Review security best practices
 - 🧪 Set up automated testing
-- 🚀 Deploy to production (see DEPLOYMENT.md if available)
+- 🚀 Deploy to production
 
 ---
 
