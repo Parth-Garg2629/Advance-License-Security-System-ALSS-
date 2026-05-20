@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ALSS Security Control Console</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00f2ff", // Electric Cyan
+                        "primary-dark": "#0099a3",
+                        "secondary": "#39ff14", // Neon Green
+                        "danger": "#ff073a", // Neon Red
+                        "warning": "#ffd300", // Neon Yellow
+                        "background-dark": "#050508", // Almost black
+                        "surface-dark": "#0b0c15", // Very dark navy/black
+                        "surface-light": "#151621", // Slightly lighter for headers/hovers
+                        "border-dark": "#1f2235", 
+                        "border-neon": "rgba(0, 242, 255, 0.3)",
+                        "text-main": "#e2e8f0", 
+                        "text-muted": "#94a3b8",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    boxShadow: {
+                        'neon': '0 0 5px theme("colors.primary"), 0 0 15px theme("colors.primary-dark")',
+                        'neon-sm': '0 0 2px theme("colors.primary")',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b0c15; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f2235; 
+            border-radius: 4px;
+            border: 1px solid #0b0c15;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00f2ff; 
+        }
+        .table-fixed-head {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background-color: #151621;
+        }.text-glow {
+            text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
+        }
+        .text-glow-danger {
+            text-shadow: 0 0 10px rgba(255, 7, 58, 0.5);
+        }
+    </style>
+</head>
+<body class="bg-background-dark font-display text-text-main antialiased overflow-hidden text-base selection:bg-primary/30 selection:text-white">
+<div class="flex h-screen w-full">
+<aside class="flex w-64 flex-col bg-surface-dark border-r border-border-dark shrink-0 transition-all duration-300 shadow-2xl z-20 relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-40 bg-primary/5 blur-3xl pointer-events-none"></div>
+<div class="flex flex-col items-center justify-center pt-8 pb-6 border-b border-white/5 gap-3 relative z-10">
+<div class="relative group">
+<svg class="w-20 h-20 text-primary transform transition-transform group-hover:scale-105 duration-300 drop-shadow-[0_0_8px_rgba(0,242,255,0.6)]" fill="none" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+<rect height="80" rx="2" stroke="currentColor" stroke-width="4" width="80" x="10" y="10"></rect>
+<path d="M50 25 L25 75 H38 L50 50 L62 75 H75 L50 25 Z" fill="currentColor"></path>
+<rect fill="currentColor" height="5" width="16" x="42" y="60"></rect>
+</svg>
+<div class="absolute inset-0 bg-primary/20 blur-xl rounded-full -z-10 opacity-50 group-hover:opacity-100 transition-opacity duration-500"></div>
+</div>
+<div class="flex flex-col items-center">
+<h1 class="text-white text-2xl font-bold tracking-wide font-display drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">ALSS</h1>
+<p class="text-primary/70 text-[10px] font-bold uppercase tracking-[0.2em] mt-1 text-glow">Admin Console</p>
+</div>
+</div>
+<nav class="flex-1 overflow-y-auto px-4 py-6 space-y-1 relative z-10">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/10 text-primary shadow-[0_0_15px_rgba(0,242,255,0.15)] group border border-primary/40" href="#">
+<span class="material-symbols-outlined text-[20px] drop-shadow-[0_0_5px_rgba(0,242,255,0.8)]">grid_view</span>
+<span class="text-sm font-semibold tracking-wide">Control Console</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-muted hover:bg-white/5 hover:text-white transition-all group hover:border-l-2 hover:border-primary pl-[10px]" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">key</span>
+<span class="text-sm font-medium">Licenses</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-muted hover:bg-white/5 hover:text-white transition-all group hover:border-l-2 hover:border-primary pl-[10px]" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">devices</span>
+<span class="text-sm font-medium">Devices</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-muted hover:bg-white/5 hover:text-white transition-all group hover:border-l-2 hover:border-primary pl-[10px]" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">domain</span>
+<span class="text-sm font-medium">Clients</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-muted hover:bg-white/5 hover:text-white transition-all group hover:border-l-2 hover:border-primary pl-[10px]" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">receipt_long</span>
+<span class="text-sm font-medium">Audit Logs</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-muted hover:bg-white/5 hover:text-white transition-all group hover:border-l-2 hover:border-primary pl-[10px]" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">file_download</span>
+<span class="text-sm font-medium">Exports</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-muted hover:bg-white/5 hover:text-white transition-all group hover:border-l-2 hover:border-primary pl-[10px]" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">business</span>
+<span class="text-sm font-medium">Company</span>
+</a>
+<div class="my-4 border-t border-white/5"></div>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-muted hover:bg-white/5 hover:text-white transition-all group hover:border-l-2 hover:border-primary pl-[10px]" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-muted hover:bg-white/5 hover:text-white transition-all group hover:border-l-2 hover:border-primary pl-[10px]" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">admin_panel_settings</span>
+<span class="text-sm font-medium">Admin Profile</span>
+</a>
+</nav>
+<div class="p-4 border-t border-white/10 bg-black/20 relative z-10">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-cover bg-center border border-primary/30 shadow-[0_0_10px_rgba(0,242,255,0.2)]" data-alt="Admin user avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC85W-rnvGf0nwON7M-L7Pho1-LgPYRXHspWfoVOZjhDrAtHvAOvF26kZpyaXfNldzULkGbCvRljLqtsOKsPE6zDsE_8ZE_1k2cfRyzyqeik5vd-F8ufuJeJtYBcUFCkeQcrb8E-MPGi-DUOTSX60mIyh7a0pqiQzRtMzEyfJ0CL5IsJMnPGUeKfdRmIvxo5nNNua-lAZXuoxnysGuxu58mvb8cyHl6vPih7e0szgxlsrUH-onK3kOdZyrR64Ngd58BckHV8LY_xfM");'></div>
+<div class="flex flex-col overflow-hidden">
+<p class="text-white text-sm font-medium truncate">System Admin</p>
+<p class="text-text-muted text-xs truncate">admin@alss.secure</p>
+</div>
+</div>
+</div>
+</aside>
+<main class="flex-1 flex flex-col h-full overflow-hidden bg-background-dark relative">
+<div class="absolute inset-0 bg-[linear-gradient(rgba(30,41,59,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(30,41,59,0.1)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
+<header class="flex items-center justify-between px-8 py-5 bg-surface-dark border-b border-border-dark shadow-lg shrink-0 h-20 relative z-10">
+<div class="flex items-center gap-3">
+<span class="text-text-muted text-sm font-medium">System Administration</span>
+<span class="text-primary/50 text-sm font-bold">/</span>
+<span class="text-white text-lg font-bold tracking-tight drop-shadow-md">Security Control Console</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 bg-danger/10 text-danger px-4 py-1.5 rounded-full border border-danger/40 animate-pulse shadow-[0_0_10px_rgba(255,7,58,0.2)]">
+<span class="material-symbols-outlined text-[18px]">warning</span>
+<span class="text-xs font-bold uppercase tracking-wide">2 Critical Alerts</span>
+</div>
+<div class="w-px h-8 bg-white/10"></div>
+<button class="text-text-muted hover:text-primary transition p-1 hover:drop-shadow-[0_0_5px_rgba(0,242,255,0.8)]">
+<span class="material-symbols-outlined text-2xl">notifications</span>
+</button>
+<button class="text-text-muted hover:text-primary transition p-1 hover:drop-shadow-[0_0_5px_rgba(0,242,255,0.8)]">
+<span class="material-symbols-outlined text-2xl">help</span>
+</button>
+</div>
+</header>
+<div class="flex-1 overflow-y-auto p-6 space-y-6 relative z-10">
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-6 h-[520px]">
+<div class="flex flex-col bg-surface-dark border border-border-neon rounded shadow-2xl overflow-hidden h-full">
+<div class="px-5 py-4 border-b border-white/5 flex justify-between items-center bg-surface-dark shrink-0">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl drop-shadow-[0_0_5px_rgba(0,242,255,0.8)]">verified</span>
+<h3 class="text-primary text-lg font-bold tracking-wide text-glow">Active Licenses</h3>
+</div>
+<div class="flex items-center gap-2">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-2.5 top-2 text-slate-500 text-sm group-focus-within:text-primary transition-colors">search</span>
+<input class="pl-8 pr-3 py-1.5 text-xs bg-black/30 text-white border border-white/10 rounded focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary w-40 transition-all focus:w-48 placeholder-slate-600" placeholder="Filter licenses..." type="text"/>
+</div>
+<button class="text-slate-500 hover:text-primary transition p-1 rounded hover:bg-white/5"><span class="material-symbols-outlined">filter_list</span></button>
+<button class="text-slate-500 hover:text-primary transition p-1 rounded hover:bg-white/5"><span class="material-symbols-outlined">refresh</span></button>
+</div>
+</div>
+<div class="flex-1 overflow-auto">
+<table class="w-full text-left border-collapse">
+<thead class="text-xs font-semibold text-text-muted uppercase bg-surface-light border-b border-white/5 sticky top-0 z-10">
+<tr>
+<th class="px-4 py-3 cursor-pointer hover:bg-white/5 whitespace-nowrap hover:text-primary transition-colors">License ID <span class="material-symbols-outlined text-[10px] align-middle ml-1">unfold_more</span></th>
+<th class="px-4 py-3 cursor-pointer hover:bg-white/5 whitespace-nowrap hover:text-primary transition-colors">Product</th>
+<th class="px-4 py-3 cursor-pointer hover:bg-white/5 whitespace-nowrap hover:text-primary transition-colors">Client</th>
+<th class="px-4 py-3 text-center cursor-pointer hover:bg-white/5 whitespace-nowrap hover:text-primary transition-colors">Status</th>
+<th class="px-4 py-3 cursor-pointer hover:bg-white/5 whitespace-nowrap hover:text-primary transition-colors">Expiration Date</th>
+<th class="px-4 py-3 text-center whitespace-nowrap">Bound Devices</th>
+<th class="px-4 py-3 text-right whitespace-nowrap">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-white/5 text-sm">
+<tr class="hover:bg-primary/5 group transition-colors">
+<td class="px-4 py-3 font-mono text-xs text-primary font-medium tracking-wide">LIC-9928-XA</td>
+<td class="px-4 py-3 text-white">Ent. Suite v4</td>
+<td class="px-4 py-3 text-text-muted">Acme Fin.</td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-secondary/10 text-secondary uppercase border border-secondary/30 shadow-[0_0_5px_rgba(57,255,20,0.2)]">Active</span></td>
+<td class="px-4 py-3 text-xs text-text-muted font-mono">2024-12-31</td>
+<td class="px-4 py-3 text-center text-xs font-mono text-text-main">12/50</td>
+<td class="px-4 py-3 text-right">
+<div class="flex justify-end gap-2 opacity-80 group-hover:opacity-100">
+<button class="text-primary hover:text-black text-[11px] font-semibold uppercase tracking-wide border border-primary/50 hover:bg-primary px-2 py-0.5 rounded transition shadow-[0_0_5px_rgba(0,242,255,0.1)] hover:shadow-[0_0_10px_rgba(0,242,255,0.6)]">View</button>
+<button class="text-text-muted hover:text-danger text-[11px] font-semibold uppercase tracking-wide border border-transparent hover:border-danger/50 hover:bg-danger/10 px-2 py-0.5 rounded transition">Revoke</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 group transition-colors">
+<td class="px-4 py-3 font-mono text-xs text-primary font-medium tracking-wide">LIC-1102-BB</td>
+<td class="px-4 py-3 text-white">Sec. Module</td>
+<td class="px-4 py-3 text-text-muted">TechSol</td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-secondary/10 text-secondary uppercase border border-secondary/30 shadow-[0_0_5px_rgba(57,255,20,0.2)]">Active</span></td>
+<td class="px-4 py-3 text-xs text-text-muted font-mono">2024-06-15</td>
+<td class="px-4 py-3 text-center text-xs font-mono text-text-main">88/100</td>
+<td class="px-4 py-3 text-right">
+<div class="flex justify-end gap-2 opacity-80 group-hover:opacity-100">
+<button class="text-primary hover:text-black text-[11px] font-semibold uppercase tracking-wide border border-primary/50 hover:bg-primary px-2 py-0.5 rounded transition shadow-[0_0_5px_rgba(0,242,255,0.1)] hover:shadow-[0_0_10px_rgba(0,242,255,0.6)]">View</button>
+<button class="text-text-muted hover:text-danger text-[11px] font-semibold uppercase tracking-wide border border-transparent hover:border-danger/50 hover:bg-danger/10 px-2 py-0.5 rounded transition">Revoke</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-warning/5 group bg-warning/5 border-l-2 border-warning/50">
+<td class="px-4 py-3 font-mono text-xs text-warning font-medium tracking-wide">LIC-4491-TR</td>
+<td class="px-4 py-3 text-white">Audit Tool</td>
+<td class="px-4 py-3 text-text-muted">NorthSys</td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-warning/10 text-warning uppercase border border-warning/30 shadow-[0_0_5px_rgba(255,211,0,0.2)]">Expiring</span></td>
+<td class="px-4 py-3 text-xs text-warning font-medium font-mono">2023-10-30</td>
+<td class="px-4 py-3 text-center text-xs font-mono text-text-main">5/5</td>
+<td class="px-4 py-3 text-right">
+<div class="flex justify-end gap-2 opacity-80 group-hover:opacity-100">
+<button class="text-primary hover:text-black text-[11px] font-semibold uppercase tracking-wide border border-primary/50 hover:bg-primary px-2 py-0.5 rounded transition">View</button>
+<button class="text-text-muted hover:text-danger text-[11px] font-semibold uppercase tracking-wide border border-transparent hover:border-danger/50 hover:bg-danger/10 px-2 py-0.5 rounded transition">Revoke</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 group transition-colors">
+<td class="px-4 py-3 font-mono text-xs text-primary font-medium tracking-wide">LIC-7721-CV</td>
+<td class="px-4 py-3 text-white">Ent. Suite v4</td>
+<td class="px-4 py-3 text-text-muted">CyberDyne</td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-secondary/10 text-secondary uppercase border border-secondary/30 shadow-[0_0_5px_rgba(57,255,20,0.2)]">Active</span></td>
+<td class="px-4 py-3 text-xs text-text-muted font-mono">2025-01-01</td>
+<td class="px-4 py-3 text-center text-xs font-mono text-text-main">200/Unl</td>
+<td class="px-4 py-3 text-right">
+<div class="flex justify-end gap-2 opacity-80 group-hover:opacity-100">
+<button class="text-primary hover:text-black text-[11px] font-semibold uppercase tracking-wide border border-primary/50 hover:bg-primary px-2 py-0.5 rounded transition shadow-[0_0_5px_rgba(0,242,255,0.1)] hover:shadow-[0_0_10px_rgba(0,242,255,0.6)]">View</button>
+<button class="text-text-muted hover:text-danger text-[11px] font-semibold uppercase tracking-wide border border-transparent hover:border-danger/50 hover:bg-danger/10 px-2 py-0.5 rounded transition">Revoke</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-danger/5 group bg-danger/5 border-l-2 border-danger/50">
+<td class="px-4 py-3 font-mono text-xs text-danger font-medium tracking-wide">LIC-2212-SX</td>
+<td class="px-4 py-3 text-white">Dev Kit</td>
+<td class="px-4 py-3 text-text-muted">Stark Ind</td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-danger/10 text-danger uppercase border border-danger/30 shadow-[0_0_5px_rgba(255,7,58,0.2)]">Suspended</span></td>
+<td class="px-4 py-3 text-xs text-text-muted font-mono">2024-02-20</td>
+<td class="px-4 py-3 text-center text-xs font-mono text-text-main">5/5</td>
+<td class="px-4 py-3 text-right">
+<div class="flex justify-end gap-2 opacity-80 group-hover:opacity-100">
+<button class="text-primary hover:text-black text-[11px] font-semibold uppercase tracking-wide border border-primary/50 hover:bg-primary px-2 py-0.5 rounded transition">View</button>
+<button class="text-danger hover:text-white text-[11px] font-bold uppercase tracking-wide border border-danger/50 hover:border-danger hover:bg-danger px-2 py-0.5 rounded transition shadow-[0_0_5px_rgba(255,7,58,0.3)]">Release</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="flex flex-col bg-surface-dark border border-border-neon rounded shadow-2xl overflow-hidden h-full">
+<div class="px-5 py-4 border-b border-white/5 flex justify-between items-center bg-surface-dark shrink-0">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl drop-shadow-[0_0_5px_rgba(0,242,255,0.8)]">pattern</span>
+<h3 class="text-primary text-lg font-bold tracking-wide text-glow">Devices Under Review</h3>
+</div>
+<span class="bg-primary/20 text-primary border border-primary/50 text-xs font-bold px-2.5 py-1 rounded-full shadow-[0_0_8px_rgba(0,242,255,0.4)]">4 Pending</span>
+</div>
+<div class="flex-1 overflow-auto">
+<table class="w-full text-left border-collapse">
+<thead class="text-xs font-semibold text-text-muted uppercase bg-surface-light border-b border-white/5 sticky top-0 z-10">
+<tr>
+<th class="px-4 py-3 cursor-pointer hover:bg-white/5 whitespace-nowrap hover:text-primary transition-colors">Device ID</th>
+<th class="px-4 py-3 cursor-pointer hover:bg-white/5 whitespace-nowrap hover:text-primary transition-colors">Fingerprint Hash</th>
+<th class="px-4 py-3 cursor-pointer hover:bg-white/5 whitespace-nowrap hover:text-primary transition-colors">Associated License</th>
+<th class="px-4 py-3 cursor-pointer hover:bg-white/5 whitespace-nowrap hover:text-primary transition-colors">Client</th>
+<th class="px-4 py-3 text-center cursor-pointer hover:bg-white/5 whitespace-nowrap hover:text-primary transition-colors">Status</th>
+<th class="px-4 py-3 whitespace-nowrap">Last Activity</th>
+<th class="px-4 py-3 text-right whitespace-nowrap">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-white/5 text-sm">
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="px-4 py-3 text-xs font-medium text-white">DEV-1092</td>
+<td class="px-4 py-3">
+<div class="flex flex-col">
+<span class="font-mono text-[10px] text-primary/80 bg-black/40 border border-primary/20 px-1 rounded inline-block w-fit">fp_99a821...</span>
+</div>
+</td>
+<td class="px-4 py-3 text-xs text-text-muted font-mono">LIC-9928-XA</td>
+<td class="px-4 py-3 text-xs text-text-muted">Acme Fin.</td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-warning/10 text-warning uppercase border border-warning/30">Review</span></td>
+<td class="px-4 py-3 text-xs text-text-muted">2 mins ago</td>
+<td class="px-4 py-3 text-right">
+<div class="flex justify-end gap-1">
+<button class="flex items-center justify-center p-1 rounded hover:bg-danger/20 text-slate-500 hover:text-danger transition border border-transparent hover:border-danger/30" title="Deny">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+<button class="flex items-center justify-center p-1 rounded bg-primary/10 text-primary hover:bg-primary hover:text-black transition shadow-[0_0_5px_rgba(0,242,255,0.2)] hover:shadow-[0_0_10px_rgba(0,242,255,0.6)] border border-primary/50" title="Approve">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="px-4 py-3 text-xs font-medium text-white">DEV-4421</td>
+<td class="px-4 py-3">
+<div class="flex flex-col">
+<span class="font-mono text-[10px] text-primary/80 bg-black/40 border border-primary/20 px-1 rounded inline-block w-fit">fp_11b200...</span>
+</div>
+</td>
+<td class="px-4 py-3 text-xs text-text-muted font-mono">LIC-7721-CV</td>
+<td class="px-4 py-3 text-xs text-text-muted">CyberDyne</td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-warning/10 text-warning uppercase border border-warning/30">Review</span></td>
+<td class="px-4 py-3 text-xs text-text-muted">15 mins ago</td>
+<td class="px-4 py-3 text-right">
+<div class="flex justify-end gap-1">
+<button class="flex items-center justify-center p-1 rounded hover:bg-danger/20 text-slate-500 hover:text-danger transition border border-transparent hover:border-danger/30" title="Deny">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+<button class="flex items-center justify-center p-1 rounded bg-primary/10 text-primary hover:bg-primary hover:text-black transition shadow-[0_0_5px_rgba(0,242,255,0.2)] hover:shadow-[0_0_10px_rgba(0,242,255,0.6)] border border-primary/50" title="Approve">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-danger/5 bg-danger/5 transition-colors border-l-2 border-danger/50">
+<td class="px-4 py-3 text-xs font-medium text-white">UNK-0000</td>
+<td class="px-4 py-3">
+<div class="flex flex-col">
+<span class="font-mono text-[10px] text-danger/80 bg-danger/10 border border-danger/20 px-1 rounded inline-block w-fit">fp_xx9911...</span>
+</div>
+</td>
+<td class="px-4 py-3 text-xs text-danger italic">Unassigned</td>
+<td class="px-4 py-3 text-xs text-text-muted">Unknown</td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 uppercase border border-slate-700">Unknown</span></td>
+<td class="px-4 py-3 text-xs text-text-muted">1 hour ago</td>
+<td class="px-4 py-3 text-right">
+<div class="flex justify-end gap-1">
+<button class="flex items-center justify-center p-1 rounded bg-danger/10 border border-danger/50 text-danger hover:bg-danger hover:text-white transition shadow-[0_0_5px_rgba(255,7,58,0.2)] w-full" title="Block Device">
+<span class="text-[10px] font-bold uppercase px-1">Block</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="px-4 py-3 text-xs font-medium text-white">DEV-8821</td>
+<td class="px-4 py-3">
+<div class="flex flex-col">
+<span class="font-mono text-[10px] text-primary/80 bg-black/40 border border-primary/20 px-1 rounded inline-block w-fit">fp_33c441...</span>
+</div>
+</td>
+<td class="px-4 py-3 text-xs text-text-muted font-mono">LIC-9928-XA</td>
+<td class="px-4 py-3 text-xs text-text-muted">Acme Fin.</td>
+<td class="px-4 py-3 text-center"><span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-warning/10 text-warning uppercase border border-warning/30">Review</span></td>
+<td class="px-4 py-3 text-xs text-text-muted">2 hours ago</td>
+<td class="px-4 py-3 text-right">
+<div class="flex justify-end gap-1">
+<button class="flex items-center justify-center p-1 rounded hover:bg-danger/20 text-slate-500 hover:text-danger transition border border-transparent hover:border-danger/30" title="Deny">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+<button class="flex items-center justify-center p-1 rounded bg-primary/10 text-primary hover:bg-primary hover:text-black transition shadow-[0_0_5px_rgba(0,242,255,0.2)] hover:shadow-[0_0_10px_rgba(0,242,255,0.6)] border border-primary/50" title="Approve">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="flex flex-col bg-surface-dark border border-border-neon rounded shadow-2xl overflow-hidden h-full min-h-[400px]">
+<div class="px-5 py-4 border-b border-white/5 flex justify-between items-center bg-surface-dark shrink-0">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl drop-shadow-[0_0_5px_rgba(0,242,255,0.8)]">gavel</span>
+<h3 class="text-primary text-lg font-bold tracking-wide text-glow">Recent Critical Audit Events</h3>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 text-xs font-medium text-text-muted">
+<span class="flex items-center gap-1.5"><span class="size-2.5 rounded-full bg-danger shadow-[0_0_5px_rgba(255,7,58,0.8)]"></span> Critical</span>
+<span class="flex items-center gap-1.5"><span class="size-2.5 rounded-full bg-warning shadow-[0_0_5px_rgba(255,211,0,0.8)]"></span> Warning</span>
+<span class="flex items-center gap-1.5"><span class="size-2.5 rounded-full bg-primary shadow-[0_0_5px_rgba(0,242,255,0.8)]"></span> Info</span>
+</div>
+<div class="w-px h-5 bg-white/10"></div>
+<button class="text-sm text-primary font-semibold hover:text-white transition-colors flex items-center gap-1 group">
+                                Export Logs <span class="material-symbols-outlined text-[18px] group-hover:translate-y-0.5 transition-transform">download</span>
+</button>
+</div>
+</div>
+<div class="flex-1 overflow-auto">
+<table class="w-full text-left border-collapse">
+<thead class="text-xs font-semibold text-text-muted uppercase bg-surface-light border-b border-white/5 sticky top-0 z-10">
+<tr>
+<th class="px-4 py-3 cursor-pointer hover:bg-white/5 whitespace-nowrap hover:text-primary transition-colors">Timestamp <span class="material-symbols-outlined text-[10px] align-middle ml-1">arrow_drop_down</span></th>
+<th class="px-4 py-3 cursor-pointer hover:bg-white/5 whitespace-nowrap hover:text-primary transition-colors">Event Type</th>
+<th class="px-4 py-3 cursor-pointer hover:bg-white/5 whitespace-nowrap hover:text-primary transition-colors">User</th>
+<th class="px-4 py-3 cursor-pointer hover:bg-white/5 whitespace-nowrap hover:text-primary transition-colors">Target Entity</th>
+<th class="px-4 py-3 whitespace-nowrap">Description</th>
+<th class="px-4 py-3 text-center cursor-pointer hover:bg-white/5 whitespace-nowrap hover:text-primary transition-colors">Severity</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-white/5 text-sm">
+<tr class="hover:bg-danger/5 group transition-colors border-l-2 border-transparent hover:border-danger/50">
+<td class="px-4 py-2.5 font-mono text-xs text-text-muted whitespace-nowrap">2023-10-27 10:45:01</td>
+<td class="px-4 py-2.5 text-white font-medium group-hover:text-danger transition-colors">Auth Failure (Brute Force)</td>
+<td class="px-4 py-2.5 text-text-main">sys.firewall</td>
+<td class="px-4 py-2.5 font-mono text-xs text-primary/80">IP: 45.33.22.11</td>
+<td class="px-4 py-2.5 text-xs text-text-muted">50 failed login attempts detected in 10s timeframe.</td>
+<td class="px-4 py-2.5 text-center"><span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-danger/10 text-danger uppercase tracking-wide border border-danger/30 shadow-[0_0_5px_rgba(255,7,58,0.2)]">Critical</span></td>
+</tr>
+<tr class="hover:bg-warning/5 group transition-colors border-l-2 border-transparent hover:border-warning/50">
+<td class="px-4 py-2.5 font-mono text-xs text-text-muted whitespace-nowrap">2023-10-27 10:32:15</td>
+<td class="px-4 py-2.5 text-white font-medium group-hover:text-warning transition-colors">Policy Override</td>
+<td class="px-4 py-2.5 text-text-main">admin.sarah</td>
+<td class="px-4 py-2.5 font-mono text-xs text-primary/80">LIC-9928-XA</td>
+<td class="px-4 py-2.5 text-xs text-text-muted">Manual seat limit increase override applied.</td>
+<td class="px-4 py-2.5 text-center"><span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-warning/10 text-warning uppercase tracking-wide border border-warning/30 shadow-[0_0_5px_rgba(255,211,0,0.2)]">Warning</span></td>
+</tr>
+<tr class="hover:bg-primary/5 group transition-colors border-l-2 border-transparent hover:border-primary/50">
+<td class="px-4 py-2.5 font-mono text-xs text-text-muted whitespace-nowrap">2023-10-27 09:42:12</td>
+<td class="px-4 py-2.5 text-white font-medium group-hover:text-primary transition-colors">License Created</td>
+<td class="px-4 py-2.5 text-text-main">admin.sarah</td>
+<td class="px-4 py-2.5 font-mono text-xs text-primary/80">ACME Corp</td>
+<td class="px-4 py-2.5 text-xs text-text-muted">New enterprise tier license generated successfully.</td>
+<td class="px-4 py-2.5 text-center"><span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-primary/10 text-primary uppercase tracking-wide border border-primary/30 shadow-[0_0_5px_rgba(0,242,255,0.2)]">Info</span></td>
+</tr>
+<tr class="hover:bg-danger/5 group transition-colors border-l-2 border-transparent hover:border-danger/50">
+<td class="px-4 py-2.5 font-mono text-xs text-text-muted whitespace-nowrap">2023-10-27 09:15:00</td>
+<td class="px-4 py-2.5 text-white font-medium group-hover:text-danger transition-colors">Signature Mismatch</td>
+<td class="px-4 py-2.5 text-text-main">api.gateway</td>
+<td class="px-4 py-2.5 font-mono text-xs text-primary/80">Req-ID: 99281</td>
+<td class="px-4 py-2.5 text-xs text-text-muted">Tampered payload signature detected from client agent.</td>
+<td class="px-4 py-2.5 text-center"><span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-danger/10 text-danger uppercase tracking-wide border border-danger/30 shadow-[0_0_5px_rgba(255,7,58,0.2)]">Critical</span></td>
+</tr>
+<tr class="hover:bg-primary/5 group transition-colors border-l-2 border-transparent hover:border-primary/50">
+<td class="px-4 py-2.5 font-mono text-xs text-text-muted whitespace-nowrap">2023-10-27 08:30:05</td>
+<td class="px-4 py-2.5 text-white font-medium group-hover:text-primary transition-colors">Device Binding</td>
+<td class="px-4 py-2.5 text-text-main">system.auto</td>
+<td class="px-4 py-2.5 font-mono text-xs text-primary/80">DEV-AB921</td>
+<td class="px-4 py-2.5 text-xs text-text-muted">Automatic enrollment of verified fingerprint.</td>
+<td class="px-4 py-2.5 text-center"><span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-primary/10 text-primary uppercase tracking-wide border border-primary/30 shadow-[0_0_5px_rgba(0,242,255,0.2)]">Info</span></td>
+</tr>
+<tr class="hover:bg-warning/5 group transition-colors border-l-2 border-transparent hover:border-warning/50">
+<td class="px-4 py-2.5 font-mono text-xs text-text-muted whitespace-nowrap">2023-10-27 08:15:22</td>
+<td class="px-4 py-2.5 text-white font-medium group-hover:text-warning transition-colors">License Revocation</td>
+<td class="px-4 py-2.5 text-text-main">admin.mike</td>
+<td class="px-4 py-2.5 font-mono text-xs text-primary/80">LIC-1002-ZZ</td>
+<td class="px-4 py-2.5 text-xs text-text-muted">Policy violation triggered immediate revocation.</td>
+<td class="px-4 py-2.5 text-center"><span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-warning/10 text-warning uppercase tracking-wide border border-warning/30 shadow-[0_0_5px_rgba(255,211,0,0.2)]">Warning</span></td>
+</tr>
+<tr class="hover:bg-primary/5 group transition-colors border-l-2 border-transparent hover:border-primary/50">
+<td class="px-4 py-2.5 font-mono text-xs text-text-muted whitespace-nowrap">2023-10-27 07:55:01</td>
+<td class="px-4 py-2.5 text-white font-medium group-hover:text-primary transition-colors">Activation Failed</td>
+<td class="px-4 py-2.5 text-text-main">client.agent</td>
+<td class="px-4 py-2.5 font-mono text-xs text-primary/80">IP: 192.168.1.104</td>
+<td class="px-4 py-2.5 text-xs text-text-muted">Failed handshake due to clock skew &gt; 5000ms.</td>
+<td class="px-4 py-2.5 text-center"><span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-primary/10 text-primary uppercase tracking-wide border border-primary/30 shadow-[0_0_5px_rgba(0,242,255,0.2)]">Info</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+</body></html>

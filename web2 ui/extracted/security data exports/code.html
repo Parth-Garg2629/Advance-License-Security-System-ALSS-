@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ALSS - Security Data Exports</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00f2ff", // Neon Cyan
+                        "primary-dim": "rgba(0, 242, 255, 0.1)",
+                        "secondary": "#94a3b8", // Silver/Slate
+                        "surface-dark": "#050508", // Very dark background
+                        "surface-panel": "#0f1016", // Panel background
+                        "surface-border": "#1f2937", // Dark border
+                        "neon-green": "#00ff9d",
+                        "neon-pink": "#ff2a6d",
+                        "neon-purple": "#bd00ff",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    boxShadow: {
+                        'neon': '0 0 5px rgba(0, 242, 255, 0.2), 0 0 20px rgba(0, 242, 255, 0.1)',
+                        'neon-strong': '0 0 10px rgba(0, 242, 255, 0.5), 0 0 30px rgba(0, 242, 255, 0.2)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>body {
+    font-family: "Inter", sans-serif
+    }::-webkit-scrollbar {
+    width: 8px;
+    height: 8px
+    }
+::-webkit-scrollbar-track {
+    background: #050508
+    }
+::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 4px
+    }input[type="checkbox"]:checked {
+    background-color: #00f2ff;
+    border-color: #00f2ff;
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuC3ZReJ56Vu1usgO6hP2Hb_m-xpXpTVR2iI1igEyJKuJ73-XWUYGR1dwVyr8DdnOO8WkfTnmIGy4YUAY6vkDc5p3XKiTbAnIs0UPC28PYR-4yel2Hc5v20v38Vb0GtQZJGzbz8dKqaMng13CVTIXK58ThPwLa1pdy_PBg_TKbS4nBmULc9GV7RCPbUAGzWxn0OCK2ikNRX3Xe037Ec6yPXFxKZ1w1KcD9m1ZBA_4s7BaXBK3SrOQEDzE_Soxu15yBou3TwwRJUCjXE)
+    }
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer
+    }</style>
+</head>
+<body class="bg-surface-dark text-slate-300 flex h-screen overflow-hidden antialiased selection:bg-primary selection:text-black">
+<aside class="w-64 bg-surface-panel border-r border-surface-border flex flex-col shrink-0 h-full relative z-20">
+<div class="p-6 flex items-center gap-3 border-b border-surface-border/50">
+<div class="rounded-lg size-10 bg-primary/10 border border-primary/20 flex items-center justify-center shadow-neon">
+<span class="material-symbols-outlined text-primary text-2xl">shield_lock</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-white text-base font-bold leading-tight tracking-wide">ALSS <span class="text-primary">Admin</span></h1>
+<p class="text-slate-500 text-xs font-normal">Security Console</p>
+</div>
+</div>
+<nav class="flex-1 overflow-y-auto py-6 px-3 flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors" style="font-size: 20px;">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors" style="font-size: 20px;">vpn_key</span>
+<span class="text-sm font-medium">Licenses</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors" style="font-size: 20px;">devices</span>
+<span class="text-sm font-medium">Devices</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary-dim text-white border border-primary/30 shadow-neon" href="#">
+<span class="material-symbols-outlined text-primary" style="font-size: 20px;">download</span>
+<span class="text-sm font-bold text-primary tracking-wide">Data Exports</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors" style="font-size: 20px;">list_alt</span>
+<span class="text-sm font-medium">Audit Logs</span>
+</a>
+<div class="my-2 border-t border-surface-border/50"></div>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors" style="font-size: 20px;">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</nav>
+<div class="p-4 border-t border-surface-border/50 bg-black/20">
+<div class="flex items-center gap-3 px-2 py-2">
+<div class="rounded-full bg-slate-800 border border-slate-700 h-8 w-8 flex items-center justify-center text-xs font-bold text-primary shadow-neon">
+                    AD
+                </div>
+<div class="flex flex-col">
+<p class="text-white text-sm font-medium">Admin User</p>
+<p class="text-slate-500 text-xs">admin@alss.sec</p>
+</div>
+</div>
+</div>
+</aside>
+<main class="flex-1 overflow-y-auto bg-surface-dark h-full flex flex-col relative">
+<div class="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none"></div>
+<header class="bg-surface-panel/80 backdrop-blur-md border-b border-surface-border px-8 py-6 sticky top-0 z-10">
+<div class="max-w-[1400px] mx-auto w-full">
+<div class="flex justify-between items-start">
+<div>
+<h2 class="text-white text-2xl font-bold tracking-tight flex items-center gap-3">
+                            Security Data Exports
+                            <span class="text-xs font-mono text-primary border border-primary/30 px-2 py-0.5 rounded bg-primary/5">SEC-LEVEL-3</span>
+</h2>
+<p class="text-slate-400 text-sm mt-1">Configure and generate secure data reports for compliance and auditing purposes.</p>
+</div>
+<div class="flex items-center gap-3">
+<span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-mono font-medium border border-emerald-500/20 flex items-center gap-2 shadow-[0_0_10px_rgba(16,185,129,0.1)]">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]"></span>
+                            SYSTEM_ONLINE
+                        </span>
+<button class="flex items-center gap-2 px-4 py-2 bg-surface-dark border border-slate-700 hover:border-primary/50 hover:text-primary rounded text-sm font-medium text-slate-300 transition-all duration-300">
+<span class="material-symbols-outlined" style="font-size: 18px;">help</span>
+                            Documentation
+                        </button>
+</div>
+</div>
+</div>
+</header>
+<div class="p-8 max-w-[1400px] mx-auto w-full flex flex-col gap-8 pb-20 relative z-0">
+<section class="bg-surface-panel rounded-xl border border-surface-border shadow-xl overflow-hidden relative group">
+<div class="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
+<div class="px-6 py-4 border-b border-surface-border bg-black/20 flex justify-between items-center">
+<h3 class="text-lg font-bold text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-size: 22px;">tune</span>
+                        New Export Request
+                    </h3>
+</div>
+<div class="p-6">
+<form class="grid grid-cols-1 lg:grid-cols-12 gap-8" onsubmit="event.preventDefault();">
+<div class="lg:col-span-7 flex flex-col gap-8">
+<div>
+<label class="block text-xs font-bold uppercase tracking-widest text-primary mb-4 flex items-center gap-2">
+<span class="w-1 h-3 bg-primary rounded-full"></span> Data Categories
+                                </label>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<label class="flex items-start p-3 border border-surface-border bg-surface-dark/50 rounded-lg hover:border-primary/40 hover:bg-surface-dark cursor-pointer transition-all duration-200 group/item">
+<div class="flex items-center h-5">
+<input class="h-4 w-4 rounded border-slate-600 bg-surface-dark text-primary focus:ring-primary focus:ring-offset-0 focus:ring-offset-transparent" type="checkbox"/>
+</div>
+<div class="ml-3 flex flex-col">
+<span class="text-sm font-medium text-slate-200 group-hover/item:text-primary transition-colors">License Keys</span>
+<span class="text-xs text-slate-500 mt-0.5">Active, Revoked, Expired keys</span>
+</div>
+</label>
+<label class="flex items-start p-3 border border-surface-border bg-surface-dark/50 rounded-lg hover:border-primary/40 hover:bg-surface-dark cursor-pointer transition-all duration-200 group/item">
+<div class="flex items-center h-5">
+<input class="h-4 w-4 rounded border-slate-600 bg-surface-dark text-primary focus:ring-primary focus:ring-offset-0 focus:ring-offset-transparent" type="checkbox"/>
+</div>
+<div class="ml-3 flex flex-col">
+<span class="text-sm font-medium text-slate-200 group-hover/item:text-primary transition-colors">Device Fingerprints</span>
+<span class="text-xs text-slate-500 mt-0.5">Hardware IDs, IP bindings</span>
+</div>
+</label>
+<label class="flex items-start p-3 border border-surface-border bg-surface-dark/50 rounded-lg hover:border-primary/40 hover:bg-surface-dark cursor-pointer transition-all duration-200 group/item">
+<div class="flex items-center h-5">
+<input checked="" class="h-4 w-4 rounded border-slate-600 bg-surface-dark text-primary focus:ring-primary focus:ring-offset-0 focus:ring-offset-transparent" type="checkbox"/>
+</div>
+<div class="ml-3 flex flex-col">
+<span class="text-sm font-medium text-slate-200 group-hover/item:text-primary transition-colors">Audit Logs</span>
+<span class="text-xs text-slate-500 mt-0.5">Login history, Admin actions</span>
+</div>
+</label>
+<label class="flex items-start p-3 border border-surface-border bg-surface-dark/50 rounded-lg hover:border-primary/40 hover:bg-surface-dark cursor-pointer transition-all duration-200 group/item">
+<div class="flex items-center h-5">
+<input class="h-4 w-4 rounded border-slate-600 bg-surface-dark text-primary focus:ring-primary focus:ring-offset-0 focus:ring-offset-transparent" type="checkbox"/>
+</div>
+<div class="ml-3 flex flex-col">
+<span class="text-sm font-medium text-slate-200 group-hover/item:text-primary transition-colors">Client Profiles</span>
+<span class="text-xs text-slate-500 mt-0.5">Company metadata, Contacts</span>
+</div>
+</label>
+</div>
+</div>
+<div>
+<label class="block text-xs font-bold uppercase tracking-widest text-primary mb-4 flex items-center gap-2">
+<span class="w-1 h-3 bg-primary rounded-full"></span> Timeframe
+                                </label>
+<div class="flex flex-col sm:flex-row gap-4 items-center">
+<div class="relative grow w-full">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-slate-500" style="font-size: 20px;">calendar_today</span>
+</div>
+<input class="block w-full pl-10 pr-3 py-2.5 border border-surface-border rounded bg-surface-dark text-white placeholder-slate-600 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-sm transition-all shadow-inner" type="date"/>
+</div>
+<span class="hidden sm:flex text-slate-500 font-mono text-xs">TO</span>
+<div class="relative grow w-full">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-slate-500" style="font-size: 20px;">event</span>
+</div>
+<input class="block w-full pl-10 pr-3 py-2.5 border border-surface-border rounded bg-surface-dark text-white placeholder-slate-600 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-sm transition-all shadow-inner" type="date"/>
+</div>
+</div>
+</div>
+</div>
+<div class="lg:col-span-5 flex flex-col gap-6 bg-surface-dark/30 p-6 rounded-xl border border-surface-border h-fit relative">
+<div class="absolute -right-1 -top-1 w-20 h-20 bg-primary/5 blur-2xl rounded-full pointer-events-none"></div>
+<div>
+<label class="block text-xs font-bold uppercase tracking-widest text-primary mb-3">Export Format</label>
+<div class="flex rounded shadow-sm isolate" role="group">
+<button class="flex-1 px-4 py-2.5 text-sm font-medium text-slate-300 bg-surface-dark border border-surface-border rounded-l hover:bg-white/5 hover:text-white hover:border-primary/50 focus:z-10 focus:ring-1 focus:ring-primary transition-all" type="button">
+                                        CSV
+                                    </button>
+<button class="flex-1 px-4 py-2.5 text-sm font-medium text-slate-300 bg-surface-dark border-y border-r border-surface-border hover:bg-white/5 hover:text-white hover:border-primary/50 focus:z-10 focus:ring-1 focus:ring-primary transition-all" type="button">
+                                        JSON
+                                    </button>
+<button class="relative flex-1 px-4 py-2.5 text-sm font-bold text-black bg-primary border border-primary rounded-r hover:bg-cyan-300 focus:z-10 focus:ring-1 focus:ring-white transition-all shadow-neon" type="button">
+                                        PDF
+                                    </button>
+</div>
+</div>
+<div>
+<label class="block text-xs font-bold uppercase tracking-widest text-primary mb-3">Security Options</label>
+<div class="flex items-center gap-3 mb-4 p-3 rounded bg-surface-dark/50 border border-surface-border/50">
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-9 h-5 bg-slate-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/50 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+<span class="ml-3 text-sm font-medium text-slate-300">Password Protect File</span>
+</label>
+</div>
+<div class="relative group">
+<input class="block w-full px-4 py-2.5 border border-surface-border rounded bg-surface-dark text-sm text-white focus:ring-1 focus:ring-primary focus:border-primary transition-colors group-hover:border-slate-600" placeholder="Recipient Email (Optional)" type="text"/>
+<p class="text-xs text-slate-500 mt-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">info</span>
+                                        Leave empty to download directly.
+                                    </p>
+</div>
+</div>
+<div class="pt-4 border-t border-surface-border mt-2">
+<button class="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-cyan-600 hover:to-cyan-500 text-black font-bold py-3 px-4 rounded shadow-neon hover:shadow-neon-strong transition-all transform hover:-translate-y-0.5">
+<span class="material-symbols-outlined" style="font-size: 20px;">bolt</span>
+                                    Generate Secure Export
+                                </button>
+</div>
+</div>
+</form>
+</div>
+</section>
+<section class="bg-surface-panel rounded-xl border border-surface-border shadow-xl overflow-hidden flex-1 flex flex-col relative">
+<div class="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div>
+<div class="px-6 py-4 border-b border-surface-border flex justify-between items-center bg-black/20">
+<h3 class="text-lg font-bold text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400" style="font-size: 22px;">history</span>
+                        Export Audit Log
+                    </h3>
+<div class="flex gap-2">
+<button class="p-1.5 rounded text-slate-500 hover:text-primary hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined" style="font-size: 20px;">refresh</span>
+</button>
+<button class="p-1.5 rounded text-slate-500 hover:text-primary hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined" style="font-size: 20px;">filter_list</span>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="min-w-full divide-y divide-surface-border">
+<thead class="bg-surface-dark">
+<tr>
+<th class="px-6 py-4 text-left text-xs font-bold text-primary uppercase tracking-wider" scope="col">Reference ID</th>
+<th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider" scope="col">Data Type</th>
+<th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider" scope="col">Requested By</th>
+<th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider" scope="col">Date &amp; Time</th>
+<th class="px-6 py-4 text-center text-xs font-bold text-slate-500 uppercase tracking-wider" scope="col">Format</th>
+<th class="px-6 py-4 text-center text-xs font-bold text-slate-500 uppercase tracking-wider" scope="col">Status</th>
+<th class="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wider" scope="col">Action</th>
+</tr>
+</thead>
+<tbody class="bg-surface-panel divide-y divide-surface-border text-sm">
+<tr class="hover:bg-surface-dark transition-colors group">
+<td class="px-6 py-4 whitespace-nowrap font-mono text-primary group-hover:text-cyan-300">
+                                    EXP-2023-892
+                                </td>
+<td class="px-6 py-4 whitespace-nowrap text-slate-300">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-500" style="font-size: 16px;">list_alt</span>
+                                        Audit Logs
+                                    </div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-slate-300">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-slate-800 border border-slate-700 text-xs flex items-center justify-center font-bold text-white">JD</div>
+                                        John Doe
+                                    </div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-slate-400">
+                                    Oct 24, 2023 <span class="text-xs text-slate-600 ml-1">14:30</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-300 border border-slate-700">
+                                        JSON
+                                    </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-center">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shadow-[0_0_10px_rgba(16,185,129,0.1)]">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_5px_#34d399]"></span>
+                                        COMPLETED
+                                    </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right font-medium">
+<button class="text-primary hover:text-white transition-colors mr-3 inline-flex items-center gap-1 group/btn">
+<span class="material-symbols-outlined group-hover/btn:animate-bounce" style="font-size: 18px;">download</span>
+                                        Download
+                                    </button>
+</td>
+</tr>
+<tr class="hover:bg-surface-dark transition-colors group">
+<td class="px-6 py-4 whitespace-nowrap font-mono text-primary group-hover:text-cyan-300">
+                                    EXP-2023-891
+                                </td>
+<td class="px-6 py-4 whitespace-nowrap text-slate-300">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-500" style="font-size: 16px;">vpn_key</span>
+                                        License Keys
+                                    </div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-slate-300">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-slate-800 border border-slate-700 text-xs flex items-center justify-center font-bold text-white">JD</div>
+                                        John Doe
+                                    </div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-slate-400">
+                                    Oct 24, 2023 <span class="text-xs text-slate-600 ml-1">09:15</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-300 border border-slate-700">
+                                        CSV
+                                    </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-center">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shadow-[0_0_10px_rgba(16,185,129,0.1)]">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_5px_#34d399]"></span>
+                                        COMPLETED
+                                    </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right font-medium">
+<button class="text-primary hover:text-white transition-colors mr-3 inline-flex items-center gap-1 group/btn">
+<span class="material-symbols-outlined group-hover/btn:animate-bounce" style="font-size: 18px;">download</span>
+                                        Download
+                                    </button>
+</td>
+</tr>
+<tr class="bg-primary/5 hover:bg-primary/10 transition-colors">
+<td class="px-6 py-4 whitespace-nowrap font-mono text-primary font-bold">
+                                    EXP-2023-890
+                                </td>
+<td class="px-6 py-4 whitespace-nowrap text-white">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-size: 16px;">devices</span>
+                                        Device Fingerprints
+                                    </div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-slate-300">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-purple-900/50 border border-purple-500/30 text-xs flex items-center justify-center font-bold text-purple-300">SA</div>
+                                        SysAdmin
+                                    </div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-primary">
+                                    Just now
+                                </td>
+<td class="px-6 py-4 whitespace-nowrap text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-300 border border-slate-700">
+                                        PDF
+                                    </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-center">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20 shadow-[0_0_10px_rgba(59,130,246,0.2)] animate-pulse">
+<span class="material-symbols-outlined text-xs animate-spin" style="font-size: 12px;">sync</span>
+                                        PROCESSING
+                                    </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right font-medium">
+<span class="text-slate-500 cursor-not-allowed inline-flex items-center gap-1">
+<span class="material-symbols-outlined" style="font-size: 18px;">hourglass_empty</span>
+                                        Wait...
+                                    </span>
+</td>
+</tr>
+<tr class="hover:bg-surface-dark transition-colors group">
+<td class="px-6 py-4 whitespace-nowrap font-mono text-slate-500 group-hover:text-slate-400">
+                                    EXP-2023-885
+                                </td>
+<td class="px-6 py-4 whitespace-nowrap text-slate-400">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-600" style="font-size: 16px;">groups</span>
+                                        Client Profiles
+                                    </div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-slate-400">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-slate-800 border border-slate-700 text-xs flex items-center justify-center font-bold text-slate-400">JD</div>
+                                        John Doe
+                                    </div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-slate-500">
+                                    Oct 23, 2023 <span class="text-xs text-slate-700 ml-1">16:45</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-500 border border-slate-700">
+                                        CSV
+                                    </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-center">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-800 text-slate-400 border border-slate-700">
+<span class="w-1.5 h-1.5 rounded-full bg-slate-500"></span>
+                                        EXPIRED
+                                    </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right font-medium">
+<button class="text-slate-600 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined" style="font-size: 18px;">delete</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="bg-surface-dark px-6 py-3 border-t border-surface-border flex items-center justify-between">
+<span class="text-xs text-slate-500">Showing <span class="text-white">4</span> most recent exports</span>
+<div class="flex gap-1">
+<button class="px-2 py-1 rounded hover:bg-white/10 text-slate-500 hover:text-white transition-colors">
+<span class="material-symbols-outlined" style="font-size: 18px;">chevron_left</span>
+</button>
+<button class="px-2 py-1 rounded hover:bg-white/10 text-slate-500 hover:text-white transition-colors">
+<span class="material-symbols-outlined" style="font-size: 18px;">chevron_right</span>
+</button>
+</div>
+</div>
+</section>
+</div>
+</main>
+
+</body></html>

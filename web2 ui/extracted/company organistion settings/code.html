@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ALSS - Organization Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00f0ff","primary-dim": "rgba(0, 240, 255, 0.1)",
+                        "primary-dark": "#00bdd6", 
+                        "secondary": "#7000ff","background": "#050507","surface": "#0f111a","surface-highlight": "#1a1d2d","border": "#2d2d3a",
+                        "text-main": "#e2e8f0",
+                        "text-muted": "#94a3b8",
+                    },
+                    fontFamily: {
+                        "sans": ["Inter", "sans-serif"],
+                    },
+                    boxShadow: {
+                        "neon": "0 0 5px theme('colors.primary'), 0 0 20px theme('colors.primary-dim')",
+                        "neon-sm": "0 0 2px theme('colors.primary')",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+        }::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f111a; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2d2d3a; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00f0ff; 
+        }
+        .form-checkbox {
+            color: #00f0ff;
+            background-color: #1a1d2d;
+            border-color: #2d2d3a;
+        }
+        .form-checkbox:focus {
+            ring: 0;
+            border-color: #00f0ff;
+            box-shadow: 0 0 0 1px #00f0ff;
+        }input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #00f0ff;
+            box-shadow: 0 0 0 1px #00f0ff, 0 0 10px rgba(0, 240, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-background text-text-main h-screen overflow-hidden flex selection:bg-primary selection:text-black">
+<aside class="w-64 bg-[#08090f] flex flex-col h-full shrink-0 border-r border-border">
+<div class="p-6 border-b border-border flex items-center gap-3">
+<div class="bg-primary/10 p-2 rounded-lg border border-primary/20 shadow-[0_0_10px_rgba(0,240,255,0.1)]">
+<span class="material-symbols-outlined text-primary" style="font-size: 24px;">shield</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-white text-lg font-bold leading-tight tracking-tight">ALSS <span class="text-primary">Admin</span></h1>
+<p class="text-text-muted text-xs font-normal">Security Console</p>
+</div>
+</div>
+<nav class="flex-1 overflow-y-auto py-6 flex flex-col gap-1 px-3">
+<a class="flex items-center gap-3 px-3 py-3 rounded-md text-text-muted hover:bg-surface-highlight hover:text-white hover:shadow-[inset_2px_0_0_0_#00f0ff] transition-all group" href="#">
+<span class="material-symbols-outlined text-gray-500 group-hover:text-primary transition-colors" style="font-size: 20px;">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<div class="px-3 pt-4 pb-2">
+<p class="text-xs font-bold text-gray-600 uppercase tracking-wider">Management</p>
+</div>
+<a class="flex items-center gap-3 px-3 py-3 rounded-md text-text-muted hover:bg-surface-highlight hover:text-white hover:shadow-[inset_2px_0_0_0_#00f0ff] transition-all group" href="#">
+<span class="material-symbols-outlined text-gray-500 group-hover:text-primary transition-colors" style="font-size: 20px;">key</span>
+<span class="text-sm font-medium">Licenses</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-md text-text-muted hover:bg-surface-highlight hover:text-white hover:shadow-[inset_2px_0_0_0_#00f0ff] transition-all group" href="#">
+<span class="material-symbols-outlined text-gray-500 group-hover:text-primary transition-colors" style="font-size: 20px;">devices</span>
+<span class="text-sm font-medium">Devices</span>
+</a>
+<div class="px-3 pt-4 pb-2">
+<p class="text-xs font-bold text-gray-600 uppercase tracking-wider">Compliance</p>
+</div>
+<a class="flex items-center gap-3 px-3 py-3 rounded-md text-text-muted hover:bg-surface-highlight hover:text-white hover:shadow-[inset_2px_0_0_0_#00f0ff] transition-all group" href="#">
+<span class="material-symbols-outlined text-gray-500 group-hover:text-primary transition-colors" style="font-size: 20px;">fact_check</span>
+<span class="text-sm font-medium">Audit Logs</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-md bg-primary/10 border border-primary/20 text-primary shadow-[0_0_15px_rgba(0,240,255,0.1)] group" href="#">
+<span class="material-symbols-outlined text-primary" style="font-size: 20px;">settings_suggest</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</nav>
+<div class="p-4 border-t border-border bg-[#0a0c14]">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-cover bg-center ring-2 ring-border" data-alt="User avatar placeholder with abstract gradient" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB5vySOFj5vIimV4i8FqaA545wLLqtv_0LxvakbqtdI5pPd1oRm9a96KSoYoAoILaBmgQN47TX3vmS88L5t5kosR6JZha0WXNXSUwe7QOWOLYRHuwhAb-YYekR2hvZwZfo2Xc7UsRzBhNNS0Rk2ER9kh7q5R-xVgmFPHaD0gPPM82ifChLRpkpMW6YZ624aGK1YW98BJctVn3K9aHlLB05Zs_IBFnV0T-P6d62EA1MXFdLNyoixPzuTEFfdMcO6MDmJxXyV__A9kwc");'></div>
+<div class="flex flex-col overflow-hidden">
+<p class="text-white text-sm font-medium truncate">Admin User</p>
+<p class="text-gray-500 text-xs truncate">admin@alss.security</p>
+</div>
+<button class="ml-auto text-gray-500 hover:text-primary transition-colors">
+<span class="material-symbols-outlined" style="font-size: 20px;">logout</span>
+</button>
+</div>
+</div>
+</aside>
+<main class="flex-1 flex flex-col h-full overflow-hidden bg-background relative">
+<div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent pointer-events-none"></div>
+<header class="bg-surface/50 backdrop-blur-md border-b border-border px-8 py-4 flex items-center justify-between shrink-0 h-20 relative z-10">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2 text-sm text-text-muted">
+<span class="material-symbols-outlined" style="font-size: 16px;">settings</span>
+<span>Settings</span>
+<span class="material-symbols-outlined text-gray-600" style="font-size: 14px;">chevron_right</span>
+<span class="font-semibold text-primary drop-shadow-[0_0_5px_rgba(0,240,255,0.5)]">Organization</span>
+</div>
+<h2 class="text-white text-xl font-bold tracking-tight">Organization Profile</h2>
+</div>
+<div class="flex gap-3">
+<button class="px-4 py-2 text-sm font-medium text-text-main bg-surface border border-border rounded-md hover:bg-surface-highlight hover:border-gray-500 transition-all">
+                Cancel
+            </button>
+<button class="px-4 py-2 text-sm font-bold text-black bg-primary rounded-md shadow-[0_0_15px_rgba(0,240,255,0.3)] hover:bg-white hover:shadow-[0_0_20px_rgba(0,240,255,0.6)] transition-all flex items-center gap-2">
+<span class="material-symbols-outlined" style="font-size: 18px;">save</span>
+                Save Changes
+            </button>
+</div>
+</header>
+<div class="flex-1 overflow-y-auto p-8 relative z-0">
+<div class="max-w-[1200px] mx-auto flex flex-col gap-6">
+<section class="bg-surface rounded-lg border border-border shadow-lg overflow-hidden">
+<div class="px-6 py-4 border-b border-border bg-[#13151f]">
+<h3 class="text-white text-lg font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-size: 20px;">domain</span>
+                        General Information
+                    </h3>
+</div>
+<div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="flex flex-col gap-2">
+<label class="text-text-muted text-sm font-medium">Company Name</label>
+<input class="w-full rounded-md border-border bg-surface-highlight text-white text-sm h-10 px-3 placeholder:text-gray-600 focus:ring-1 focus:ring-primary" type="text" value="Acme Corp Security"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-text-muted text-sm font-medium">Organization ID <span class="text-xs font-normal text-gray-600">(Read-only)</span></label>
+<div class="flex items-center gap-2 w-full rounded-md border border-border bg-[#0a0b10] text-gray-400 text-sm h-10 px-3 select-all">
+<span class="font-mono text-primary/80">ORG-8829-XJ22</span>
+<button class="ml-auto text-gray-500 hover:text-white"><span class="material-symbols-outlined" style="font-size: 16px;">content_copy</span></button>
+</div>
+</div>
+<div class="flex flex-col gap-2 md:col-span-2">
+<label class="text-text-muted text-sm font-medium">Registered Address</label>
+<input class="w-full rounded-md border-border bg-surface-highlight text-white text-sm h-10 px-3" type="text" value="1200 Cyber Way, Tech District, San Francisco, CA 94103"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-text-muted text-sm font-medium">Technical Contact Email</label>
+<input class="w-full rounded-md border-border bg-surface-highlight text-white text-sm h-10 px-3" type="email" value="admin@acme-corp.com"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-text-muted text-sm font-medium">Billing Contact Email</label>
+<input class="w-full rounded-md border-border bg-surface-highlight text-white text-sm h-10 px-3" type="email" value="billing@acme-corp.com"/>
+</div>
+</div>
+</section>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<section class="bg-surface rounded-lg border border-border shadow-lg overflow-hidden lg:col-span-1 h-full flex flex-col">
+<div class="px-6 py-4 border-b border-border bg-[#13151f]">
+<h3 class="text-white text-lg font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-size: 20px;">card_membership</span>
+                            Subscription
+                        </h3>
+</div>
+<div class="p-6 flex flex-col gap-4 flex-1">
+<div class="flex justify-between items-center">
+<span class="text-sm text-gray-400">Current Plan</span>
+<span class="bg-primary/20 text-primary border border-primary/30 px-2 py-1 rounded text-xs font-bold uppercase tracking-wide shadow-[0_0_10px_rgba(0,240,255,0.1)]">Enterprise</span>
+</div>
+<div class="flex flex-col gap-1 mt-2">
+<div class="flex justify-between text-sm mb-1">
+<span class="font-medium text-text-main">License Usage</span>
+<span class="text-gray-400">850 / 1000</span>
+</div>
+<div class="w-full bg-[#1a1d2d] rounded-full h-2 border border-border">
+<div class="bg-primary h-2 rounded-full shadow-[0_0_8px_rgba(0,240,255,0.8)]" style="width: 85%"></div>
+</div>
+</div>
+<div class="flex justify-between items-center pt-4 mt-auto border-t border-dashed border-border">
+<span class="text-sm text-gray-400">Renewal Date</span>
+<span class="text-sm font-medium text-white">Oct 24, 2024</span>
+</div>
+<button class="mt-2 w-full py-2 text-sm text-primary border border-primary/50 rounded hover:bg-primary/10 hover:border-primary transition-all font-medium shadow-[0_0_5px_rgba(0,240,255,0.1)]">
+                            Manage Subscription
+                        </button>
+</div>
+</section>
+<section class="bg-surface rounded-lg border border-border shadow-lg overflow-hidden lg:col-span-2 h-full">
+<div class="px-6 py-4 border-b border-border bg-[#13151f]">
+<h3 class="text-white text-lg font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-size: 20px;">lock_person</span>
+                            Security Policies
+                        </h3>
+</div>
+<div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="flex flex-col gap-6">
+<div class="flex items-start justify-between gap-4">
+<div class="flex flex-col">
+<p class="text-sm font-medium text-white">Enforce MFA</p>
+<p class="text-xs text-gray-500">Require Multi-Factor Authentication for all admins.</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-[#2d2d3a] peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/50 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary peer-checked:shadow-[0_0_10px_rgba(0,240,255,0.4)]"></div>
+</label>
+</div>
+<div class="flex items-start justify-between gap-4">
+<div class="flex flex-col">
+<p class="text-sm font-medium text-white">Device Fingerprinting</p>
+<p class="text-xs text-gray-500">Strictly enforce hardware ID checks on license validation.</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-[#2d2d3a] peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/50 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary peer-checked:shadow-[0_0_10px_rgba(0,240,255,0.4)]"></div>
+</label>
+</div>
+<div class="flex flex-col gap-2 mt-2">
+<label class="text-text-muted text-sm font-medium">Session Timeout (Minutes)</label>
+<select class="w-full rounded-md border-border bg-surface-highlight text-white text-sm h-10 px-3">
+<option>15 Minutes</option>
+<option selected="">30 Minutes</option>
+<option>60 Minutes</option>
+<option>4 Hours</option>
+</select>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-text-muted text-sm font-medium">IP Whitelist (CIDR)</label>
+<p class="text-xs text-gray-500 mb-1">Enter trusted IP ranges, one per line. Leave empty to allow all.</p>
+<textarea class="w-full flex-1 min-h-[140px] rounded-md border-border bg-surface-highlight text-white text-sm p-3 font-mono resize-none focus:ring-1 focus:ring-primary" placeholder="192.168.1.0/24">10.0.0.0/8
+172.16.0.0/12</textarea>
+</div>
+</div>
+</section>
+</div>
+<section class="bg-surface rounded-lg border border-border shadow-lg overflow-hidden">
+<div class="px-6 py-4 border-b border-border bg-[#13151f] flex items-center justify-between">
+<h3 class="text-white text-lg font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-size: 20px;">hub</span>
+                        Integrations &amp; API
+                    </h3>
+<span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded font-medium border border-primary/30 shadow-[0_0_8px_rgba(0,240,255,0.2)]">Active</span>
+</div>
+<div class="p-6 flex flex-col gap-6">
+<div class="flex flex-col gap-2">
+<label class="text-text-muted text-sm font-medium">Webhook URL</label>
+<div class="flex gap-2">
+<input class="flex-1 rounded-md border-border bg-surface-highlight text-white text-sm h-10 px-3 placeholder:text-gray-600" type="text" value="https://api.acme-internal.com/webhooks/alss-events"/>
+<button class="px-3 py-2 text-sm border border-border rounded-md hover:bg-surface-highlight hover:border-gray-500 text-text-main font-medium transition-colors">Test</button>
+</div>
+<p class="text-xs text-gray-500">We will send a POST request for License Activation and Revocation events.</p>
+</div>
+<div class="p-4 bg-[#0a0b10] border border-border rounded-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+<div class="flex flex-col gap-1">
+<p class="text-sm font-bold text-white">API Access Key</p>
+<p class="text-xs text-primary font-mono tracking-wide">pk_live_************************8f92</p>
+</div>
+<div class="flex gap-2">
+<button class="px-3 py-2 text-xs border border-border bg-surface rounded-md hover:bg-surface-highlight text-text-main font-medium flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined" style="font-size: 16px;">visibility</span> Reveal
+                            </button>
+<button class="px-3 py-2 text-xs border border-red-900/50 bg-red-900/10 rounded-md hover:bg-red-900/20 text-red-400 font-medium flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined" style="font-size: 16px;">refresh</span> Roll Key
+                            </button>
+</div>
+</div>
+</div>
+</section>
+<section class="bg-surface rounded-lg border border-border shadow-lg overflow-hidden mb-10">
+<div class="px-6 py-4 border-b border-border bg-[#13151f] flex justify-between items-center">
+<h3 class="text-white text-lg font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-size: 20px;">admin_panel_settings</span>
+                        Internal Roles
+                    </h3>
+<button class="flex items-center gap-2 px-3 py-1.5 bg-primary/20 border border-primary/50 text-primary text-sm font-medium rounded hover:bg-primary hover:text-black transition-all shadow-[0_0_10px_rgba(0,240,255,0.1)]">
+<span class="material-symbols-outlined" style="font-size: 18px;">add</span>
+                        Invite Admin
+                    </button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-[#0a0b10] border-b border-border">
+<th class="px-6 py-3 text-xs font-bold text-gray-400 uppercase tracking-wider">User</th>
+<th class="px-6 py-3 text-xs font-bold text-gray-400 uppercase tracking-wider">Role</th>
+<th class="px-6 py-3 text-xs font-bold text-gray-400 uppercase tracking-wider">Status</th>
+<th class="px-6 py-3 text-xs font-bold text-gray-400 uppercase tracking-wider">Last Login</th>
+<th class="px-6 py-3 text-xs font-bold text-gray-400 uppercase tracking-wider text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border">
+<tr class="hover:bg-surface-highlight transition-colors">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-primary/10 text-primary border border-primary/20 flex items-center justify-center font-bold text-xs shadow-[0_0_5px_rgba(0,240,255,0.2)]">JD</div>
+<div class="flex flex-col">
+<p class="text-sm font-medium text-white">John Doe</p>
+<p class="text-xs text-gray-500">john.d@acme.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2 py-1 rounded border border-secondary/40 bg-secondary/10 text-secondary text-xs font-medium shadow-[0_0_5px_rgba(112,0,255,0.2)]">Super Admin</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-1.5">
+<div class="size-2 rounded-full bg-green-400 shadow-[0_0_5px_#4ade80]"></div>
+<span class="text-sm text-gray-400">Active</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    Just now
+                                </td>
+<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+<button class="text-gray-500 hover:text-primary transition-colors mx-1"><span class="material-symbols-outlined" style="font-size: 18px;">edit</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-highlight transition-colors">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-orange-900/30 border border-orange-500/30 text-orange-400 flex items-center justify-center font-bold text-xs">AS</div>
+<div class="flex flex-col">
+<p class="text-sm font-medium text-white">Alice Smith</p>
+<p class="text-xs text-gray-500">alice.s@acme.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2 py-1 rounded border border-blue-500/40 bg-blue-500/10 text-blue-400 text-xs font-medium shadow-[0_0_5px_rgba(59,130,246,0.2)]">Security Analyst</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-1.5">
+<div class="size-2 rounded-full bg-green-400 shadow-[0_0_5px_#4ade80]"></div>
+<span class="text-sm text-gray-400">Active</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    2 days ago
+                                </td>
+<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+<button class="text-gray-500 hover:text-primary transition-colors mx-1"><span class="material-symbols-outlined" style="font-size: 18px;">edit</span></button>
+<button class="text-gray-500 hover:text-red-500 transition-colors mx-1"><span class="material-symbols-outlined" style="font-size: 18px;">delete</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-highlight transition-colors">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-gray-800 border border-gray-700 text-gray-400 flex items-center justify-center font-bold text-xs">RO</div>
+<div class="flex flex-col">
+<p class="text-sm font-medium text-gray-400">Robert Oliver</p>
+<p class="text-xs text-gray-600">robert.o@acme.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="px-2 py-1 rounded border border-gray-700 bg-gray-800 text-gray-400 text-xs font-medium">Viewer</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-1.5">
+<div class="size-2 rounded-full bg-gray-600"></div>
+<span class="text-sm text-gray-500">Inactive</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                                    Never
+                                </td>
+<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+<button class="text-gray-600 hover:text-primary transition-colors mx-1"><span class="material-symbols-outlined" style="font-size: 18px;">mail</span></button>
+<button class="text-gray-600 hover:text-red-500 transition-colors mx-1"><span class="material-symbols-outlined" style="font-size: 18px;">delete</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+</div>
+</main>
+
+</body></html>

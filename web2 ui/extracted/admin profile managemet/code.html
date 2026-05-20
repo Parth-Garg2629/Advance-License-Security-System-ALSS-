@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ALSS - Admin Profile</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "neon-blue": "#00f3ff",
+                        "neon-purple": "#bc13fe",
+                        "neon-green": "#0aff64",
+                        "neon-red": "#ff2a6d",
+                        "dark-base": "#05050a",
+                        "dark-surface": "#0f1016",
+                        "dark-highlight": "#1a1c26",
+                        "dark-border": "#2d2d3f",
+                        "text-main": "#e2e2e5",
+                        "text-muted": "#8a8b98",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "mono": ["JetBrains Mono", "ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"],
+                    },
+                    boxShadow: {
+                        "neon-blue": "0 0 10px rgba(0, 243, 255, 0.3), 0 0 20px rgba(0, 243, 255, 0.1)",
+                        "neon-purple": "0 0 10px rgba(188, 19, 254, 0.3), 0 0 20px rgba(188, 19, 254, 0.1)",
+                        "neon-green": "0 0 10px rgba(10, 255, 100, 0.3)",
+                    }
+                },
+            },
+        }
+    </script>
+<style>::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f1016;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2d2d3f;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4a4a5e;
+        }
+        .neon-border {
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        .neon-border:hover {
+            border-color: rgba(0, 243, 255, 0.6);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);
+        }
+        .neon-input {
+            background-color: #0f1016 !important;
+            border-color: #2d2d3f !important;
+            color: #e2e2e5 !important;
+        }
+        .neon-input:focus {
+            border-color: #00f3ff !important;
+            box-shadow: 0 0 0 1px #00f3ff !important;
+        }
+    </style>
+</head>
+<body class="font-display bg-dark-base text-text-main overflow-hidden">
+<div class="flex h-screen w-full">
+<aside class="flex w-72 flex-col bg-dark-surface border-r border-dark-border flex-shrink-0 z-20">
+<div class="flex items-center gap-3 px-6 py-6 border-b border-dark-border">
+<div class="flex items-center justify-center size-10 rounded bg-neon-blue/10 text-neon-blue shadow-[0_0_15px_rgba(0,243,255,0.15)] border border-neon-blue/20">
+<span class="material-symbols-outlined text-3xl">shield_lock</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-white text-lg font-bold leading-tight tracking-tight font-mono">ALSS<span class="text-neon-blue">_SYS</span></h1>
+<p class="text-text-muted text-xs font-normal">Security Console v3.0</p>
+</div>
+</div>
+<nav class="flex flex-col gap-1 p-4 overflow-y-auto flex-1">
+<a class="flex items-center gap-3 px-3 py-3 rounded text-text-muted hover:bg-white/5 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined text-[24px]">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<div class="px-3 pt-4 pb-2">
+<p class="text-[10px] font-bold text-neon-blue/70 uppercase tracking-widest font-mono">License Ops</p>
+</div>
+<a class="flex items-center gap-3 px-3 py-3 rounded text-text-muted hover:bg-white/5 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">vpn_key</span>
+<span class="text-sm font-medium">License Management</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded text-text-muted hover:bg-white/5 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">devices</span>
+<span class="text-sm font-medium">Device Binding</span>
+</a>
+<div class="px-3 pt-4 pb-2">
+<p class="text-[10px] font-bold text-neon-blue/70 uppercase tracking-widest font-mono">Security &amp; Logs</p>
+</div>
+<a class="flex items-center gap-3 px-3 py-3 rounded text-text-muted hover:bg-white/5 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">history</span>
+<span class="text-sm font-medium">Audit Logs</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded text-text-muted hover:bg-white/5 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">policy</span>
+<span class="text-sm font-medium">Compliance Reports</span>
+</a>
+<div class="px-3 pt-4 pb-2">
+<p class="text-[10px] font-bold text-neon-blue/70 uppercase tracking-widest font-mono">Administration</p>
+</div>
+<a class="flex items-center gap-3 px-3 py-3 rounded bg-neon-blue/10 text-neon-blue border border-neon-blue/30 shadow-[0_0_15px_rgba(0,243,255,0.1)] relative overflow-hidden" href="#">
+<div class="absolute inset-0 bg-gradient-to-r from-neon-blue/20 to-transparent opacity-30"></div>
+<span class="material-symbols-outlined text-[24px] fill-1 relative z-10">admin_panel_settings</span>
+<span class="text-sm font-medium relative z-10">Admin Profile</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded text-text-muted hover:bg-white/5 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">settings</span>
+<span class="text-sm font-medium">System Settings</span>
+</a>
+</nav>
+<div class="p-4 border-t border-dark-border bg-dark-highlight/30">
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border border-neon-blue ring-2 ring-neon-blue/20" data-alt="Profile picture of the current admin user" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCZ6EVkrOZaeGJU3T9jTjKtAkOb8tOYKa1Fu3OyHoUR9ItE5UsKr3i1scBqhg5LUdWueH1zBZcbnxcy16pum0J51ptm_4edvvHHbFY0zcb77BMYljSHFir2z2TTLfDds3ewAnqk1CvoJU2TbA8nHL2GJxuhoEPyLFXGYjnP_fdHMO3oXt-Jyp2lSRNXjZ9y1Oygk2mIHgxuipeCyHEuhxdnM_mZvj2qNnQ-2E5gP0qongt6Q07UwNjZpTxq1oLFLOYXJANobXgchN8");'></div>
+<div class="flex flex-col overflow-hidden">
+<p class="text-white text-sm font-medium truncate">Alexander Hunt</p>
+<p class="text-neon-blue text-xs truncate font-mono">Super Admin</p>
+</div>
+<button class="ml-auto text-text-muted hover:text-white">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+</button>
+</div>
+</div>
+</aside>
+<main class="flex-1 flex flex-col h-full overflow-hidden bg-dark-base relative">
+<div class="absolute inset-0 z-0 pointer-events-none" style="background-image: linear-gradient(#1a1c26 1px, transparent 1px), linear-gradient(90deg, #1a1c26 1px, transparent 1px); background-size: 40px 40px; opacity: 0.3;">
+</div>
+<header class="bg-dark-surface/80 backdrop-blur-md border-b border-dark-border px-8 py-5 flex items-center justify-between shrink-0 sticky top-0 z-10">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-3">
+<h2 class="text-white text-2xl font-bold tracking-tight">Admin Profile</h2>
+<span class="px-2 py-0.5 rounded text-[10px] font-mono border border-neon-blue/40 text-neon-blue bg-neon-blue/5">SEC-LEVEL-5</span>
+</div>
+<p class="text-text-muted text-base">Manage your personal information, security credentials, and preferences.</p>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 px-3 py-1.5 rounded bg-dark-highlight border border-dark-border">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-neon-green opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-neon-green"></span>
+</span>
+<span class="text-xs font-medium text-neon-green tracking-wide">SYSTEM ONLINE</span>
+</div>
+<div class="text-right">
+<p class="text-xs text-text-muted uppercase tracking-wider font-mono">Last login</p>
+<p class="text-sm text-white font-mono">Today, 09:41:22 AM</p>
+</div>
+</div>
+</header>
+<div class="flex-1 overflow-y-auto p-8 z-10 custom-scrollbar">
+<div class="max-w-[1200px] mx-auto flex flex-col gap-8">
+<section class="bg-dark-surface/50 backdrop-blur-sm rounded-lg border border-dark-border neon-border overflow-hidden">
+<div class="px-6 py-4 border-b border-dark-border bg-dark-highlight/50 flex justify-between items-center">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-neon-blue">badge</span>
+<h3 class="text-white text-lg font-bold tracking-wide">Personal Information</h3>
+</div>
+</div>
+<div class="p-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+<label class="flex flex-col gap-2 group">
+<span class="text-text-muted text-sm font-medium group-focus-within:text-neon-blue transition-colors">Full Name</span>
+<input class="form-input w-full rounded-md neon-input h-11 px-4 text-base placeholder:text-gray-600" type="text" value="Alexander Hunt"/>
+</label>
+<label class="flex flex-col gap-2">
+<span class="text-text-muted text-sm font-medium">Work Email</span>
+<div class="relative">
+<input class="form-input w-full rounded-md border-dark-border bg-dark-base/50 text-gray-500 h-11 px-4 text-base cursor-not-allowed border opacity-70" readonly="" type="email" value="alex.hunt@enterprise-security.com"/>
+<span class="material-symbols-outlined absolute right-3 top-3 text-gray-600 text-lg">lock</span>
+</div>
+</label>
+<label class="flex flex-col gap-2">
+<span class="text-text-muted text-sm font-medium">Role</span>
+<input class="form-input w-full rounded-md border-dark-border bg-dark-base/50 text-gray-500 h-11 px-4 text-base cursor-not-allowed border opacity-70" readonly="" type="text" value="Super Administrator"/>
+</label>
+<label class="flex flex-col gap-2 group">
+<span class="text-text-muted text-sm font-medium group-focus-within:text-neon-blue transition-colors">Department</span>
+<select class="form-select w-full rounded-md neon-input h-11 px-4 text-base">
+<option>Security Operations (SOC)</option>
+<option>IT Administration</option>
+<option>Compliance</option>
+</select>
+</label>
+</div>
+<div class="flex justify-end pt-4 border-t border-dark-border border-dashed">
+<button class="bg-neon-blue/10 hover:bg-neon-blue/20 text-neon-blue border border-neon-blue/50 hover:border-neon-blue text-sm font-bold px-6 py-2.5 rounded transition-all shadow-neon-blue">
+                                Update Profile
+                            </button>
+</div>
+</div>
+</section>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<section class="lg:col-span-1 bg-dark-surface/50 backdrop-blur-sm rounded-lg border border-dark-border neon-border flex flex-col h-full">
+<div class="px-6 py-4 border-b border-dark-border bg-dark-highlight/50 flex items-center gap-2">
+<span class="material-symbols-outlined text-neon-purple">lock_person</span>
+<h3 class="text-white text-lg font-bold tracking-wide">Credentials</h3>
+</div>
+<div class="p-6 flex flex-col gap-6 flex-1">
+<div>
+<div class="flex justify-between items-center mb-3">
+<p class="text-sm font-medium text-text-main">Password</p>
+<span class="text-xs text-text-muted font-mono">Age: 30d</span>
+</div>
+<button class="w-full flex items-center justify-center gap-2 border border-dark-border bg-dark-base hover:bg-dark-highlight hover:border-neon-purple/50 hover:text-neon-purple text-text-main text-sm font-semibold px-4 py-3 rounded transition-all group">
+<span class="material-symbols-outlined text-lg group-hover:animate-pulse">key</span>
+                                    Change Password
+                                </button>
+</div>
+<hr class="border-dark-border"/>
+<div>
+<div class="flex justify-between items-center mb-3">
+<p class="text-sm font-medium text-text-main">MFA Status</p>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-neon-green/10 text-neon-green border border-neon-green/30 tracking-wider">ACTIVE</span>
+</div>
+<p class="text-sm text-text-muted mb-4 leading-relaxed">Secure your account with TOTP (Google Authenticator, Authy).</p>
+<div class="flex gap-3">
+<button class="flex-1 border border-dark-border bg-dark-base hover:bg-dark-highlight hover:border-text-muted text-text-main text-sm font-semibold px-3 py-2 rounded transition-colors">
+                                        Configure
+                                    </button>
+<button class="flex-1 border border-dark-border bg-dark-base hover:bg-dark-highlight hover:border-text-muted text-text-main text-sm font-semibold px-3 py-2 rounded transition-colors">
+                                        Codes
+                                    </button>
+</div>
+</div>
+</div>
+</section>
+<section class="lg:col-span-2 bg-dark-surface/50 backdrop-blur-sm rounded-lg border border-dark-border neon-border flex flex-col h-full">
+<div class="px-6 py-4 border-b border-dark-border bg-dark-highlight/50 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-neon-green">devices_other</span>
+<h3 class="text-white text-lg font-bold tracking-wide">Active Sessions</h3>
+</div>
+<button class="text-xs text-neon-red font-bold hover:text-red-400 uppercase tracking-widest border border-neon-red/30 px-3 py-1 rounded bg-neon-red/5 hover:bg-neon-red/10 transition-colors">Revoke All</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left text-sm">
+<thead class="bg-dark-base/50 border-b border-dark-border text-xs uppercase text-text-muted font-bold tracking-wider">
+<tr>
+<th class="px-6 py-4">Device / Browser</th>
+<th class="px-6 py-4">IP Address</th>
+<th class="px-6 py-4">Location</th>
+<th class="px-6 py-4">Last Active</th>
+<th class="px-6 py-4 text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-dark-border">
+<tr class="group hover:bg-dark-highlight/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-text-muted group-hover:text-neon-blue transition-colors">desktop_windows</span>
+<div>
+<p class="font-medium text-white">Chrome on MacOS</p>
+<p class="text-xs text-neon-green font-mono mt-0.5">CURRENT_SESSION</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-mono text-text-muted">192.168.1.42</td>
+<td class="px-6 py-4 text-text-muted">San Francisco, US</td>
+<td class="px-6 py-4 text-text-muted">Now</td>
+<td class="px-6 py-4 text-right">
+<button class="text-gray-600 cursor-not-allowed" disabled="">Revoke</button>
+</td>
+</tr>
+<tr class="group hover:bg-dark-highlight/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-text-muted group-hover:text-neon-blue transition-colors">laptop_mac</span>
+<div>
+<p class="font-medium text-white">Firefox on Windows</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-mono text-text-muted">10.0.0.158</td>
+<td class="px-6 py-4 text-text-muted">Austin, US</td>
+<td class="px-6 py-4 text-text-muted">2 days ago</td>
+<td class="px-6 py-4 text-right">
+<button class="text-neon-red hover:text-white font-medium text-xs border border-neon-red/30 bg-neon-red/10 hover:bg-neon-red px-3 py-1.5 rounded transition-all">REVOKE</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+<section class="bg-dark-surface/50 backdrop-blur-sm rounded-lg border border-dark-border neon-border overflow-hidden">
+<div class="px-6 py-4 border-b border-dark-border bg-dark-highlight/50 flex justify-between items-center">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-white">tune</span>
+<h3 class="text-white text-lg font-bold tracking-wide">Preferences &amp; API Access</h3>
+</div>
+</div>
+<div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-10">
+<div>
+<h4 class="text-white text-base font-bold mb-4 flex items-center gap-2">
+<span class="size-1.5 bg-neon-blue rounded-full"></span> Email Notifications
+                            </h4>
+<div class="flex flex-col gap-3">
+<label class="flex items-start gap-3 p-3 rounded-md border border-dark-border bg-dark-base/30 hover:border-neon-blue/50 hover:bg-dark-highlight transition-all cursor-pointer group">
+<div class="flex items-center h-5">
+<input checked="" class="w-4 h-4 text-neon-blue bg-dark-base border-dark-border rounded focus:ring-neon-blue focus:ring-offset-0 focus:ring-2" type="checkbox"/>
+</div>
+<div class="text-sm">
+<p class="font-medium text-white group-hover:text-neon-blue transition-colors">Critical Security Alerts</p>
+<p class="text-text-muted text-xs mt-0.5">Receive immediate alerts for license breaches and failed login attempts.</p>
+</div>
+</label>
+<label class="flex items-start gap-3 p-3 rounded-md border border-dark-border bg-dark-base/30 hover:border-neon-blue/50 hover:bg-dark-highlight transition-all cursor-pointer group">
+<div class="flex items-center h-5">
+<input checked="" class="w-4 h-4 text-neon-blue bg-dark-base border-dark-border rounded focus:ring-neon-blue focus:ring-offset-0 focus:ring-2" type="checkbox"/>
+</div>
+<div class="text-sm">
+<p class="font-medium text-white group-hover:text-neon-blue transition-colors">Device Binding Requests</p>
+<p class="text-text-muted text-xs mt-0.5">Notify when a new device requests license activation.</p>
+</div>
+</label>
+<label class="flex items-start gap-3 p-3 rounded-md border border-dark-border bg-dark-base/30 hover:border-neon-blue/50 hover:bg-dark-highlight transition-all cursor-pointer group">
+<div class="flex items-center h-5">
+<input class="w-4 h-4 text-neon-blue bg-dark-base border-dark-border rounded focus:ring-neon-blue focus:ring-offset-0 focus:ring-2" type="checkbox"/>
+</div>
+<div class="text-sm">
+<p class="font-medium text-white group-hover:text-neon-blue transition-colors">Weekly Audit Reports</p>
+<p class="text-text-muted text-xs mt-0.5">Receive a summary of system activity every Monday.</p>
+</div>
+</label>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-center mb-4">
+<h4 class="text-white text-base font-bold flex items-center gap-2">
+<span class="size-1.5 bg-neon-purple rounded-full"></span> Personal API Keys
+                                </h4>
+<button class="text-neon-blue text-sm font-semibold hover:text-white transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">add</span> Generate New
+                                </button>
+</div>
+<div class="border border-dark-border rounded-md overflow-hidden bg-dark-base">
+<table class="w-full text-left text-sm">
+<thead class="bg-dark-highlight/50 border-b border-dark-border text-xs uppercase text-text-muted">
+<tr>
+<th class="px-4 py-2">Key Label</th>
+<th class="px-4 py-2">Created</th>
+<th class="px-4 py-2 text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-dark-border">
+<tr class="group hover:bg-dark-highlight/20">
+<td class="px-4 py-3 font-medium text-white font-mono group-hover:text-neon-purple transition-colors">Dev-Environment-01</td>
+<td class="px-4 py-3 text-text-muted text-xs">Oct 24, 2023</td>
+<td class="px-4 py-3 text-right">
+<button class="text-text-muted hover:text-neon-red transition-colors">
+<span class="material-symbols-outlined text-lg">delete</span>
+</button>
+</td>
+</tr>
+<tr class="group hover:bg-dark-highlight/20">
+<td class="px-4 py-3 font-medium text-white font-mono group-hover:text-neon-purple transition-colors">CI/CD Pipeline</td>
+<td class="px-4 py-3 text-text-muted text-xs">Sep 12, 2023</td>
+<td class="px-4 py-3 text-right">
+<button class="text-text-muted hover:text-neon-red transition-colors">
+<span class="material-symbols-outlined text-lg">delete</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="mt-4 p-3 bg-neon-blue/5 border border-neon-blue/20 rounded text-xs text-neon-blue flex gap-3 items-start">
+<span class="material-symbols-outlined text-base shrink-0">info</span>
+<p>API keys allow programmatic access to the ALSS system. Keys are visible once upon creation. Treat them like passwords.</p>
+</div>
+</div>
+</div>
+<div class="bg-dark-highlight/50 px-6 py-4 border-t border-dark-border flex justify-end gap-4">
+<button class="bg-transparent border border-dark-border text-text-muted hover:text-white hover:border-white text-sm font-bold px-5 py-2.5 rounded transition-all">
+                            Cancel
+                        </button>
+<button class="bg-neon-blue hover:bg-cyan-400 text-dark-base text-sm font-bold px-6 py-2.5 rounded transition-all shadow-[0_0_15px_rgba(0,243,255,0.4)] hover:shadow-[0_0_25px_rgba(0,243,255,0.6)]">
+                            Save Preferences
+                        </button>
+</div>
+</section>
+</div>
+</div>
+</main>
+</div>
+
+</body></html>

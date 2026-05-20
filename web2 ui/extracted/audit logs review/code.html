@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ALSS - Audit Logs Review - Neon Dark</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "neon-blue": "#00f3ff",
+                        "neon-purple": "#bc13fe",
+                        "neon-green": "#0aff60",
+                        "neon-red": "#ff0a46",
+                        "neon-yellow": "#f9ff00",
+                        "dark-base": "#05050a",
+                        "dark-surface": "#0a0a14",
+                        "dark-highlight": "#141424",
+                        "border-neon": "rgba(0, 243, 255, 0.3)",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "mono": ["JetBrains Mono", "ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"]
+                    },
+                    boxShadow: {
+                        "neon": "0 0 10px rgba(0, 243, 255, 0.2), 0 0 20px rgba(0, 243, 255, 0.1)",
+                        "neon-green": "0 0 8px rgba(10, 255, 96, 0.2)",
+                        "neon-red": "0 0 8px rgba(255, 10, 70, 0.2)",
+                    }
+                },
+            },
+        }
+    </script>
+<style>::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a14;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #33334d;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00f3ff;
+        }
+        .neon-border {
+            box-shadow: 0 0 5px rgba(0, 243, 255, 0.1), inset 0 0 20px rgba(0, 243, 255, 0.05);
+        }
+        table tbody tr:hover td {
+            color: #ffffff;
+            text-shadow: 0 0 8px rgba(255,255,255,0.3);
+        }
+    </style>
+</head>
+<body class="font-display bg-dark-base text-gray-200 antialiased overflow-hidden">
+<div class="flex h-screen w-full overflow-hidden">
+<aside class="flex w-72 flex-col bg-dark-surface border-r border-gray-800/50 shrink-0 h-full overflow-y-auto relative">
+<div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-neon-purple to-neon-blue opacity-50"></div>
+<div class="p-6 flex items-center gap-3 border-b border-gray-800/50">
+<div class="bg-neon-blue/10 flex items-center justify-center rounded-lg size-10 text-neon-blue border border-neon-blue/20 shadow-[0_0_15px_rgba(0,243,255,0.15)]">
+<span class="material-symbols-outlined" style="font-size: 24px;">shield</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-white text-lg font-bold tracking-wide">ALSS <span class="text-neon-blue text-xs align-top">SYS</span></h1>
+<p class="text-gray-500 text-xs font-medium uppercase tracking-widest">Security Admin</p>
+</div>
+</div>
+<nav class="flex flex-col gap-1 p-4 flex-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-white/5 hover:text-neon-blue transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:drop-shadow-[0_0_5px_rgba(0,243,255,0.5)]" style="font-size: 20px;">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-white/5 hover:text-neon-blue transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:drop-shadow-[0_0_5px_rgba(0,243,255,0.5)]" style="font-size: 20px;">vpn_key</span>
+<span class="text-sm font-medium">License Management</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-white/5 hover:text-neon-blue transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:drop-shadow-[0_0_5px_rgba(0,243,255,0.5)]" style="font-size: 20px;">devices</span>
+<span class="text-sm font-medium">Devices</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-white/5 hover:text-neon-blue transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:drop-shadow-[0_0_5px_rgba(0,243,255,0.5)]" style="font-size: 20px;">domain</span>
+<span class="text-sm font-medium">Clients</span>
+</a>
+<div class="my-2 border-t border-gray-800/50"></div>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-neon-blue/10 text-neon-blue border border-neon-blue/30 shadow-[0_0_15px_rgba(0,243,255,0.1)] group relative overflow-hidden" href="#">
+<div class="absolute inset-0 bg-neon-blue/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<span class="material-symbols-outlined drop-shadow-[0_0_8px_rgba(0,243,255,0.5)]" style="font-size: 20px;">receipt_long</span>
+<span class="text-sm font-bold tracking-wide">Audit Logs</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-white/5 hover:text-neon-blue transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:drop-shadow-[0_0_5px_rgba(0,243,255,0.5)]" style="font-size: 20px;">settings</span>
+<span class="text-sm font-medium">Admin Settings</span>
+</a>
+</nav>
+<div class="p-4 border-t border-gray-800/50">
+<div class="flex items-center gap-3 px-4 py-3 rounded-lg bg-white/5 border border-white/5">
+<div class="size-8 rounded-full border border-gray-600 bg-center bg-cover" data-alt="Avatar of the currently logged in admin user" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCD7NjedW2U7MVsLAxiihY_bIv0cGg2JgxBp4ZrLerZaIWpZXEiYsS_5P3u_88wAppzdTKBdzhWloMqNtjY94W2aNWRUrqbQVerL9gsaLk_jMsFJPbNd7zEUS7eChOfxVBkXWMuE66kLGmBAUqWGV0Gz6f8E6akyWZZHqCU1BdWExvwIe4JrX6JxhP0-frRuVhWGqKYPKdWVOzv1kyeVAwsf1F6oaYxzfRRgPYDgrMhilslacPHNwW5wgmo4SUtSgG4jlUzYammroY');"></div>
+<div class="flex flex-col">
+<p class="text-sm font-medium text-white">Admin_01</p>
+<p class="text-xs text-neon-green">Online</p>
+</div>
+</div>
+</div>
+</aside>
+<main class="flex flex-1 flex-col h-full bg-dark-base overflow-hidden relative">
+<div class="absolute inset-0 bg-[linear-gradient(rgba(20,20,36,0.5)_1px,transparent_1px),linear-gradient(90deg,rgba(20,20,36,0.5)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none z-0"></div>
+<header class="bg-dark-surface/80 backdrop-blur-md border-b border-gray-800/50 shrink-0 z-10">
+<div class="px-8 py-6 flex flex-wrap items-center justify-between gap-4">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2 text-xs text-gray-500 mb-1 font-mono uppercase tracking-wider">
+<span class="hover:text-white transition-colors cursor-pointer">Home</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-neon-blue font-semibold drop-shadow-[0_0_5px_rgba(0,243,255,0.4)]">Audit Logs</span>
+</div>
+<h2 class="text-white text-2xl font-bold tracking-tight drop-shadow-md">Audit Logs Review</h2>
+<p class="text-gray-400 text-sm">Review system activity, security events, and compliance records.</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center justify-center gap-2 px-4 py-2 bg-dark-highlight border border-gray-700 rounded text-gray-300 text-sm font-medium hover:text-white hover:border-neon-blue/50 hover:shadow-neon transition-all">
+<span class="material-symbols-outlined" style="font-size: 18px;">download</span>
+                            Export CSV
+                        </button>
+<button class="flex items-center justify-center gap-2 px-4 py-2 bg-neon-blue/10 border border-neon-blue/50 text-neon-blue rounded text-sm font-medium hover:bg-neon-blue/20 hover:shadow-neon transition-all shadow-[0_0_10px_rgba(0,243,255,0.1)]">
+<span class="material-symbols-outlined" style="font-size: 18px;">print</span>
+                            Print Report
+                        </button>
+</div>
+</div>
+</header>
+<section class="bg-dark-surface/50 border-b border-gray-800/50 px-8 py-4 shrink-0 z-0 relative">
+<div class="flex flex-col lg:flex-row gap-4 justify-between lg:items-center">
+<div class="flex-1 max-w-xl">
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-gray-500 group-focus-within:text-neon-blue transition-colors">search</span>
+</div>
+<input class="block w-full pl-10 pr-3 py-2.5 border border-gray-700 rounded-lg leading-5 bg-dark-highlight text-gray-200 placeholder-gray-600 focus:outline-none focus:bg-dark-surface focus:ring-1 focus:ring-neon-blue focus:border-neon-blue sm:text-sm transition-all shadow-inner" placeholder="Search by IP, User, License ID..." type="text"/>
+</div>
+</div>
+<div class="flex flex-wrap gap-2 items-center">
+<div class="relative">
+<button class="flex items-center gap-2 px-3 py-2 bg-dark-highlight border border-gray-700 rounded-lg text-sm font-medium text-gray-300 hover:border-neon-purple hover:text-neon-purple hover:shadow-[0_0_8px_rgba(188,19,254,0.3)] transition-all">
+<span class="material-symbols-outlined text-gray-500" style="font-size: 18px;">calendar_today</span>
+                                Date: Last 7 Days
+                                <span class="material-symbols-outlined text-gray-500" style="font-size: 18px;">expand_more</span>
+</button>
+</div>
+<div class="relative">
+<button class="flex items-center gap-2 px-3 py-2 bg-dark-highlight border border-gray-700 rounded-lg text-sm font-medium text-gray-300 hover:border-neon-purple hover:text-neon-purple hover:shadow-[0_0_8px_rgba(188,19,254,0.3)] transition-all">
+<span class="material-symbols-outlined text-gray-500" style="font-size: 18px;">filter_list</span>
+                                Event Type: All
+                                <span class="material-symbols-outlined text-gray-500" style="font-size: 18px;">expand_more</span>
+</button>
+</div>
+<div class="relative">
+<button class="flex items-center gap-2 px-3 py-2 bg-dark-highlight border border-gray-700 rounded-lg text-sm font-medium text-gray-300 hover:border-neon-purple hover:text-neon-purple hover:shadow-[0_0_8px_rgba(188,19,254,0.3)] transition-all">
+<span class="material-symbols-outlined text-gray-500" style="font-size: 18px;">person</span>
+                                Actor: All
+                                <span class="material-symbols-outlined text-gray-500" style="font-size: 18px;">expand_more</span>
+</button>
+</div>
+<div class="h-6 w-px bg-gray-700 mx-1"></div>
+<button class="flex items-center justify-center p-2 text-gray-500 hover:text-neon-red transition-colors" title="Clear Filters">
+<span class="material-symbols-outlined" style="font-size: 20px;">restart_alt</span>
+</button>
+</div>
+</div>
+</section>
+<section class="flex-1 overflow-auto px-8 py-6 relative z-0">
+<div class="min-w-full inline-block align-middle pb-20">
+<div class="border border-gray-800 rounded-lg overflow-hidden bg-dark-surface shadow-lg ring-1 ring-white/5">
+<table class="min-w-full divide-y divide-gray-800">
+<thead class="bg-dark-highlight sticky top-0 z-10 shadow-lg">
+<tr>
+<th class="px-6 py-3 text-left text-xs font-bold text-neon-blue uppercase tracking-wider group cursor-pointer hover:bg-white/5 font-mono" scope="col">
+<div class="flex items-center gap-1">
+                                            Timestamp
+                                            <span class="material-symbols-outlined text-neon-blue/50 text-[16px]">arrow_downward</span>
+</div>
+</th>
+<th class="px-6 py-3 text-left text-xs font-bold text-gray-400 uppercase tracking-wider cursor-pointer hover:text-white" scope="col">Event Type</th>
+<th class="px-6 py-3 text-left text-xs font-bold text-gray-400 uppercase tracking-wider cursor-pointer hover:text-white" scope="col">User (Actor)</th>
+<th class="px-6 py-3 text-left text-xs font-bold text-gray-400 uppercase tracking-wider cursor-pointer hover:text-white" scope="col">Target Entity</th>
+<th class="px-6 py-3 text-left text-xs font-bold text-gray-400 uppercase tracking-wider" scope="col">Action</th>
+<th class="px-6 py-3 text-left text-xs font-bold text-gray-400 uppercase tracking-wider cursor-pointer hover:text-white" scope="col">Status</th>
+<th class="px-6 py-3 text-left text-xs font-bold text-gray-400 uppercase tracking-wider w-1/4" scope="col">Description</th>
+<th class="relative px-6 py-3" scope="col">
+<span class="sr-only">Menu</span>
+</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-800/50 bg-dark-surface">
+<tr class="hover:bg-neon-blue/5 transition-colors group">
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400 font-mono group-hover:text-neon-blue transition-colors">
+                                        2023-10-27 14:32:10
+                                    </td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-neon-purple text-[18px]">lock_person</span>
+<span class="text-sm font-medium text-gray-200">License Revocation</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-neon-blue font-medium cursor-pointer hover:underline hover:drop-shadow-[0_0_5px_rgba(0,243,255,0.5)]">
+                                        Admin_01
+                                    </td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400 font-mono">
+<span class="bg-white/5 border border-white/10 rounded px-2 py-1 text-xs text-gray-300">License-8832-XJ9</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
+                                        Revoke
+                                    </td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-neon-green/10 text-neon-green border border-neon-green/30 shadow-neon-green">
+                                            Success
+                                        </span>
+</td>
+<td class="px-6 py-4 text-sm text-gray-500 max-w-xs truncate group-hover:text-gray-300" title="Manual revocation request initiated by administrator due to breach policy.">
+                                        Manual revocation request initiated by administrator...
+                                    </td>
+<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+<button class="text-gray-500 hover:text-white transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-neon-blue/5 transition-colors group">
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400 font-mono group-hover:text-neon-blue transition-colors">
+                                        2023-10-27 14:30:45
+                                    </td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-gray-500 text-[18px]">login</span>
+<span class="text-sm font-medium text-gray-200">Login Attempt</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-neon-blue font-medium cursor-pointer hover:underline hover:drop-shadow-[0_0_5px_rgba(0,243,255,0.5)]">
+                                        User_99
+                                    </td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400 font-mono">
+<span class="bg-white/5 border border-white/10 rounded px-2 py-1 text-xs text-gray-300">System_Portal</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
+                                        Auth
+                                    </td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-neon-red/10 text-neon-red border border-neon-red/30 shadow-neon-red">
+                                            Failed
+                                        </span>
+</td>
+<td class="px-6 py-4 text-sm text-gray-500 max-w-xs truncate group-hover:text-gray-300">
+                                        Invalid credentials provided from IP 192.168.1.1
+                                    </td>
+<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+<button class="text-gray-500 hover:text-white transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-neon-blue/5 transition-colors group">
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400 font-mono group-hover:text-neon-blue transition-colors">
+                                        2023-10-27 14:15:22
+                                    </td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-neon-blue text-[18px]">key</span>
+<span class="text-sm font-medium text-gray-200">Key Generation</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-neon-blue font-medium cursor-pointer hover:underline hover:drop-shadow-[0_0_5px_rgba(0,243,255,0.5)]">
+                                        System_Auto
+                                    </td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400 font-mono">
+<span class="bg-white/5 border border-white/10 rounded px-2 py-1 text-xs text-gray-300">License-9941-K2L</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
+                                        Create
+                                    </td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-neon-green/10 text-neon-green border border-neon-green/30 shadow-neon-green">
+                                            Success
+                                        </span>
+</td>
+<td class="px-6 py-4 text-sm text-gray-500 max-w-xs truncate group-hover:text-gray-300">
+                                        Auto-renewal trigger executed for Enterprise plan
+                                    </td>
+<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+<button class="text-gray-500 hover:text-white transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-neon-blue/5 transition-colors group">
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400 font-mono group-hover:text-neon-blue transition-colors">
+                                        2023-10-27 13:45:00
+                                    </td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-neon-purple text-[18px]">policy</span>
+<span class="text-sm font-medium text-gray-200">Policy Update</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-neon-blue font-medium cursor-pointer hover:underline hover:drop-shadow-[0_0_5px_rgba(0,243,255,0.5)]">
+                                        Admin_02
+                                    </td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400 font-mono">
+<span class="bg-white/5 border border-white/10 rounded px-2 py-1 text-xs text-gray-300">Policy-Global-V2</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
+                                        Update
+                                    </td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-neon-green/10 text-neon-green border border-neon-green/30 shadow-neon-green">
+                                            Success
+                                        </span>
+</td>
+<td class="px-6 py-4 text-sm text-gray-500 max-w-xs truncate group-hover:text-gray-300">
+                                        Changed max device limit from 5 to 10
+                                    </td>
+<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+<button class="text-gray-500 hover:text-white transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-neon-blue/5 transition-colors group">
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400 font-mono group-hover:text-neon-blue transition-colors">
+                                        2023-10-27 12:10:11
+                                    </td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-gray-500 text-[18px]">download</span>
+<span class="text-sm font-medium text-gray-200">Data Export</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-neon-blue font-medium cursor-pointer hover:underline hover:drop-shadow-[0_0_5px_rgba(0,243,255,0.5)]">
+                                        Admin_01
+                                    </td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400 font-mono">
+<span class="bg-white/5 border border-white/10 rounded px-2 py-1 text-xs text-gray-300">Audit_Logs_DB</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
+                                        Export
+                                    </td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-neon-green/10 text-neon-green border border-neon-green/30 shadow-neon-green">
+                                            Success
+                                        </span>
+</td>
+<td class="px-6 py-4 text-sm text-gray-500 max-w-xs truncate group-hover:text-gray-300">
+                                        Full CSV export initiated for compliance review
+                                    </td>
+<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+<button class="text-gray-500 hover:text-white transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-neon-blue/5 transition-colors group">
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400 font-mono group-hover:text-neon-blue transition-colors">
+                                        2023-10-27 11:55:03
+                                    </td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-neon-red text-[18px] drop-shadow-[0_0_8px_rgba(255,10,70,0.5)]">warning</span>
+<span class="text-sm font-medium text-gray-200">Security Alert</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-neon-blue font-medium cursor-pointer hover:underline hover:drop-shadow-[0_0_5px_rgba(0,243,255,0.5)]">
+                                        System_Sentinel
+                                    </td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400 font-mono">
+<span class="bg-white/5 border border-white/10 rounded px-2 py-1 text-xs text-gray-300">IP-Blocklist</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
+                                        Block
+                                    </td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-neon-green/10 text-neon-green border border-neon-green/30 shadow-neon-green">
+                                            Success
+                                        </span>
+</td>
+<td class="px-6 py-4 text-sm text-gray-500 max-w-xs truncate group-hover:text-gray-300">
+                                        Multiple failed attempts detected from 10.0.0.55
+                                    </td>
+<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+<button class="text-gray-500 hover:text-white transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-neon-blue/5 transition-colors group">
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400 font-mono group-hover:text-neon-blue transition-colors">
+                                        2023-10-27 10:20:18
+                                    </td>
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-gray-500 text-[18px]">person_add</span>
+<span class="text-sm font-medium text-gray-200">User Creation</span>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-neon-blue font-medium cursor-pointer hover:underline hover:drop-shadow-[0_0_5px_rgba(0,243,255,0.5)]">
+                                        Admin_01
+                                    </td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400 font-mono">
+<span class="bg-white/5 border border-white/10 rounded px-2 py-1 text-xs text-gray-300">User_102</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
+                                        Create
+                                    </td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-neon-yellow/10 text-neon-yellow border border-neon-yellow/30 shadow-[0_0_8px_rgba(249,255,0,0.2)]">
+                                            Pending
+                                        </span>
+</td>
+<td class="px-6 py-4 text-sm text-gray-500 max-w-xs truncate group-hover:text-gray-300">
+                                        New analyst account created, awaiting email verification
+                                    </td>
+<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+<button class="text-gray-500 hover:text-white transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<footer class="bg-dark-surface border-t border-gray-800/50 px-8 py-4 flex items-center justify-between shrink-0 fixed bottom-0 w-[calc(100%-18rem)] z-20 shadow-[0_-5px_15px_rgba(0,0,0,0.3)]">
+<div class="flex items-center gap-4 text-sm text-gray-400">
+<span class="font-medium">Showing <span class="text-white">1</span> to <span class="text-white">7</span> of <span class="text-white">1,204</span> results</span>
+<select class="form-select bg-dark-highlight border-gray-700 rounded-md text-sm py-1 pl-2 pr-8 text-gray-300 focus:ring-neon-blue focus:border-neon-blue">
+<option>25 per page</option>
+<option>50 per page</option>
+<option>100 per page</option>
+</select>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 rounded-md border border-gray-700 text-gray-500 hover:bg-dark-highlight hover:text-white disabled:opacity-50 transition-colors">
+<span class="material-symbols-outlined" style="font-size: 20px;">first_page</span>
+</button>
+<button class="p-2 rounded-md border border-gray-700 text-gray-500 hover:bg-dark-highlight hover:text-white disabled:opacity-50 transition-colors">
+<span class="material-symbols-outlined" style="font-size: 20px;">chevron_left</span>
+</button>
+<div class="flex items-center gap-1">
+<button class="w-8 h-8 flex items-center justify-center rounded-md bg-neon-blue text-dark-base text-sm font-bold shadow-neon">1</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-md bg-dark-highlight border border-gray-700 text-gray-400 hover:bg-dark-surface hover:text-white text-sm font-medium transition-colors">2</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-md bg-dark-highlight border border-gray-700 text-gray-400 hover:bg-dark-surface hover:text-white text-sm font-medium transition-colors">3</button>
+<span class="w-8 h-8 flex items-center justify-center text-gray-600">...</span>
+<button class="w-8 h-8 flex items-center justify-center rounded-md bg-dark-highlight border border-gray-700 text-gray-400 hover:bg-dark-surface hover:text-white text-sm font-medium transition-colors">48</button>
+</div>
+<button class="p-2 rounded-md border border-gray-700 text-gray-500 hover:bg-dark-highlight hover:text-white transition-colors">
+<span class="material-symbols-outlined" style="font-size: 20px;">chevron_right</span>
+</button>
+<button class="p-2 rounded-md border border-gray-700 text-gray-500 hover:bg-dark-highlight hover:text-white transition-colors">
+<span class="material-symbols-outlined" style="font-size: 20px;">last_page</span>
+</button>
+</div>
+</footer>
+</main>
+</div>
+
+</body></html>

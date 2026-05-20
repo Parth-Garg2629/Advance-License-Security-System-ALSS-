@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>License Management - Neon Dark</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#00f2ea",
+                        "primary-hover": "#00c2bb",
+                        "primary-dim": "rgba(0, 242, 234, 0.1)",
+                        background: "#050507", // Deep black/blue
+                        surface: "#111118", // Card bg
+                        "surface-highlight": "#1a1a24", // Hover
+                        border: "#2a2a35",
+                        "border-highlight": "#3f3f50",
+                        text: {
+                            main: "#e4e4e7", // Zinc 200
+                            sub: "#a1a1aa", // Zinc 400
+                            muted: "#52525b" // Zinc 600
+                        },
+                        status: {
+                            active: "#00f2ea", // Cyan
+                            active_bg: "rgba(0, 242, 234, 0.1)",
+                            warning: "#facc15", // Yellow
+                            warning_bg: "rgba(250, 204, 21, 0.1)",
+                            danger: "#ff0055", // Neon Red
+                            danger_bg: "rgba(255, 0, 85, 0.1)",
+                        }
+                    },
+                    boxShadow: {
+                        'neon': '0 0 10px rgba(0, 242, 234, 0.3), 0 0 20px rgba(0, 242, 234, 0.1)',
+                        'neon-red': '0 0 10px rgba(255, 0, 85, 0.3)',
+                        'neon-card': '0 0 0 1px rgba(255, 255, 255, 0.05), 0 4px 6px -1px rgba(0, 0, 0, 0.5)',
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }.custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #050507;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #2a2a35;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #3f3f50;
+        }
+    </style>
+</head>
+<body class="bg-background text-text-main antialiased overflow-hidden h-screen flex">
+<aside class="w-64 bg-surface border-r border-border flex-shrink-0 flex flex-col h-full text-text-sub transition-all duration-300 z-20">
+<div class="h-16 flex items-center px-6 border-b border-border/50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-3xl text-primary drop-shadow-[0_0_8px_rgba(0,242,234,0.6)]">shield_lock</span>
+<div class="flex flex-col">
+<span class="font-bold text-lg leading-tight tracking-tight text-white">ALSS Admin</span>
+<span class="text-xs text-text-muted font-medium uppercase tracking-widest">Security System</span>
+</div>
+</div>
+</div>
+<nav class="flex-1 overflow-y-auto py-6 px-3 flex flex-col gap-1 custom-scrollbar">
+<a class="flex items-center gap-3 px-4 py-3 rounded text-text-sub hover:bg-surface-highlight hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded bg-primary-dim text-primary shadow-[0_0_15px_rgba(0,242,234,0.1)] border border-primary/20" href="#">
+<span class="material-symbols-outlined">vpn_key</span>
+<span class="text-sm font-medium">Licenses</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded text-text-sub hover:bg-surface-highlight hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">devices</span>
+<span class="text-sm font-medium">Devices</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded text-text-sub hover:bg-surface-highlight hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">business</span>
+<span class="text-sm font-medium">Clients</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded text-text-sub hover:bg-surface-highlight hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">history_edu</span>
+<span class="text-sm font-medium">Audit Logs</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded text-text-sub hover:bg-surface-highlight hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">file_download</span>
+<span class="text-sm font-medium">Exports</span>
+</a>
+<div class="my-4 h-px bg-border/50 mx-4"></div>
+<div class="px-4 mb-2 text-xs font-semibold text-text-muted uppercase tracking-wider">Administration</div>
+<a class="flex items-center gap-3 px-4 py-3 rounded text-text-sub hover:bg-surface-highlight hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">domain</span>
+<span class="text-sm font-medium">Organization</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded text-text-sub hover:bg-surface-highlight hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded text-text-sub hover:bg-surface-highlight hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">admin_panel_settings</span>
+<span class="text-sm font-medium">Admin Profile</span>
+</a>
+</nav>
+<div class="p-4 border-t border-border/50">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-highlight border border-border flex items-center justify-center text-primary font-bold shadow-[0_0_10px_rgba(0,0,0,0.5)]" data-alt="Admin user avatar placeholder">JD</div>
+<div class="flex flex-col overflow-hidden">
+<span class="text-sm font-medium text-white truncate">Jane Doe</span>
+<span class="text-xs text-text-muted truncate">Super Admin</span>
+</div>
+</div>
+</div>
+</aside>
+<main class="flex-1 flex flex-col min-w-0 overflow-hidden bg-background">
+<header class="h-16 flex items-center justify-between px-6 border-b border-border bg-surface flex-shrink-0 z-10">
+<h1 class="text-xl font-bold text-white tracking-tight flex items-center gap-2">
+            License Management
+        </h1>
+<div class="flex items-center gap-4">
+<button class="p-2 text-text-sub hover:text-primary transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-status-danger rounded-full shadow-[0_0_8px_#ff0055]"></span>
+</button>
+<div class="h-8 w-px bg-border mx-1"></div>
+<button class="flex items-center gap-2 text-sm font-medium text-text-sub hover:text-primary transition-colors">
+<span class="material-symbols-outlined">help</span>
+<span>Help Center</span>
+</button>
+</div>
+</header>
+<div class="flex-1 overflow-y-auto p-6 bg-background custom-scrollbar">
+<div class="max-w-[1600px] mx-auto flex flex-col gap-6">
+<div class="flex flex-col gap-6">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="flex flex-col gap-1">
+<h2 class="text-2xl font-bold text-white tracking-tight">License Registry</h2>
+<p class="text-text-sub text-sm">Manage and audit software entitlements across the organization.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center justify-center h-10 px-4 border border-border bg-surface text-text-sub text-sm font-medium rounded hover:text-primary hover:border-primary transition-colors shadow-sm">
+<span class="material-symbols-outlined mr-2 text-lg">file_upload</span>
+                            Import CSV
+                        </button>
+<button class="flex items-center justify-center h-10 px-4 bg-primary text-black text-sm font-bold rounded hover:bg-primary-hover transition-all shadow-neon">
+<span class="material-symbols-outlined mr-2 text-lg">add_circle</span>
+                            Issue New License
+                        </button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-surface border border-border rounded p-5 shadow-neon-card flex flex-col gap-1 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-primary">check_circle</span>
+</div>
+<div class="flex items-center justify-between z-10">
+<span class="text-sm font-medium text-text-sub">Total Active Licenses</span>
+<span class="material-symbols-outlined text-primary text-xl drop-shadow-[0_0_5px_rgba(0,242,234,0.8)]">check_circle</span>
+</div>
+<div class="flex items-end gap-2 mt-2 z-10">
+<span class="text-2xl font-bold text-white">1,245</span>
+<span class="text-xs font-medium text-green-400 mb-1">+2.5%</span>
+</div>
+</div>
+<div class="bg-surface border border-border rounded p-5 shadow-neon-card flex flex-col gap-1 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-status-warning">schedule</span>
+</div>
+<div class="flex items-center justify-between z-10">
+<span class="text-sm font-medium text-text-sub">Expiring Soon (30d)</span>
+<span class="material-symbols-outlined text-status-warning text-xl drop-shadow-[0_0_5px_rgba(250,204,21,0.5)]">schedule</span>
+</div>
+<div class="flex items-end gap-2 mt-2 z-10">
+<span class="text-2xl font-bold text-white">42</span>
+<span class="text-xs font-medium text-status-warning mb-1">Action Needed</span>
+</div>
+</div>
+<div class="bg-surface border border-border rounded p-5 shadow-neon-card flex flex-col gap-1 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-status-danger">block</span>
+</div>
+<div class="flex items-center justify-between z-10">
+<span class="text-sm font-medium text-text-sub">Revoked Licenses</span>
+<span class="material-symbols-outlined text-status-danger text-xl drop-shadow-[0_0_5px_rgba(255,0,85,0.5)]">block</span>
+</div>
+<div class="flex items-end gap-2 mt-2 z-10">
+<span class="text-2xl font-bold text-white">18</span>
+<span class="text-xs font-medium text-text-muted mb-1">This Month</span>
+</div>
+</div>
+<div class="bg-surface border border-border rounded p-5 shadow-neon-card flex flex-col gap-1 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-primary">devices</span>
+</div>
+<div class="flex items-center justify-between z-10">
+<span class="text-sm font-medium text-text-sub">Device Utilizaton</span>
+<span class="material-symbols-outlined text-primary text-xl drop-shadow-[0_0_5px_rgba(0,242,234,0.8)]">devices</span>
+</div>
+<div class="flex items-end gap-2 mt-2 z-10">
+<span class="text-2xl font-bold text-white">92%</span>
+<span class="text-xs font-medium text-text-muted mb-1">Seat Usage</span>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface border border-border rounded-t shadow-sm p-4 flex flex-col lg:flex-row gap-4 justify-between items-start lg:items-center">
+<div class="relative w-full lg:w-96">
+<input class="w-full pl-10 pr-4 h-10 text-sm bg-background border border-border rounded focus:ring-1 focus:ring-primary focus:border-primary text-white placeholder-text-muted focus:shadow-[0_0_10px_rgba(0,242,234,0.2)] transition-all" placeholder="Search by License Key, Client, or Product..." type="text"/>
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-text-sub text-lg">search</span>
+</div>
+<div class="flex flex-wrap items-center gap-3 w-full lg:w-auto">
+<div class="flex items-center gap-2">
+<span class="text-sm font-medium text-text-sub">Filters:</span>
+<div class="relative group">
+<button class="flex items-center gap-2 h-9 px-3 bg-surface-highlight border border-border rounded text-sm font-medium text-text-main hover:bg-background hover:border-text-sub transition-colors">
+                                Status: All
+                                <span class="material-symbols-outlined text-lg">arrow_drop_down</span>
+</button>
+</div>
+<div class="relative group">
+<button class="flex items-center gap-2 h-9 px-3 bg-surface-highlight border border-border rounded text-sm font-medium text-text-main hover:bg-background hover:border-text-sub transition-colors">
+                                Product: All
+                                <span class="material-symbols-outlined text-lg">arrow_drop_down</span>
+</button>
+</div>
+<div class="relative group">
+<button class="flex items-center gap-2 h-9 px-3 bg-surface-highlight border border-border rounded text-sm font-medium text-text-main hover:bg-background hover:border-text-sub transition-colors">
+                                Client: All
+                                <span class="material-symbols-outlined text-lg">arrow_drop_down</span>
+</button>
+</div>
+</div>
+<div class="h-6 w-px bg-border hidden sm:block"></div>
+<button class="text-primary text-sm font-medium hover:text-white hover:underline flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-base">restart_alt</span>
+                        Reset
+                    </button>
+</div>
+</div>
+<div class="bg-surface border-x border-b border-border rounded-b shadow-lg overflow-hidden -mt-6"> 
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-highlight border-b border-border">
+<th class="p-4 text-xs font-bold uppercase tracking-wider text-text-sub w-12">
+<input class="rounded border-border-highlight bg-background text-primary focus:ring-primary focus:ring-offset-surface" type="checkbox"/>
+</th>
+<th class="p-4 text-xs font-bold uppercase tracking-wider text-text-sub cursor-pointer hover:text-white group transition-colors">
+<div class="flex items-center gap-1">
+                                    License Key
+                                    <span class="material-symbols-outlined text-text-muted text-sm opacity-0 group-hover:opacity-100">sort</span>
+</div>
+</th>
+<th class="p-4 text-xs font-bold uppercase tracking-wider text-text-sub">Product</th>
+<th class="p-4 text-xs font-bold uppercase tracking-wider text-text-sub">Client</th>
+<th class="p-4 text-xs font-bold uppercase tracking-wider text-text-sub">Status</th>
+<th class="p-4 text-xs font-bold uppercase tracking-wider text-text-sub">Devices</th>
+<th class="p-4 text-xs font-bold uppercase tracking-wider text-text-sub cursor-pointer hover:text-white group transition-colors">
+<div class="flex items-center gap-1">
+                                    Expires
+                                    <span class="material-symbols-outlined text-text-muted text-sm opacity-0 group-hover:opacity-100">sort</span>
+</div>
+</th>
+<th class="p-4 text-xs font-bold uppercase tracking-wider text-text-sub text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border">
+<tr class="hover:bg-surface-highlight/50 group transition-colors">
+<td class="p-4 w-12 align-middle">
+<input class="rounded border-border-highlight bg-background text-primary focus:ring-primary focus:ring-offset-surface" type="checkbox"/>
+</td>
+<td class="p-4 align-middle">
+<div class="flex items-center gap-2 font-mono text-sm text-text-main font-medium">
+<span class="opacity-50 text-text-muted">••••-••••-</span><span class="text-primary drop-shadow-[0_0_5px_rgba(0,242,234,0.3)]">A9B2</span>
+<button class="text-text-muted hover:text-primary transition-colors" title="Reveal Key">
+<span class="material-symbols-outlined text-base">visibility_off</span>
+</button>
+</div>
+</td>
+<td class="p-4 align-middle">
+<div class="text-sm text-white">Enterprise Security Suite v2</div>
+<div class="text-xs text-text-sub">Tier: Platinum</div>
+</td>
+<td class="p-4 align-middle">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-surface-highlight border border-border text-primary flex items-center justify-center text-xs font-bold" data-alt="Acme Logo">A</div>
+<span class="text-sm text-text-main">Acme Corp</span>
+</div>
+</td>
+<td class="p-4 align-middle">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-status-active_bg text-status-active border border-status-active/30 shadow-[0_0_8px_rgba(0,242,234,0.15)]">
+<span class="w-1.5 h-1.5 rounded-full bg-status-active shadow-[0_0_5px_#00f2ea]"></span>
+                                    Active
+                                </span>
+</td>
+<td class="p-4 align-middle">
+<div class="flex items-center gap-2">
+<div class="w-24 h-2 bg-gray-800 rounded-full overflow-hidden border border-border/50">
+<div class="h-full bg-primary w-[40%] shadow-[0_0_10px_#00f2ea]"></div>
+</div>
+<span class="text-xs text-text-sub font-medium">4/10</span>
+</div>
+</td>
+<td class="p-4 align-middle">
+<div class="text-sm text-text-main">Oct 24, 2024</div>
+<div class="text-xs text-text-sub">320 days left</div>
+</td>
+<td class="p-4 align-middle text-right">
+<div class="opacity-0 group-hover:opacity-100 transition-opacity flex justify-end gap-1">
+<button class="p-1.5 text-text-sub hover:text-primary hover:bg-primary-dim rounded transition-colors" title="Edit">
+<span class="material-symbols-outlined text-lg">edit</span>
+</button>
+<button class="p-1.5 text-text-sub hover:text-status-danger hover:bg-status-danger_bg rounded transition-colors" title="Revoke">
+<span class="material-symbols-outlined text-lg">block</span>
+</button>
+<button class="p-1.5 text-text-sub hover:text-white hover:bg-surface-highlight rounded transition-colors" title="More">
+<span class="material-symbols-outlined text-lg">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-surface-highlight/50 group transition-colors">
+<td class="p-4 w-12 align-middle">
+<input class="rounded border-border-highlight bg-background text-primary focus:ring-primary focus:ring-offset-surface" type="checkbox"/>
+</td>
+<td class="p-4 align-middle">
+<div class="flex items-center gap-2 font-mono text-sm text-text-main font-medium">
+<span class="opacity-50 text-text-muted">••••-••••-</span><span class="text-primary drop-shadow-[0_0_5px_rgba(0,242,234,0.3)]">8X21</span>
+<button class="text-text-muted hover:text-primary transition-colors" title="Reveal Key">
+<span class="material-symbols-outlined text-base">visibility_off</span>
+</button>
+</div>
+</td>
+<td class="p-4 align-middle">
+<div class="text-sm text-white">Threat Monitor Pro</div>
+<div class="text-xs text-text-sub">Tier: Gold</div>
+</td>
+<td class="p-4 align-middle">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-surface-highlight border border-border text-primary flex items-center justify-center text-xs font-bold" data-alt="Globex Logo">G</div>
+<span class="text-sm text-text-main">Globex Inc.</span>
+</div>
+</td>
+<td class="p-4 align-middle">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-status-warning_bg text-status-warning border border-status-warning/30 shadow-[0_0_8px_rgba(250,204,21,0.15)]">
+<span class="w-1.5 h-1.5 rounded-full bg-status-warning shadow-[0_0_5px_#facc15]"></span>
+                                    Expiring
+                                </span>
+</td>
+<td class="p-4 align-middle">
+<div class="flex items-center gap-2">
+<div class="w-24 h-2 bg-gray-800 rounded-full overflow-hidden border border-border/50">
+<div class="h-full bg-primary w-[90%] shadow-[0_0_10px_#00f2ea]"></div>
+</div>
+<span class="text-xs text-text-sub font-medium">45/50</span>
+</div>
+</td>
+<td class="p-4 align-middle">
+<div class="text-sm text-status-warning font-medium">Dec 15, 2023</div>
+<div class="text-xs text-text-sub">12 days left</div>
+</td>
+<td class="p-4 align-middle text-right">
+<div class="opacity-0 group-hover:opacity-100 transition-opacity flex justify-end gap-1">
+<button class="p-1.5 text-text-sub hover:text-primary hover:bg-primary-dim rounded transition-colors" title="Edit">
+<span class="material-symbols-outlined text-lg">edit</span>
+</button>
+<button class="p-1.5 text-text-sub hover:text-status-danger hover:bg-status-danger_bg rounded transition-colors" title="Revoke">
+<span class="material-symbols-outlined text-lg">block</span>
+</button>
+<button class="p-1.5 text-text-sub hover:text-white hover:bg-surface-highlight rounded transition-colors" title="More">
+<span class="material-symbols-outlined text-lg">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-surface-highlight/50 group transition-colors bg-status-danger_bg/5">
+<td class="p-4 w-12 align-middle">
+<input class="rounded border-border-highlight bg-background text-primary focus:ring-primary focus:ring-offset-surface" type="checkbox"/>
+</td>
+<td class="p-4 align-middle">
+<div class="flex items-center gap-2 font-mono text-sm text-text-muted font-medium">
+<span class="opacity-50">••••-••••-</span>B777
+                                    <button class="text-text-muted hover:text-primary transition-colors" title="Reveal Key">
+<span class="material-symbols-outlined text-base">visibility_off</span>
+</button>
+</div>
+</td>
+<td class="p-4 align-middle">
+<div class="text-sm text-text-muted">Enterprise Security Suite v2</div>
+<div class="text-xs text-text-muted">Tier: Standard</div>
+</td>
+<td class="p-4 align-middle">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-surface-highlight border border-border text-text-muted flex items-center justify-center text-xs font-bold" data-alt="Stark Logo">S</div>
+<span class="text-sm text-text-muted">Stark Ind.</span>
+</div>
+</td>
+<td class="p-4 align-middle">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-status-danger_bg text-status-danger border border-status-danger/30 shadow-[0_0_8px_rgba(255,0,85,0.15)]">
+<span class="w-1.5 h-1.5 rounded-full bg-status-danger shadow-[0_0_5px_#ff0055]"></span>
+                                    Revoked
+                                </span>
+</td>
+<td class="p-4 align-middle">
+<div class="flex items-center gap-2">
+<div class="w-24 h-2 bg-gray-800 rounded-full overflow-hidden border border-border/50">
+<div class="h-full bg-text-muted w-[0%]"></div>
+</div>
+<span class="text-xs text-text-muted font-medium">0/5</span>
+</div>
+</td>
+<td class="p-4 align-middle">
+<div class="text-sm text-text-muted line-through">Nov 01, 2024</div>
+<div class="text-xs text-status-danger font-medium">Revoked by Admin</div>
+</td>
+<td class="p-4 align-middle text-right">
+<div class="opacity-0 group-hover:opacity-100 transition-opacity flex justify-end gap-1">
+<button class="p-1.5 text-text-sub hover:text-primary hover:bg-primary-dim rounded transition-colors" title="Reactivate">
+<span class="material-symbols-outlined text-lg">history</span>
+</button>
+<button class="p-1.5 text-text-sub hover:text-white hover:bg-surface-highlight rounded transition-colors" title="More">
+<span class="material-symbols-outlined text-lg">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-surface-highlight/50 group transition-colors">
+<td class="p-4 w-12 align-middle">
+<input class="rounded border-border-highlight bg-background text-primary focus:ring-primary focus:ring-offset-surface" type="checkbox"/>
+</td>
+<td class="p-4 align-middle">
+<div class="flex items-center gap-2 font-mono text-sm text-text-main font-medium">
+<span class="opacity-50 text-text-muted">••••-••••-</span><span class="text-primary drop-shadow-[0_0_5px_rgba(0,242,234,0.3)]">44D9</span>
+<button class="text-text-muted hover:text-primary transition-colors" title="Reveal Key">
+<span class="material-symbols-outlined text-base">visibility_off</span>
+</button>
+</div>
+</td>
+<td class="p-4 align-middle">
+<div class="text-sm text-white">Firewall Manager Plus</div>
+<div class="text-xs text-text-sub">Tier: Enterprise</div>
+</td>
+<td class="p-4 align-middle">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-surface-highlight border border-border text-primary flex items-center justify-center text-xs font-bold" data-alt="Wayne Logo">W</div>
+<span class="text-sm text-text-main">Wayne Ent.</span>
+</div>
+</td>
+<td class="p-4 align-middle">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-status-active_bg text-status-active border border-status-active/30 shadow-[0_0_8px_rgba(0,242,234,0.15)]">
+<span class="w-1.5 h-1.5 rounded-full bg-status-active shadow-[0_0_5px_#00f2ea]"></span>
+                                    Active
+                                </span>
+</td>
+<td class="p-4 align-middle">
+<div class="flex items-center gap-2">
+<div class="w-24 h-2 bg-gray-800 rounded-full overflow-hidden border border-border/50">
+<div class="h-full bg-primary w-[20%] shadow-[0_0_10px_#00f2ea]"></div>
+</div>
+<span class="text-xs text-text-sub font-medium">20/100</span>
+</div>
+</td>
+<td class="p-4 align-middle">
+<div class="text-sm text-text-main">Feb 28, 2025</div>
+<div class="text-xs text-text-sub">400+ days left</div>
+</td>
+<td class="p-4 align-middle text-right">
+<div class="opacity-0 group-hover:opacity-100 transition-opacity flex justify-end gap-1">
+<button class="p-1.5 text-text-sub hover:text-primary hover:bg-primary-dim rounded transition-colors" title="Edit">
+<span class="material-symbols-outlined text-lg">edit</span>
+</button>
+<button class="p-1.5 text-text-sub hover:text-status-danger hover:bg-status-danger_bg rounded transition-colors" title="Revoke">
+<span class="material-symbols-outlined text-lg">block</span>
+</button>
+<button class="p-1.5 text-text-sub hover:text-white hover:bg-surface-highlight rounded transition-colors" title="More">
+<span class="material-symbols-outlined text-lg">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-surface-highlight/50 group transition-colors">
+<td class="p-4 w-12 align-middle">
+<input class="rounded border-border-highlight bg-background text-primary focus:ring-primary focus:ring-offset-surface" type="checkbox"/>
+</td>
+<td class="p-4 align-middle">
+<div class="flex items-center gap-2 font-mono text-sm text-text-main font-medium">
+<span class="opacity-50 text-text-muted">••••-••••-</span><span class="text-primary drop-shadow-[0_0_5px_rgba(0,242,234,0.3)]">K92L</span>
+<button class="text-text-muted hover:text-primary transition-colors" title="Reveal Key">
+<span class="material-symbols-outlined text-base">visibility_off</span>
+</button>
+</div>
+</td>
+<td class="p-4 align-middle">
+<div class="text-sm text-white">Data Vault</div>
+<div class="text-xs text-text-sub">Tier: Basic</div>
+</td>
+<td class="p-4 align-middle">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-surface-highlight border border-border text-primary flex items-center justify-center text-xs font-bold" data-alt="Massive Dynamic Logo">M</div>
+<span class="text-sm text-text-main">Massive Dynamic</span>
+</div>
+</td>
+<td class="p-4 align-middle">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-status-active_bg text-status-active border border-status-active/30 shadow-[0_0_8px_rgba(0,242,234,0.15)]">
+<span class="w-1.5 h-1.5 rounded-full bg-status-active shadow-[0_0_5px_#00f2ea]"></span>
+                                    Active
+                                </span>
+</td>
+<td class="p-4 align-middle">
+<div class="flex items-center gap-2">
+<div class="w-24 h-2 bg-gray-800 rounded-full overflow-hidden border border-border/50">
+<div class="h-full bg-primary w-[75%] shadow-[0_0_10px_#00f2ea]"></div>
+</div>
+<span class="text-xs text-text-sub font-medium">3/4</span>
+</div>
+</td>
+<td class="p-4 align-middle">
+<div class="text-sm text-text-main">Jan 10, 2024</div>
+<div class="text-xs text-text-sub">38 days left</div>
+</td>
+<td class="p-4 align-middle text-right">
+<div class="opacity-0 group-hover:opacity-100 transition-opacity flex justify-end gap-1">
+<button class="p-1.5 text-text-sub hover:text-primary hover:bg-primary-dim rounded transition-colors" title="Edit">
+<span class="material-symbols-outlined text-lg">edit</span>
+</button>
+<button class="p-1.5 text-text-sub hover:text-status-danger hover:bg-status-danger_bg rounded transition-colors" title="Revoke">
+<span class="material-symbols-outlined text-lg">block</span>
+</button>
+<button class="p-1.5 text-text-sub hover:text-white hover:bg-surface-highlight rounded transition-colors" title="More">
+<span class="material-symbols-outlined text-lg">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="bg-surface border-t border-border p-4 flex items-center justify-between">
+<div class="text-xs text-text-sub">
+                        Showing <span class="font-medium text-primary">1</span> to <span class="font-medium text-primary">5</span> of <span class="font-medium text-text-main">248</span> results
+                    </div>
+<div class="flex items-center gap-2">
+<button class="flex items-center justify-center w-8 h-8 rounded border border-border text-text-sub hover:bg-surface-highlight hover:text-white disabled:opacity-50 transition-colors" disabled="">
+<span class="material-symbols-outlined text-base">chevron_left</span>
+</button>
+<button class="flex items-center justify-center w-8 h-8 rounded bg-primary text-black text-sm font-bold shadow-neon">1</button>
+<button class="flex items-center justify-center w-8 h-8 rounded border border-border text-text-sub hover:bg-surface-highlight hover:text-white text-sm font-medium transition-colors">2</button>
+<button class="flex items-center justify-center w-8 h-8 rounded border border-border text-text-sub hover:bg-surface-highlight hover:text-white text-sm font-medium transition-colors">3</button>
+<span class="text-text-muted px-1">...</span>
+<button class="flex items-center justify-center w-8 h-8 rounded border border-border text-text-sub hover:bg-surface-highlight hover:text-white text-sm font-medium transition-colors">25</button>
+<button class="flex items-center justify-center w-8 h-8 rounded border border-border text-text-sub hover:bg-surface-highlight hover:text-white transition-colors">
+<span class="material-symbols-outlined text-base">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+
+</body></html>

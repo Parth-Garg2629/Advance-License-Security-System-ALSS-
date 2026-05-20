@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Application Settings - ALSS Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "neon-blue": "#00f3ff",
+                        "neon-purple": "#bc13fe",
+                        "neon-green": "#0aff0a",
+                        "dark-bg": "#05050a",
+                        "dark-surface": "#0f0f16",
+                        "dark-border": "#1f1f2e",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0px", "lg": "2px", "xl": "4px", "full": "9999px" },
+                    boxShadow: {
+                        "neon": "0 0 5px theme('colors.neon-blue'), 0 0 20px theme('colors.neon-blue')",
+                        "neon-sm": "0 0 2px theme('colors.neon-blue'), 0 0 10px theme('colors.neon-blue')",
+                        "neon-purple": "0 0 5px theme('colors.neon-purple'), 0 0 20px theme('colors.neon-purple')",
+                    }
+                },
+            },
+        }
+    </script>
+<style>.custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #05050a;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #1f1f2e;
+            border-radius: 0px;
+        }
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #00f3ff;
+            background-color: #00f3ff;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: rgba(0, 243, 255, 0.2);
+            border-color: #00f3ff;
+        }input:focus, select:focus, textarea:focus {
+            box-shadow: 0 0 0 1px #00f3ff, 0 0 8px rgba(0, 243, 255, 0.4);
+        }
+        body {
+            background-color: #05050a;
+            color: #e0e0e0;
+        }
+    </style>
+</head>
+<body class="bg-dark-bg font-display text-gray-200 antialiased selection:bg-neon-blue selection:text-black">
+<div class="flex h-screen w-full overflow-hidden">
+<aside class="flex w-64 flex-col bg-dark-surface border-r border-dark-border z-20">
+<div class="flex h-16 items-center gap-3 px-6 py-4 border-b border-dark-border bg-gradient-to-r from-dark-surface to-[#0a0a12]">
+<div class="bg-center bg-no-repeat bg-cover rounded-none size-8 shrink-0 border border-neon-blue shadow-[0_0_10px_rgba(0,243,255,0.3)]" data-alt="Abstract secure shield logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuArrI9N3tSCGpxwJx9NUH9B9ilPe9CRlW1248297L4H2QBMXEMzFTH-zPAZVqyjIFNrr7-UPy7H007zoha5y-eJpxNBoJ_IVCyLGNv-ClIVoc6lkGJqpLuPwonOlu3thDXqLgEJwTSsccGs6p2I1ZnrG9es-EbzKVTJcDQZA237-jasDEM9TG_k4eMintUk5jWCEyKr3EKeZr95NYVgBtrQxMUa0zHQWPQ90Pnohr29_MU3wfYf3f8W26ilfmWXUoKeWRjOdlUKS1w");'></div>
+<div class="flex flex-col">
+<h1 class="text-white text-base font-bold leading-none tracking-tight uppercase tracking-wider">ALSS<span class="text-neon-blue">.SYS</span></h1>
+<p class="text-gray-500 text-[10px] font-mono mt-1 uppercase tracking-widest">Security Console</p>
+</div>
+</div>
+<div class="flex flex-1 flex-col justify-between overflow-y-auto custom-scrollbar p-4">
+<div class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-sm hover:bg-white/5 text-gray-400 hover:text-neon-blue transition-all group border-l-2 border-transparent hover:border-neon-blue" href="#">
+<span class="material-symbols-outlined text-gray-500 group-hover:text-neon-blue transition-colors" style="font-size: 20px;">dashboard</span>
+<p class="text-sm font-medium leading-normal">Dashboard</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-sm hover:bg-white/5 text-gray-400 hover:text-neon-blue transition-all group border-l-2 border-transparent hover:border-neon-blue" href="#">
+<span class="material-symbols-outlined text-gray-500 group-hover:text-neon-blue transition-colors" style="font-size: 20px;">vpn_key</span>
+<p class="text-sm font-medium leading-normal">License Management</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-sm hover:bg-white/5 text-gray-400 hover:text-neon-blue transition-all group border-l-2 border-transparent hover:border-neon-blue" href="#">
+<span class="material-symbols-outlined text-gray-500 group-hover:text-neon-blue transition-colors" style="font-size: 20px;">group</span>
+<p class="text-sm font-medium leading-normal">User Directory</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-sm hover:bg-white/5 text-gray-400 hover:text-neon-blue transition-all group border-l-2 border-transparent hover:border-neon-blue" href="#">
+<span class="material-symbols-outlined text-gray-500 group-hover:text-neon-blue transition-colors" style="font-size: 20px;">description</span>
+<p class="text-sm font-medium leading-normal">Audit Logs</p>
+</a>
+<div class="my-2 border-t border-dark-border"></div>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-sm bg-neon-blue/10 text-neon-blue border-l-2 border-neon-blue shadow-[inset_0_0_20px_rgba(0,243,255,0.1)]" href="#">
+<span class="material-symbols-outlined text-neon-blue" style="font-size: 20px;">settings</span>
+<p class="text-sm font-bold leading-normal tracking-wide">Application Settings</p>
+</a>
+</div>
+<div class="flex flex-col gap-1 mt-auto border-t border-dark-border pt-4">
+<div class="flex items-center gap-3 px-3 py-2 rounded-sm hover:bg-red-900/10 cursor-pointer text-gray-400 hover:text-red-500 transition-colors border border-transparent hover:border-red-900/30">
+<span class="material-symbols-outlined" style="font-size: 20px;">logout</span>
+<p class="text-sm font-medium leading-normal">Log Out</p>
+</div>
+<div class="px-3 py-2 text-[10px] text-gray-600 font-mono text-center tracking-widest uppercase">
+                        v4.2.0-secure
+                    </div>
+</div>
+</div>
+</aside>
+<main class="flex-1 overflow-y-auto bg-dark-bg relative w-full h-full">
+<div class="absolute inset-0 z-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#1f1f2e 1px, transparent 1px); background-size: 20px 20px;"></div>
+<div class="container relative z-10 mx-auto max-w-[1200px] px-6 py-8 pb-20">
+<div class="flex items-center gap-2 mb-8 text-xs font-mono uppercase tracking-widest">
+<a class="text-gray-500 hover:text-neon-blue transition-colors" href="#">Home</a>
+<span class="text-gray-700 material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-neon-blue font-bold shadow-neon-sm p-1">Settings</span>
+</div>
+<div class="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-10 border-b border-dark-border pb-8">
+<div class="flex flex-col gap-2 max-w-2xl">
+<h1 class="text-white text-3xl font-black leading-tight tracking-[-0.033em] uppercase">Application Settings</h1>
+<p class="text-gray-400 text-sm font-normal leading-relaxed border-l-2 border-neon-purple pl-4">Configure system-wide preferences, security policies, and external integrations. Changes are logged in the immutable audit trail.</p>
+</div>
+<div class="flex gap-3 items-center shrink-0">
+<button class="flex h-10 items-center justify-center rounded-sm px-4 border border-gray-700 bg-transparent text-gray-400 text-sm font-bold uppercase tracking-wider hover:bg-gray-800 hover:text-white transition-all hover:border-gray-500">
+                            Discard
+                        </button>
+<button class="flex h-10 items-center justify-center rounded-sm px-6 bg-neon-blue/10 border border-neon-blue text-neon-blue text-sm font-bold uppercase tracking-wider hover:bg-neon-blue hover:text-black hover:shadow-neon transition-all gap-2 group">
+<span class="material-symbols-outlined text-[18px] group-hover:text-black transition-colors">save</span>
+                            Save Changes
+                        </button>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<div class="lg:col-span-8 flex flex-col gap-8">
+<section class="bg-dark-surface rounded-sm border border-dark-border relative overflow-hidden group hover:border-neon-blue/50 transition-colors duration-300">
+<div class="absolute top-0 left-0 w-1 h-full bg-neon-blue opacity-50"></div>
+<div class="px-6 py-4 border-b border-dark-border bg-[#0a0a12] flex items-center justify-between">
+<h2 class="text-white text-lg font-bold uppercase tracking-wide">General Configuration</h2>
+<span class="material-symbols-outlined text-gray-600 group-hover:text-neon-blue transition-colors">tune</span>
+</div>
+<div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+<label class="flex flex-col gap-2">
+<span class="text-gray-400 text-xs font-mono uppercase tracking-wider">System Name</span>
+<input class="form-input w-full rounded-sm border border-dark-border bg-[#05050a] px-4 py-2.5 text-sm text-gray-200 focus:border-neon-blue focus:ring-0 placeholder-gray-700 transition-all" type="text" value="ALSS-Enterprise-01"/>
+</label>
+<label class="flex flex-col gap-2">
+<span class="text-gray-400 text-xs font-mono uppercase tracking-wider">Support Contact Email</span>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-gray-600 text-[20px]">mail</span>
+<input class="form-input w-full rounded-sm border border-dark-border bg-[#05050a] pl-10 pr-4 py-2.5 text-sm text-gray-200 focus:border-neon-blue focus:ring-0 placeholder-gray-700 transition-all" type="email" value="admin-security@company.com"/>
+</div>
+</label>
+<label class="flex flex-col gap-2">
+<span class="text-gray-400 text-xs font-mono uppercase tracking-wider">Timezone</span>
+<select class="form-select w-full rounded-sm border border-dark-border bg-[#05050a] px-4 py-2.5 text-sm text-gray-200 focus:border-neon-blue focus:ring-0 transition-all">
+<option>UTC (Coordinated Universal Time)</option>
+<option selected="">EST (Eastern Standard Time)</option>
+<option>PST (Pacific Standard Time)</option>
+<option>CET (Central European Time)</option>
+</select>
+</label>
+<label class="flex flex-col gap-2">
+<span class="text-gray-400 text-xs font-mono uppercase tracking-wider">Default Language</span>
+<select class="form-select w-full rounded-sm border border-dark-border bg-[#05050a] px-4 py-2.5 text-sm text-gray-200 focus:border-neon-blue focus:ring-0 transition-all">
+<option selected="">English (US)</option>
+<option>English (UK)</option>
+<option>Spanish</option>
+<option>German</option>
+</select>
+</label>
+</div>
+</section>
+<section class="bg-dark-surface rounded-sm border border-dark-border relative overflow-hidden group hover:border-neon-purple/50 transition-colors duration-300">
+<div class="absolute top-0 left-0 w-1 h-full bg-neon-purple opacity-50"></div>
+<div class="px-6 py-4 border-b border-dark-border bg-[#0a0a12] flex items-center justify-between">
+<h2 class="text-white text-lg font-bold uppercase tracking-wide">Security Policies</h2>
+<span class="material-symbols-outlined text-gray-600 group-hover:text-neon-purple transition-colors">security</span>
+</div>
+<div class="p-6 flex flex-col gap-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<label class="flex flex-col gap-2">
+<span class="text-gray-400 text-xs font-mono uppercase tracking-wider">Global Session Timeout</span>
+<select class="form-select w-full rounded-sm border border-dark-border bg-[#05050a] px-4 py-2.5 text-sm text-gray-200 focus:border-neon-purple focus:ring-0 transition-all">
+<option>15 Minutes</option>
+<option selected="">30 Minutes</option>
+<option>1 Hour</option>
+<option>4 Hours</option>
+</select>
+<p class="text-[10px] text-gray-600 font-mono">Force logout after inactivity.</p>
+</label>
+<div class="flex flex-col gap-3 p-4 bg-neon-purple/5 border border-neon-purple/20 rounded-sm">
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<span class="text-neon-purple text-sm font-bold uppercase tracking-wider">Enforce Admin 2FA</span>
+<span class="text-[10px] text-gray-500 font-mono">Mandatory Multi-Factor Auth</span>
+</div>
+<div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+<input class="toggle-checkbox absolute block w-5 h-5 rounded-sm bg-gray-800 border-2 appearance-none cursor-pointer border-gray-600 transition-all duration-300 left-0 checked:left-5 checked:bg-neon-purple checked:border-neon-purple" id="toggle-2fa" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-5 rounded-sm bg-gray-800 border border-gray-700 cursor-pointer transition-colors duration-300" for="toggle-2fa"></label>
+</div>
+</div>
+<div class="flex items-center justify-between mt-2 pt-3 border-t border-neon-purple/20">
+<div class="flex flex-col">
+<span class="text-neon-purple text-sm font-bold uppercase tracking-wider">Device Fingerprint</span>
+<span class="text-[10px] text-gray-500 font-mono">Track hardware IDs</span>
+</div>
+<div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-5 h-5 rounded-sm bg-gray-800 border-2 appearance-none cursor-pointer border-gray-600 transition-all duration-300 left-0 checked:left-5 checked:bg-neon-purple checked:border-neon-purple" id="toggle-fp" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-5 rounded-sm bg-gray-800 border border-gray-700 cursor-pointer transition-colors duration-300" for="toggle-fp"></label>
+</div>
+</div>
+</div>
+</div>
+<label class="flex flex-col gap-2">
+<span class="text-gray-400 text-xs font-mono uppercase tracking-wider">IP Whitelist Configuration</span>
+<textarea class="form-textarea w-full rounded-sm border border-dark-border bg-[#05050a] px-4 py-3 text-sm font-mono text-neon-green focus:border-neon-green focus:ring-0 min-h-[100px] selection:bg-neon-green selection:text-black" placeholder="192.168.1.1/32
+10.0.0.0/24">10.20.1.55/32
+192.168.100.0/24</textarea>
+<p class="text-[10px] text-gray-600 font-mono">One CIDR range per line. Only these IPs can access admin console.</p>
+</label>
+</div>
+</section>
+<section class="bg-dark-surface rounded-sm border border-dark-border relative overflow-hidden group hover:border-neon-green/50 transition-colors duration-300">
+<div class="absolute top-0 left-0 w-1 h-full bg-neon-green opacity-50"></div>
+<div class="px-6 py-4 border-b border-dark-border bg-[#0a0a12] flex items-center justify-between">
+<h2 class="text-white text-lg font-bold uppercase tracking-wide">API Integrations</h2>
+<span class="material-symbols-outlined text-gray-600 group-hover:text-neon-green transition-colors">api</span>
+</div>
+<div class="p-6 flex flex-col gap-6">
+<label class="flex flex-col gap-2">
+<span class="text-gray-400 text-xs font-mono uppercase tracking-wider">Webhook URL</span>
+<input class="form-input w-full rounded-sm border border-dark-border bg-[#05050a] px-4 py-2.5 text-sm text-gray-200 focus:border-neon-green focus:ring-0 placeholder-gray-700 transition-all" placeholder="https://api.yourdomain.com/hooks/alss" type="url"/>
+</label>
+<div class="flex flex-col gap-2">
+<span class="text-gray-400 text-xs font-mono uppercase tracking-wider">Service API Key</span>
+<div class="flex gap-2">
+<div class="relative flex-1">
+<input class="form-input w-full rounded-sm border border-dark-border bg-[#05050a] px-4 py-2.5 text-sm font-mono text-gray-400 focus:outline-none" readonly="" type="password" value="sk_live_51Mz...q3f7"/>
+<button class="absolute right-2 top-2 text-gray-500 hover:text-neon-green transition-colors">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</div>
+<button class="flex items-center gap-2 px-4 py-2 rounded-sm border border-gray-700 bg-transparent text-gray-300 text-xs font-bold uppercase tracking-wide hover:bg-gray-800 hover:text-white hover:border-gray-500 transition-all">
+<span class="material-symbols-outlined text-[16px]">content_copy</span>
+                                            Copy
+                                        </button>
+<button class="flex items-center gap-2 px-4 py-2 rounded-sm border border-gray-700 bg-transparent text-gray-300 text-xs font-bold uppercase tracking-wide hover:bg-gray-800 hover:text-white hover:border-gray-500 transition-all">
+<span class="material-symbols-outlined text-[16px]">refresh</span>
+                                            Regenerate
+                                        </button>
+</div>
+<p class="text-[10px] text-gray-600 font-mono">Used for external licensing validation services. Keep secret.</p>
+</div>
+</div>
+</section>
+</div>
+<div class="lg:col-span-4 flex flex-col gap-8">
+<section class="bg-dark-surface rounded-sm border border-dark-border relative overflow-hidden h-fit group hover:border-neon-blue/50 transition-colors duration-300">
+<div class="absolute top-0 right-0 w-1 h-full bg-neon-blue opacity-50"></div>
+<div class="px-6 py-4 border-b border-dark-border bg-[#0a0a12] flex items-center justify-between">
+<h2 class="text-white text-lg font-bold uppercase tracking-wide">Notifications</h2>
+<span class="material-symbols-outlined text-gray-600 group-hover:text-neon-blue transition-colors">notifications</span>
+</div>
+<div class="p-6 flex flex-col gap-4">
+<div class="flex items-center justify-between py-2">
+<div class="flex flex-col max-w-[70%]">
+<span class="text-gray-200 text-sm font-semibold">Critical Events</span>
+<span class="text-[10px] text-gray-500 font-mono">Security breaches &amp; failures</span>
+</div>
+<div class="relative inline-block w-10 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-5 h-5 rounded-sm bg-gray-800 border-2 appearance-none cursor-pointer border-gray-600 transition-all duration-300 left-0 checked:left-5 checked:bg-neon-blue checked:border-neon-blue" id="toggle-notif-1" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-5 rounded-sm bg-gray-800 border border-gray-700 cursor-pointer transition-colors duration-300" for="toggle-notif-1"></label>
+</div>
+</div>
+<div class="flex items-center justify-between py-2 border-t border-dark-border">
+<div class="flex flex-col max-w-[70%]">
+<span class="text-gray-200 text-sm font-semibold">Expiration Warnings</span>
+<span class="text-[10px] text-gray-500 font-mono">License expiry alerts</span>
+</div>
+<div class="relative inline-block w-10 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-5 h-5 rounded-sm bg-gray-800 border-2 appearance-none cursor-pointer border-gray-600 transition-all duration-300 left-0 checked:left-5 checked:bg-neon-blue checked:border-neon-blue" id="toggle-notif-2" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-5 rounded-sm bg-gray-800 border border-gray-700 cursor-pointer transition-colors duration-300" for="toggle-notif-2"></label>
+</div>
+</div>
+<div class="flex items-center justify-between py-2 border-t border-dark-border">
+<div class="flex flex-col max-w-[70%]">
+<span class="text-gray-200 text-sm font-semibold">Weekly Reports</span>
+<span class="text-[10px] text-gray-500 font-mono">Summary of active seats</span>
+</div>
+<div class="relative inline-block w-10 align-middle select-none transition duration-200 ease-in">
+<input class="toggle-checkbox absolute block w-5 h-5 rounded-sm bg-gray-800 border-2 appearance-none cursor-pointer border-gray-600 transition-all duration-300 left-0 checked:left-5 checked:bg-neon-blue checked:border-neon-blue" id="toggle-notif-3" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-5 rounded-sm bg-gray-800 border border-gray-700 cursor-pointer transition-colors duration-300" for="toggle-notif-3"></label>
+</div>
+</div>
+<div class="mt-2 pt-4 border-t border-dark-border">
+<label class="flex flex-col gap-2">
+<span class="text-gray-500 text-[10px] font-bold uppercase tracking-widest">Alert Threshold (Days)</span>
+<input class="form-input w-full rounded-sm border border-dark-border bg-[#05050a] px-3 py-2 text-sm text-gray-200 focus:border-neon-blue focus:ring-0 transition-all font-mono" type="number" value="14"/>
+</label>
+</div>
+</div>
+</section>
+<section class="bg-gradient-to-br from-dark-surface to-[#1e1e3f] rounded-sm border border-dark-border shadow-[0_0_15px_rgba(0,243,255,0.05)] overflow-hidden h-fit text-white relative">
+<div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
+<div class="p-6 flex flex-col gap-4 relative z-10">
+<div class="flex items-center gap-3 border-b border-white/10 pb-3">
+<span class="material-symbols-outlined text-neon-blue">dns</span>
+<h2 class="text-white text-lg font-bold uppercase tracking-wider">System Status</h2>
+</div>
+<div class="flex flex-col gap-3 mt-1 font-mono text-sm">
+<div class="flex justify-between">
+<span class="text-gray-400">Server Status</span>
+<span class="text-neon-green font-bold flex items-center gap-2 drop-shadow-[0_0_5px_rgba(10,255,10,0.8)]"><span class="w-1.5 h-1.5 rounded-full bg-neon-green animate-pulse"></span> ONLINE</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-400">Database</span>
+<span class="text-neon-green font-bold drop-shadow-[0_0_5px_rgba(10,255,10,0.8)]">CONNECTED</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-400">Last Backup</span>
+<span class="text-white">2h 14m ago</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-400">Version</span>
+<span class="text-neon-blue">v4.2.0</span>
+</div>
+</div>
+</div>
+</section>
+<section class="bg-[#0f0505] rounded-sm border border-red-900/30 shadow-[0_0_15px_rgba(255,0,0,0.05)] overflow-hidden h-fit group hover:border-red-600 transition-colors duration-500">
+<div class="px-6 py-4 border-b border-red-900/20 bg-red-950/10 flex items-center justify-between">
+<h2 class="text-red-500 text-lg font-bold uppercase tracking-wider group-hover:text-red-400 group-hover:drop-shadow-[0_0_5px_rgba(255,0,0,0.8)] transition-all">Danger Zone</h2>
+<span class="material-symbols-outlined text-red-800 group-hover:text-red-500 transition-colors">warning</span>
+</div>
+<div class="p-6 flex flex-col gap-4">
+<p class="text-[11px] font-mono text-red-400/70 border-l border-red-900/50 pl-3">ACTIONS HERE ARE IRREVERSIBLE. PLEASE PROCEED WITH CAUTION.</p>
+<button class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-sm border border-red-900/50 bg-transparent text-red-500 text-xs font-bold uppercase tracking-wider hover:bg-red-950/30 hover:border-red-500 hover:text-red-400 transition-all">
+                                    Reset All Settings
+                                </button>
+<button class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-sm bg-red-900/20 border border-red-800 text-red-500 text-xs font-bold uppercase tracking-wider hover:bg-red-600 hover:text-white hover:border-red-500 hover:shadow-[0_0_15px_rgba(255,0,0,0.4)] transition-all">
+                                    Purge Audit Logs
+                                </button>
+</div>
+</section>
+</div>
+</div>
+<div class="mt-12 pt-6 border-t border-dark-border flex justify-center">
+<p class="text-[10px] text-gray-600 font-mono tracking-widest uppercase">Advanced License Security System (ALSS) © 2024. All rights reserved.</p>
+</div>
+</div>
+</main>
+</div>
+
+</body></html>
